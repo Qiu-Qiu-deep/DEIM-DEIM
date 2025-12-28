@@ -1,22 +1,18 @@
 task: detection
 
-evaluator:
+evaluator: # 指标
   type: CocoEvaluator
   iou_types: ['bbox', ]
 
 num_classes: 1 # your dataset classes
-remap_mscoco_category: False
+remap_mscoco_category: False 
 
 train_dataloader:
   type: DataLoader
   dataset:
     type: CocoDetection
-    # img_folder: /home/waas/DEIM/dataset/train/images
-    # ann_file: /home/waas/DEIM/dataset/train/annotations/data.json
-    img_folder: /home/hjj/Desktop/project/DEIM/dataset/train/images
-    ann_file: /home/hjj/Desktop/project/DEIM/dataset/train/annotations/data.json
-    # img_folder: /root/code/project/DEIM/dataset/train/images
-    # ann_file: /root/code/project/DEIM/dataset/train/annotations/data.json
+    img_folder: data/gwhd_2021/train/images
+    ann_file: data/gwhd_2021/annotations/train.json
     return_masks: False
     transforms:
       type: Compose
@@ -33,12 +29,9 @@ val_dataloader:
   type: DataLoader
   dataset:
     type: CocoDetection
-    # img_folder: /home/waas/DEIM/dataset/val/images
-    # ann_file: /home/waas/DEIM/dataset/val/annotations/data.json
-    img_folder: /home/hjj/Desktop/project/DEIM/dataset/val/images
-    ann_file: /home/hjj/Desktop/project/DEIM/dataset/val/annotations/data.json
-    # img_folder: /root/code/project/DEIM/dataset/val/images
-    # ann_file: /root/code/project/DEIM/dataset/val/annotations/data.json
+    img_folder: data/gwhd_2021/val/images
+    ann_file: data/gwhd_2021/annotations/val.json
+
     return_masks: False
     transforms:
       type: Compose
@@ -50,12 +43,15 @@ val_dataloader:
   collate_fn:
     type: BatchImageCollateFunction
 
+
+# 暂时还不需要test；把这个文件的内容全部复制到custom_detection.yml里就行了
+
 # val_dataloader:
 #   type: DataLoader
 #   dataset:
 #     type: CocoDetection
-#     img_folder: /root/code/project/DEIM/dataset/test/images
-#     ann_file: /root/code/project/DEIM/dataset/test/annotations/data.json
+#     img_folder: /root/dataset/dataset_visdrone/VisDrone2019-DET-test-dev/images
+#     ann_file: /root/dataset/dataset_visdrone/VisDrone2019-DET-test-dev/annotations/test.json
 #     return_masks: False
 #     transforms:
 #       type: Compose

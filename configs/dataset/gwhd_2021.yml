@@ -1,11 +1,11 @@
 task: detection
 
-evaluator:
+evaluator: # 指标
   type: CocoEvaluator
   iou_types: ['bbox', ]
 
 num_classes: 1 # your dataset classes
-remap_mscoco_category: False
+remap_mscoco_category: False 
 
 train_dataloader:
   type: DataLoader
@@ -42,6 +42,9 @@ val_dataloader:
   pin_memory: True
   collate_fn:
     type: BatchImageCollateFunction
+
+
+# 暂时还不需要test；把这个文件的内容全部复制到custom_detection.yml里就行了
 
 # val_dataloader:
 #   type: DataLoader
