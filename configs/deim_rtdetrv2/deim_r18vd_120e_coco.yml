@@ -3,7 +3,7 @@ __include__: [
   '../base/rt_deim.yml',
 ]
 
-output_dir: ./outputs/deim_rtdetrv2_r18vd_120e_coco
+output_dir: ./outputs/deim_rtdetrv2_r18vd_120e_custom
 
 optimizer:
   type: AdamW

@@ -1,20 +1,20 @@
 __include__: [
-  '../dataset/coco_detection.yml',
+  '../dataset/custom_detection.yml',
   '../runtime.yml',
   '../base/dataloader_dfine.yml',
   '../base/rt_optimizer.yml',
   '../base/rtdetrv2_r50vd.yml',
 ]
 
-
-output_dir: ./outputs/rtdetrv2_r18vd_120e_coco
+print_freq: 20
+output_dir: ./outputs/rtdetrv2_r18vd_120e_custom
 
 
 PResNet:
   depth: 18
   freeze_at: -1
   freeze_norm: False
-  pretrained: True
+  pretrained: False
 
 HybridEncoder:
   in_channels: [128, 256, 512]
@@ -33,10 +33,14 @@ optimizer:
     - 
       params: '^(?=.*(?:norm|bn)).*$'
       weight_decay: 0.
-
+# 算了，这个rtdetr先不跑了
 
 train_dataloader: 
   dataset: 
     transforms:
       policy:
         epoch: 117
+  total_batch_size: 4
+
+val_dataloader:
+  total_batch_size: 4

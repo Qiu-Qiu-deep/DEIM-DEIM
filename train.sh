@@ -16,8 +16,14 @@ export MKL_NUM_THREADS=4
 export CUDA_VISIBLE_DEVICES=3,5
 NUM_GPUS=2
 
-# torchrun --master_port=9928 --nproc_per_node=$NUM_GPUS train.py -c configs/yaml/deim_dfine_hgnetv2_n_mg.yml
+torchrun --master_port=9928 --nproc_per_node=$NUM_GPUS train.py -c configs/dfine/dfine_hgnetv2_n_custom.yml
 
-CUDA_VISIBLE_DEVICES=0 python train.py -c configs/yaml/deim_dfine_hgnetv2_n_mg_test.yml
+torchrun --master_port=9928 --nproc_per_node=$NUM_GPUS train.py -c configs/dfine/dfine_hgnetv2_n_mal_custom.yml
+
+torchrun --master_port=9928 --nproc_per_node=$NUM_GPUS train.py -c configs/deim/deim_hgnetv2_n_custom.yml
+
+# 都是160轮ok
+
+# CUDA_VISIBLE_DEVICES=0 python train.py -c configs/yaml/deim_dfine_hgnetv2_n_mg_test.yml
 
 echo "✅ Training completed!"
