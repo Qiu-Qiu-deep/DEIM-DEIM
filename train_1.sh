@@ -22,9 +22,9 @@ NUM_GPUS=2
 
 # torchrun --master_port=9930 --nproc_per_node=$NUM_GPUS train.py -c configs/baseline/deim_hgnetv2_n_custom.yml
 
-# torchrun --master_port=9932 --nproc_per_node=$NUM_GPUS train.py -c configs/baseline/rtdetrv2_r18vd_120e_coco.yml
+torchrun --master_port=9932 --nproc_per_node=$NUM_GPUS train.py -c configs/baseline/rtdetrv2_r18vd_120e_coco.yml
 
-# torchrun --master_port=9934 --nproc_per_node=$NUM_GPUS train.py -c configs/baseline/deim_r18vd_120e_coco.yml   
+torchrun --master_port=9934 --nproc_per_node=$NUM_GPUS train.py -c configs/baseline/deim_r18vd_120e_coco.yml   
 
 # 都是160轮ok
 
