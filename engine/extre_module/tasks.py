@@ -219,7 +219,7 @@ def parse_module(d, i, f, m, args, ch, nc=None, eval_spatial_size=None):
     elif m in {ContrastDrivenFeatureAggregation, DownsampleConv}: # attention    
         c2 = ch[f]     
         args = [c2, *args]
-    elif m in {AWTConv2d, WTConv2d}:
+    elif m in {AWTConv2d, WTConv2d}: # 处理所有只改通道，不改尺寸的模块。
         c1, c2 = ch[f], args[0]   
         args = [c1, c2, *args[1:]] 
     elif m in {PSConv, ADown, Conv}: # Conv
