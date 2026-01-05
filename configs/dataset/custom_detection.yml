@@ -25,6 +25,8 @@ train_dataloader:
     type: BatchImageCollateFunction
 
 
+
+# validation dataloader
 val_dataloader:
   type: DataLoader
   dataset:
@@ -43,15 +45,14 @@ val_dataloader:
   collate_fn:
     type: BatchImageCollateFunction
 
-
-# 暂时还不需要test；把这个文件的内容全部复制到custom_detection.yml里就行了
-
+# test dataloader
 # val_dataloader:
 #   type: DataLoader
 #   dataset:
 #     type: CocoDetection
-#     img_folder: /root/dataset/dataset_visdrone/VisDrone2019-DET-test-dev/images
-#     ann_file: /root/dataset/dataset_visdrone/VisDrone2019-DET-test-dev/annotations/test.json
+#     img_folder: data/gwhd_2021/test/images
+#     ann_file: data/gwhd_2021/annotations/test.json
+
 #     return_masks: False
 #     transforms:
 #       type: Compose
@@ -59,6 +60,9 @@ val_dataloader:
 #   shuffle: False
 #   num_workers: 4
 #   drop_last: False
-#   pin_memory: True
+#   pin_memory: False
 #   collate_fn:
 #     type: BatchImageCollateFunction
+
+
+
