@@ -66,7 +66,11 @@ def main(args, ) -> None:
         if args.path:
             solver.val_onnx_engine(args.mode)
         else:
-            solver.val()
+            if args.eval_wda:
+                data_root = '/home/wyq/wyq/DEIM-DEIM/data/gwhd_2021/test_domain'
+                solver.val_wda(data_root)
+            else:
+                solver.val()
     else:
         solver.fit(cfg_str)
 
@@ -98,6 +102,10 @@ if __name__ == '__main__':
     parser.add_argument('--print-rank', type=int, default=0, help='print rank id')
 
     parser.add_argument('--local-rank', type=int, help='local rank id')
+
+    # 添加求值WDA的flag
+    parser.add_argument('--eval-wda', action='store_true', default=False)
+
     args = parser.parse_args()
 
     main(args)

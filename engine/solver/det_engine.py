@@ -29,6 +29,7 @@ from ..extre_module.ops import Profile
 from ..extre_module.utils import TQDM, RANK
 from ..extre_module.yolo_metrice import get_yolo_det_metrice, get_yolo_seg_metrice 
 from ..deim.utils import coco_evaluator_per_class
+import subprocess
 
 CLEAR_MEMORY_STEP = 100
 TIME_DEBUG = False
@@ -304,7 +305,7 @@ def evaluate(model: torch.nn.Module, criterion: torch.nn.Module, postprocessor, 
         coco_evaluator.accumulate()
         coco_evaluator.summarize()     
         if test_only: 
-            logger.info(ORANGE + f"Saving coco pred[{output_dir / 'pred.json'}] json..." + RESET)  
+            logger.info(ORANGE + f"Saving coco pred[{output_dir / 'pred_bbox.json'}] json..." + RESET)  
             with open(output_dir / 'pred_bbox.json', 'w') as f:
                 json.dump(coco_det_pred_json, f)
             # if 'segm' in coco_evaluator.coco_eval: 
@@ -315,16 +316,23 @@ def evaluate(model: torch.nn.Module, criterion: torch.nn.Module, postprocessor, 
             for iouType in coco_evaluator.coco_gt: 
                 model_metrice_table = coco_evaluator_per_class(coco_evaluator, iouType)
                 print(ORANGE, model_metrice_table, RESET)
+
+            # cmd = ['python', 'tools/visualization/tp_fp_fn_analysis.py', '-p', f'{output_dir}/pred_bbox.json', '-o',f'{output_dir}/tp_fp_fn_visual']
+            # try:
+            #     subprocess.run(cmd, check=True)
+            #     print("生成分析成功")
+            # except Exception as e:
+            #     print("生成分析失败", e)
   
-            try:
-                logger.info(RED + "------------------------ TIDE Metrice Start ------------------------" + RESET)   
-                tide = TIDE()    
-                tide.evaluate_range(datasets.COCO(data_loader.dataset.ann_file), datasets.COCOResult(output_dir / 'pred_bbox.json'))   
-                tide.summarize()  
-                tide.plot(out_dir=output_dir / 'tide_result')
-            except Exception as e:    
-                logger.error(RED, 'TIDE failure... skip message:', e, RESET)   
-                logger.warning('------------------------ TIDE指标生成报错可以不用管 ------------------------')
+            # try:
+            #     logger.info(RED + "------------------------ TIDE Metrice Start ------------------------" + RESET)   
+            #     tide = TIDE()    
+            #     tide.evaluate_range(datasets.COCO(data_loader.dataset.ann_file), datasets.COCOResult(output_dir / 'pred_bbox.json'))   
+            #     tide.summarize()  
+            #     tide.plot(out_dir=output_dir / 'tide_result')
+            # except Exception as e:    
+            #     logger.error(RED, 'TIDE failure... skip message:', e, RESET)   
+            #     logger.warning('------------------------ TIDE指标生成报错可以不用管 ------------------------')
 
     stats = {} 
     if coco_evaluator is not None:

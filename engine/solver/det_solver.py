@@ -202,6 +202,27 @@ class DetSolver(BaseSolver):
             dist_utils.save_on_master(coco_evaluator.coco_eval["bbox"].eval, self.output_dir / "eval.pth") 
 
         return
+    
+    def eval_wda(self, data_root):
+        import os 
+        domains = os.listdir(f'{data_root}/data')
+        for domain in domains:
+            pass
+        # TODO
+        self.eval()
+     
+        module = self.ema.module if self.ema else self.model    
+        module.deploy()
+        _, model_info = stats(self.cfg, module=module)
+        logger.info(GREEN + f"Model Info(fused) {model_info}" + RESET)  
+        get_weight_size(module)   
+        test_stats, coco_evaluator = evaluate(module, self.criterion, self.postprocessor,    
+                self.val_dataloader, self.evaluator, self.device, True, self.output_dir, self.cfg.yolo_metrice)
+  
+        if self.output_dir: 
+            dist_utils.save_on_master(coco_evaluator.coco_eval["bbox"].eval, self.output_dir / "eval.pth") 
+
+        return
   
     def val_onnx_engine(self, mode):
   

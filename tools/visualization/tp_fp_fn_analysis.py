@@ -465,8 +465,8 @@ def plot_combined_error_analysis(fp_types, fn_types, output_path):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument('--image_path', '-i', default="/root/dataset/dataset_visdrone/VisDrone2019-DET-val/images", type=str)
-    parser.add_argument('--label_json', '-l', default="/root/dataset/dataset_visdrone/VisDrone2019-DET-val/annotations/val.json", type=str)
+    parser.add_argument('--image_path', '-i', default="/home/wyq/wyq/DEIM-DEIM/data/gwhd_2021/test/images", type=str)
+    parser.add_argument('--label_json', '-l', default="/home/wyq/wyq/DEIM-DEIM/data/gwhd_2021/annotations/test.json", type=str)
     parser.add_argument('--pred_json', '-p', default="outputs/deim_dinov3_s_visdrone_eval/pred_bbox.json", type=str)
     parser.add_argument('--output_path', '-o', default='tp_fp_fn_visual', type=str)
     parser.add_argument('--iou', default=0.5, type=float)
@@ -623,21 +623,22 @@ if __name__ == '__main__':
                     fp_type = classify_fp_type(pred_box, pred_class, label, iou_threshold)
                     fp_error_types[fp_type] += 1
             
-            # 添加图例
-            image = draw_legend(image, detect_color, missing_color, error_color, right_num, error_num, missing_num)
+            # 添加图例，暂时不用
+            # image = draw_legend(image, detect_color, missing_color, error_color, right_num, error_num, missing_num)
             
             all_right_num += right_num
             all_missing_num += missing_num
             all_error_num += error_num
             
-            cv2.imwrite(os.path.join(output_path, os.path.basename(img_path)), image)
-            logger.info(f'{img_id_index + 1}/{len(image_id_dict)} name:{os.path.basename(img_path)} right:{right_num} missing:{missing_num} error:{error_num}')
-            f_r.write(f'name:{os.path.basename(img_path)} right:{right_num} missing:{missing_num} error:{error_num}\n')
+            #不需要保存暂时
+            # cv2.imwrite(os.path.join(output_path, os.path.basename(img_path)), image)
+            # logger.info(f'{img_id_index + 1}/{len(image_id_dict)} name:{os.path.basename(img_path)} right:{right_num} missing:{missing_num} error:{error_num}')
+            # f_r.write(f'name:{os.path.basename(img_path)} right:{right_num} missing:{missing_num} error:{error_num}\n')
         
         # 写入总体统计
-        logger.info(f'all_result: right:{all_right_num} missing:{all_missing_num} error:{all_error_num}')
+        logger.info(f'all_result: right:{all_right_num} missing:{all_missing_num} error:{all_error_num} AI:{all_right_num/(all_right_num+all_missing_num+all_error_num)}')
         f_r.write(f'\n=== Overall Statistics ===\n')
-        f_r.write(f'all_result: right:{all_right_num} missing:{all_missing_num} error:{all_error_num}\n')
+        f_r.write(f'all_result: right:{all_right_num} missing:{all_missing_num} error:{all_error_num} AI:{all_right_num/(all_right_num+all_missing_num+all_error_num)}\n')
         
         # 写入尺寸统计
         f_r.write(f'\n=== Object Size Statistics ===\n')
