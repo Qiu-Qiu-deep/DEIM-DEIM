@@ -134,17 +134,12 @@ class BaseSolver(object):
             logger.info(f'Resume checkpoint from {self.cfg.resume}')  
             self.load_resume_state(self.cfg.resume) 
 
-    def eval(self, images_dir=None, annfile_path=None):     
+    def eval(self):     
         self._setup(eval=True)    
-        if images_dir is not None and annfile_path is not None:
-            # TODO
-            self.val_dataloader = dist_utils.warp_loader(   
-                self.cfg.val_dataloader, shuffle=self.cfg.val_dataloader.shuffle     
-            )
-        else:
-            self.val_dataloader = dist_utils.warp_loader(   
-                self.cfg.val_dataloader, shuffle=self.cfg.val_dataloader.shuffle     
-            )
+        
+        self.val_dataloader = dist_utils.warp_loader(   
+            self.cfg.val_dataloader, shuffle=self.cfg.val_dataloader.shuffle     
+        )
         
         self.evaluator = self.cfg.evaluator
 

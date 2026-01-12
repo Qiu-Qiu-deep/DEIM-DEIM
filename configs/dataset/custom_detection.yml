@@ -50,8 +50,8 @@ val_dataloader:
   type: DataLoader
   dataset:
     type: CocoDetection
-    img_folder: data/gwhd_2021/test/images
-    ann_file: data/gwhd_2021/annotations/test.json
+    img_folder: data/gwhd_2021/test_domain/data/ARC_1
+    ann_file: data/gwhd_2021/test_domain/annotations/ARC_1_annotations.json
 
     return_masks: False
     transforms:

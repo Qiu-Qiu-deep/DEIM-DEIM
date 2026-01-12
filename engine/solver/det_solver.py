@@ -11,6 +11,7 @@ import json
 import datetime
 import copy   
 import gc     
+import numpy as np
    
 import torch     
      
@@ -203,26 +204,220 @@ class DetSolver(BaseSolver):
 
         return
     
-    def eval_wda(self, data_root):
-        import os 
-        domains = os.listdir(f'{data_root}/data')
-        for domain in domains:
-            pass
-        # TODO
+    def val_wda(self, data_root):
+        import os
+        from pathlib import Path
+        
+        # 获取所有域（子数据集）
+        data_dir = Path(data_root) / 'data'
+        anno_dir = Path(data_root) / 'annotations'
+        domains = sorted([d for d in os.listdir(data_dir) if os.path.isdir(data_dir / d)])
+        logger.info(GREEN + f"Start WDA Evaluation on {data_root}" + RESET)
+        logger.info(GREEN + f"Found {len(domains)} domains: {domains}" + RESET)
+        
+        # 初始化模型（只执行一次）
         self.eval()
-     
         module = self.ema.module if self.ema else self.model    
         module.deploy()
+        
+        # 显示模型信息
         _, model_info = stats(self.cfg, module=module)
         logger.info(GREEN + f"Model Info(fused) {model_info}" + RESET)  
-        get_weight_size(module)   
-        test_stats, coco_evaluator = evaluate(module, self.criterion, self.postprocessor,    
-                self.val_dataloader, self.evaluator, self.device, True, self.output_dir, self.cfg.yolo_metrice)
-  
-        if self.output_dir: 
-            dist_utils.save_on_master(coco_evaluator.coco_eval["bbox"].eval, self.output_dir / "eval.pth") 
-
-        return
+        get_weight_size(module)
+        
+        # 存储所有域的评估结果
+        all_results = {}
+        
+        # 遍历每个域进行评估
+        for idx, domain in enumerate(domains):
+            logger.info(RED + f"\n{'='*50}" + RESET)
+            logger.info(RED + f"Evaluating Domain [{idx+1}/{len(domains)}]: {domain}" + RESET)
+            logger.info(RED + f"{'='*50}\n" + RESET)
+            
+            # 构建当前域的数据路径
+            domain_img_folder = str(data_dir / domain)
+            domain_anno_file = str(anno_dir / f'{domain}_annotations.json')
+            
+            # 检查标注文件是否存在
+            if not os.path.exists(domain_anno_file):
+                logger.warning(YELLOW + f"Annotation file not found: {domain_anno_file}, skipping..." + RESET)
+                continue
+            
+            logger.info(f"Image folder: {domain_img_folder}")
+            logger.info(f"Annotation file: {domain_anno_file}")
+            
+            # 备份原始配置
+            original_img_folder = self.cfg.yaml_cfg['val_dataloader']['dataset']['img_folder']
+            original_anno_file = self.cfg.yaml_cfg['val_dataloader']['dataset']['ann_file']
+            
+            try:
+                # 更新配置为当前域的路径
+                self.cfg.yaml_cfg['val_dataloader']['dataset']['img_folder'] = domain_img_folder
+                self.cfg.yaml_cfg['val_dataloader']['dataset']['ann_file'] = domain_anno_file
+                
+                # 重新创建验证数据加载器和评估器
+                # 清除缓存的val_dataloader和evaluator，强制重新构建
+                self.cfg._val_dataloader = None
+                self.cfg._evaluator = None
+                val_dataloader = self.cfg.val_dataloader
+                evaluator = self.cfg.evaluator
+                
+                test_stats, coco_evaluator = evaluate(
+                    module, 
+                    self.criterion, 
+                    self.postprocessor,    
+                    val_dataloader, 
+                    evaluator, 
+                    self.device, 
+                    True, 
+                    self.output_dir, 
+                    self.cfg.yolo_metrice
+                )
+                
+                # 计算WDA指标（Weighted Domain Accuracy）
+                # WDA公式: AI_d(i) = TP / (TP + FN + FP)
+                # 添加置信度阈值过滤，避免低置信度检测框影响结果
+                conf_threshold = 0.5  # 置信度阈值
+                domain_wda = 0.0
+                if coco_evaluator is not None and "bbox" in coco_evaluator.coco_eval:
+                    coco_eval = coco_evaluator.coco_eval["bbox"]
+                    # 获取每张图像的评估结果
+                    # evalImgs: 每个元素对应一张图像在某个类别、某个IoU阈值下的评估
+                    eval_imgs = coco_eval.evalImgs
+                    
+                    # 计算每张图像的准确率（使用IoU=0.5阈值，索引为1）
+                    image_accuracies = []
+                    for eval_img in eval_imgs:
+                        if eval_img is not None and eval_img['aRng'] == [0, 10000000000.0]:  # 只取全尺寸范围
+                            # dtMatches: 检测框的匹配情况 (IoU阈值 x 检测数量)
+                            # gtMatches: 真实框的匹配情况 (IoU阈值 x 真实框数量)
+                            # dtScores: 检测框的置信度分数
+                            dt_matches = eval_img.get('dtMatches', [])
+                            gt_matches = eval_img.get('gtMatches', [])
+                            dt_scores = eval_img.get('dtScores', [])
+                            
+                            if len(dt_matches) > 0 and len(gt_matches) > 0:
+                                # 使用IoU=0.5阈值（索引1）
+                                iou_thr_idx = 1
+                                dt_m = dt_matches[iou_thr_idx] if iou_thr_idx < len(dt_matches) else []
+                                gt_m = gt_matches[iou_thr_idx] if iou_thr_idx < len(gt_matches) else []
+                                
+                                # 过滤置信度低于阈值的检测框
+                                if len(dt_scores) > 0 and len(dt_m) > 0:
+                                    # 创建置信度掩码
+                                    conf_mask = np.array(dt_scores) >= conf_threshold
+                                    # 只保留高置信度的检测框
+                                    dt_m_filtered = np.array(dt_m)[conf_mask] if len(dt_m) == len(dt_scores) else dt_m
+                                    
+                                    # TP: 成功匹配的高置信度检测框数量
+                                    tp = np.sum(dt_m_filtered > 0) if len(dt_m_filtered) > 0 else 0
+                                    # FP: 未匹配的高置信度检测框数量
+                                    fp = np.sum(dt_m_filtered == 0) if len(dt_m_filtered) > 0 else 0
+                                else:
+                                    # 如果没有置信度信息，使用所有检测框
+                                    tp = np.sum(dt_m > 0) if len(dt_m) > 0 else 0
+                                    fp = np.sum(dt_m == 0) if len(dt_m) > 0 else 0
+                                
+                                # FN: 未匹配的真实框数量
+                                fn = np.sum(gt_m == 0) if len(gt_m) > 0 else 0
+                                
+                                # 计算图像级准确率
+                                if (tp + fp + fn) > 0:
+                                    ai = tp / (tp + fp + fn)
+                                    image_accuracies.append(ai)
+                    
+                    # 计算域的平均准确率
+                    if len(image_accuracies) > 0:
+                        domain_wda = np.mean(image_accuracies)
+                    
+                    logger.info(ORANGE + f"  Domain WDA (conf>{conf_threshold}): {domain_wda:.4f} (based on {len(image_accuracies)} images)" + RESET)
+                
+                # 保存当前域的评估结果
+                all_results[domain] = {
+                    'coco_metrics': test_stats,
+                    'wda': domain_wda
+                }
+                
+                # 打印当前域的结果
+                logger.info(GREEN + f"\nResults for {domain}:" + RESET)
+                for metric_name, values in test_stats.items():
+                    logger.info(f"  {metric_name}: {values}")
+                
+                # 保存当前域的详细评估结果
+                if self.output_dir and coco_evaluator is not None:
+                    domain_output_dir = self.output_dir / 'wda_results' / domain
+                    domain_output_dir.mkdir(parents=True, exist_ok=True)
+                    if "bbox" in coco_evaluator.coco_eval:
+                        dist_utils.save_on_master(
+                            coco_evaluator.coco_eval["bbox"].eval, 
+                            domain_output_dir / "eval.pth"
+                        )
+                        logger.info(f"Saved evaluation results to {domain_output_dir / 'eval.pth'}")
+                
+            except Exception as e:
+                logger.error(RED + f"Error evaluating domain {domain}: {str(e)}" + RESET)
+                import traceback
+                traceback.print_exc()
+            
+            finally:
+                # 恢复原始配置
+                self.cfg.yaml_cfg['val_dataloader']['dataset']['img_folder'] = original_img_folder
+                self.cfg.yaml_cfg['val_dataloader']['dataset']['ann_file'] = original_anno_file
+        
+        # 打印汇总结果
+        logger.info(RED + f"\n{'='*70}" + RESET)
+        logger.info(RED + f"WDA Evaluation Summary" + RESET)
+        logger.info(RED + f"{'='*70}\n" + RESET)
+        
+        if all_results:
+            # 计算COCO平均指标和WDA指标
+            avg_coco_results = {}
+            wda_scores = []
+            
+            for domain, result_dict in all_results.items():
+                metrics = result_dict['coco_metrics']
+                domain_wda = result_dict['wda']
+                wda_scores.append(domain_wda)
+                
+                logger.info(GREEN + f"{domain}:" + RESET)
+                for metric_name, values in metrics.items():
+                    logger.info(f"  {metric_name}: AP={values[0]:.4f}, AP50={values[1]:.4f}")
+                    if metric_name not in avg_coco_results:
+                        avg_coco_results[metric_name] = []
+                    avg_coco_results[metric_name].append(values[0])  # 使用 AP (IoU=0.50:0.95)
+                logger.info(ORANGE + f"  WDA: {domain_wda:.4f}" + RESET)
+            
+            # 计算全局WDA（所有域的平均）
+            global_wda = np.mean(wda_scores) if len(wda_scores) > 0 else 0.0
+            
+            # 打印平均结果
+            logger.info(BLUE + f"\nAverage COCO metrics across all domains:" + RESET)
+            for metric_name, values in avg_coco_results.items():
+                avg_value = sum(values) / len(values)
+                logger.info(f"  {metric_name}: {avg_value:.4f}")
+            
+            logger.info(RED + f"\n{'='*70}" + RESET)
+            logger.info(RED + f"Global WDA (Weighted Domain Accuracy): {global_wda:.4f}" + RESET)
+            logger.info(RED + f"{'='*70}\n" + RESET)
+            
+            # 保存汇总结果到文件
+            if self.output_dir:
+                summary_file = self.output_dir / 'wda_summary.json'
+                import json
+                summary_data = {
+                    'domains': all_results,
+                    'average_coco': {k: sum(v) / len(v) for k, v in avg_coco_results.items()},
+                    'global_wda': float(global_wda),
+                    'domain_wda_scores': {domain: result_dict['wda'] for domain, result_dict in all_results.items()}
+                }
+                with open(summary_file, 'w') as f:
+                    json.dump(summary_data, f, indent=4)
+                logger.info(f"\nSaved summary to {summary_file}")
+        else:
+            logger.warning(YELLOW + "No valid evaluation results found!" + RESET)
+        
+        logger.info(RED + f"\n{'='*70}\n" + RESET)
+        return all_results
   
     def val_onnx_engine(self, mode):
   
