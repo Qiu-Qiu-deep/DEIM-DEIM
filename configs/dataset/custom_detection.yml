@@ -27,31 +27,12 @@ train_dataloader:
 
 
 # validation dataloader
-# val_dataloader:
-#   type: DataLoader
-#   dataset:
-#     type: CocoDetection
-#     img_folder: data/gwhd_2021/val/images
-#     ann_file: data/gwhd_2021/annotations/val.json
-
-#     return_masks: False
-#     transforms:
-#       type: Compose
-#       ops: ~
-#   shuffle: False
-#   num_workers: 4
-#   drop_last: False
-#   pin_memory: False
-#   collate_fn:
-#     type: BatchImageCollateFunction
-
-# test dataloader
 val_dataloader:
   type: DataLoader
   dataset:
     type: CocoDetection
-    img_folder: data/gwhd_2021/test_domain/data/ARC_1
-    ann_file: data/gwhd_2021/test_domain/annotations/ARC_1_annotations.json
+    img_folder: data/gwhd_2021/val/images
+    ann_file: data/gwhd_2021/annotations/val.json
 
     return_masks: False
     transforms:
@@ -63,6 +44,25 @@ val_dataloader:
   pin_memory: False
   collate_fn:
     type: BatchImageCollateFunction
+
+# test dataloader
+# val_dataloader:
+#   type: DataLoader
+#   dataset:
+#     type: CocoDetection
+#     img_folder: data/gwhd_2021/test/images
+#     ann_file: data/gwhd_2021/annotations/test.json
+
+#     return_masks: False
+#     transforms:
+#       type: Compose
+#       ops: ~
+#   shuffle: False
+#   num_workers: 4
+#   drop_last: False
+#   pin_memory: False
+#   collate_fn:
+#     type: BatchImageCollateFunction
 
 
 

@@ -625,6 +625,23 @@ class DEIMCriterion(nn.Module):
                     l_dict = {k + '_dn_pre': v for k, v in l_dict.items()}
                     losses.update(l_dict)
 
+        # DAQS density loss (方案A简化集成)
+        if 'daqs_density_map' in outputs and self.training:
+            # 生成密度GT（高斯核）
+            density_gt = self._generate_density_gt(targets, outputs['daqs_density_map'].shape[-2:])
+            gt_count = torch.tensor([len(t['labels']) for t in targets], 
+                                   dtype=torch.float32, 
+                                   device=outputs['daqs_density_map'].device).unsqueeze(1)
+            
+            # 密度图L1损失
+            loss_density_map = F.l1_loss(outputs['daqs_density_map'], density_gt)
+            
+            # 计数Smooth L1损失
+            loss_density_count = F.smooth_l1_loss(outputs['daqs_predicted_count'], gt_count)
+            
+            # 组合损失（权重0.1，不干扰主任务）
+            losses['loss_density'] = 0.1 * (loss_density_map + loss_density_count)
+
         # For debugging Objects365 pre-train.   
         losses = {k:torch.nan_to_num(v, nan=0.0) for k, v in losses.items()}  
         return losses    
@@ -695,11 +712,73 @@ class DEIMCriterion(nn.Module):
         if avg_factor is not None: 
             loss = loss.sum() / avg_factor
         elif reduction == 'mean':  
-            loss = loss.mean()  
+            loss = loss.mean()
         elif reduction == 'sum':
-            loss = loss.sum()
+            loss = loss.sum()   
+      
+        return loss
 
-        return loss    
+    def _generate_density_gt(self, targets, output_size, base_sigma=4.0):
+        """
+        为DAQS生成密度图ground truth（终极优化版）
+        
+        特性：
+        1. 完全向量化（全局grid + broadcasting）
+        2. 自适应sigma（根据特征图尺寸调整）
+        3. 批量处理所有目标
+        
+        Args:
+            targets: list of dicts, 每个dict包含'boxes'和'labels'
+            output_size: (H, W) 密度图尺寸（对应backbone下采样后的特征图）
+            base_sigma: 基础sigma（相对于原图尺寸1024的标准差）
+                       会根据output_size自动缩放
+        
+        Returns:
+            density_gt: [B, 1, H, W] 密度图
+        """
+        batch_size = len(targets)
+        H, W = output_size
+        device = targets[0]['labels'].device
+        
+        # 自适应sigma计算（根据特征图尺寸调整）
+        # 假设原图为1024x1024，base_sigma=4对应P3(128x128)的标准高斯核
+        # 对于P4(64x64): sigma=8, P5(32x32): sigma=16
+        scale_factor = 128.0 / max(H, W)  # 相对于P3的缩放比例
+        sigma = base_sigma / scale_factor
+        
+        density_maps = torch.zeros(batch_size, 1, H, W, device=device, dtype=torch.float32)
+        
+        # 创建全局坐标网格（只创建一次）[H, W, 2]
+        y_coords = torch.arange(H, device=device, dtype=torch.float32)
+        x_coords = torch.arange(W, device=device, dtype=torch.float32)
+        yy, xx = torch.meshgrid(y_coords, x_coords, indexing='ij')
+        grid = torch.stack([xx, yy], dim=-1)  # [H, W, 2]
+        
+        # 预计算常量
+        two_sigma_sq = 2.0 * sigma * sigma
+        wh_scale = torch.tensor([W, H], device=device, dtype=torch.float32)
+        
+        for b, target in enumerate(targets):
+            boxes = target['boxes']  # [N, 4] in cxcywh format, normalized
+            if len(boxes) == 0:
+                continue
+            
+            # 转换中心点到密度图坐标 [N, 2]
+            centers = boxes[:, :2] * wh_scale
+            
+            # 全局向量化计算：[H, W, 1, 2] - [1, 1, N, 2] → [H, W, N, 2]
+            diff = grid.unsqueeze(2) - centers.unsqueeze(0).unsqueeze(0)
+            
+            # 距离平方 [H, W, N]
+            dist_sq = (diff * diff).sum(dim=-1)
+            
+            # 批量高斯核 [H, W, N]（exp运算完全并行）
+            gaussian = torch.exp(-dist_sq / two_sigma_sq)
+            
+            # 累加所有目标 [H, W]
+            density_maps[b, 0] = gaussian.sum(dim=-1)
+        
+        return density_maps  
 
     def get_gradual_steps(self, outputs):     
         num_layers = len(outputs['aux_outputs']) + 1 if 'aux_outputs' in outputs else 1

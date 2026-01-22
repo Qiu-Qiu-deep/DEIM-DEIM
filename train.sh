@@ -12,18 +12,17 @@ ulimit -n 65536
 export OMP_NUM_THREADS=4
 export MKL_NUM_THREADS=4
 
+# export CUDA_LAUNCH_BLOCKING=1
+
 # GPU配置
-export CUDA_VISIBLE_DEVICES=3,4
+export CUDA_VISIBLE_DEVICES=4,5
 NUM_GPUS=2
 
-torchrun --master_port=9928 --nproc_per_node=$NUM_GPUS train.py -c configs/dfine/dfine_hgnetv2_n_custom.yml
+# torchrun --master_port=9940 --nproc_per_node=$NUM_GPUS train.py -c configs/yaml/paper_first.yml
 
-torchrun --master_port=9928 --nproc_per_node=$NUM_GPUS train.py -c configs/dfine/dfine_hgnetv2_n_mal_custom.yml
+# torchrun --master_port=9937 --nproc_per_node=$NUM_GPUS train.py -c configs/yaml/dfine.yml
 
-torchrun --master_port=9928 --nproc_per_node=$NUM_GPUS train.py -c configs/deim/deim_hgnetv2_n_custom.yml
+# torchrun --master_port=9928 --nproc_per_node=$NUM_GPUS train.py -c configs/deim/deim_hgnetv2_n_custom.yml
 
-# 都是160轮ok。别忘了教龙哥
-
-# CUDA_VISIBLE_DEVICES=0 python train.py -c configs/yaml/deim_dfine_hgnetv2_n_mg_test.yml
-
+CUDA_VISIBLE_DEVICES=2 python train.py -c configs/yaml/my1_wapk.yml
 echo "✅ Training completed!"

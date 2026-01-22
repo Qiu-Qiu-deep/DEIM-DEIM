@@ -13,7 +13,8 @@ from engine.logger_module import get_logger
 from engine.backbone.hgnetv2 import StemBlock, HG_Stage   
 from engine.deim.hybrid_encoder import RepNCSPELAN4, ConvNormLayer_fuse, SCDown, CSPLayer, TransformerEncoderBlock
 from engine.deim.dfine_decoder import DFINETransformer     
-from engine.deim.dq_dfine_decoder import DQDFINETransformer     
+from engine.deim.dq_dfine_decoder import DQDFINETransformer
+from engine.deim.dfine_decoder_with_daqs import DFINETransformerWithDAQS
      
 from engine.extre_module.ultralytics_nn.conv import Concat, Add, Conv 
 from engine.extre_module.ultralytics_nn.block import Bottleneck, C3_Block, C2f_Block, C3k2_Block, MetaFormer_Block, MetaFormer_Mona, MetaFormer_SEFN, MetaFormer_Mona_SEFN, NCHW2NLC2NCHW   
@@ -39,7 +40,10 @@ from engine.extre_module.custom_nn.neck.FDPN import FocusFeature, ADown
 from engine.extre_module.custom_nn.mlp.ConvolutionalGLU import ConvolutionalGLU
 from engine.extre_module.custom_nn.module.nnWNet import *
 from engine.extre_module.custom_nn.module.ARF import ARF
-from engine.extre_module.custom_nn.module.LWGA import LWGA   
+from engine.extre_module.custom_nn.module.LWGA import LWGA
+
+# Paper First: 论文第一篇的创新模块
+from engine.extre_module.paper_first.wapk import WAPKBlock
   
 RED, GREEN, BLUE, YELLOW, ORANGE, RESET = "\033[91m", "\033[92m", "\033[94m", "\033[93m", "\033[38;5;208m", "\033[0m"
 logger = get_logger(__name__)     
@@ -241,6 +245,11 @@ def parse_module(d, i, f, m, args, ch, nc=None, eval_spatial_size=None):
     elif m in {HyperComputeModule}: 
         c2 = ch[f]    
         args = [c2, *args]   
+    # ============== Paper First Modules ==============
+    elif m is WAPKBlock:  # WAPK: 替换标准卷积，通道可变
+        c1, c2 = ch[f], args[0]
+        args = [c1, c2, *args[1:]]
+    # ============== Paper First Modules ==============
     elif m is HyperACE:
         c1 = ch[f[1]]
         c2 = args[0]
@@ -284,7 +293,7 @@ def parse_module(d, i, f, m, args, ch, nc=None, eval_spatial_size=None):
         c1 = [ch[x] for x in f]     
         c2 = args[0]
         args = [c1, c2, *args[1:]]
-    elif m in {DFINETransformer, DQDFINETransformer}:
+    elif m in {DFINETransformer, DQDFINETransformer, DFINETransformerWithDAQS}:
         args["feat_channels"] = [ch[x] for x in f]
         args["num_classes"] = nc
         args["eval_spatial_size"] = eval_spatial_size 

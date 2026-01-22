@@ -58,7 +58,11 @@ def main(args, ) -> None:
             cfg.yaml_cfg['HGNetv2']['pretrained'] = False
 
     cfg_str = json.dumps(cfg.__dict__, indent=4, ensure_ascii=False)
-    print(GREEN + cfg_str + RESET)
+    # print(GREEN + cfg_str + RESET)
+    if cfg.yaml_cfg.get('comment', '') != '':
+        print(ORANGE + f'实验说明: {cfg.yaml_cfg["comment"]}' + RESET)
+    else:
+        print(ORANGE + '建议添加实验说明comment字段' + RESET)
 
     solver = TASKS[cfg.yaml_cfg['task']](cfg)
 

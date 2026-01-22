@@ -25,6 +25,7 @@ class BaseConfig(object):
         super().__init__()
 
         self.task :str = None  
+        self.comment :str = ''
      
         # instance / function
         self._model :nn.Module = None

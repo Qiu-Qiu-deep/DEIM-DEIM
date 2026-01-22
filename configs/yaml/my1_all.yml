@@ -1,0 +1,55 @@
+__include__: [
+  '../dataset/custom_detection.yml',
+  '../runtime.yml',
+  '../base/dataloader_dfine.yml',
+  '../base/optimizer.yml',
+  '../base/dfine_hgnetv2.yml',
+  '../base/common.yml'
+]
+
+output_dir: ./outputs/my1_all
+
+
+DEIM_MG:
+  yaml_path: configs/cfg/my1_all.yaml
+
+# Increase to search for the optimal ema
+epoches: 120
+train_dataloader:
+  dataset:
+    transforms:
+      policy:
+        epoch: 108
+  collate_fn:
+    stop_epoch: 108
+    ema_restart_decay: 0.9999
+    base_size_repeat: ~
+
+# ============ Paper First 创新点配置 ============
+# 1. WAPK: 已在yaml_path配置中集成到backbone
+# 2. DAQS: 已在yaml_path配置中集成到decoder
+# 3. UGDR: 使用CriterionWithUGDR包装DEIMCriterion
+
+criterion: CriterionWithUGDR
+
+CriterionWithUGDR:
+  # UGDR特有参数
+  enable_ugdr: True
+  ugdr_weight: 1.0
+  beta_schedule: 'linear'
+  beta_start: 1.0
+  beta_end: 0.1
+  
+  # DEIMCriterion的参数（会传递给base_criterion）
+  base_criterion: 'DEIMCriterion'
+  weight_dict: {loss_vfl: 1, loss_bbox: 5, loss_giou: 2, loss_fgl: 0.15, loss_ddf: 1.5}
+  losses: ['vfl', 'boxes', 'local']
+  alpha: 0.75
+  gamma: 2.0
+  reg_max: 32
+  
+  matcher:
+    type: HungarianMatcher
+    weight_dict: {cost_class: 2, cost_bbox: 5, cost_giou: 2}
+    alpha: 0.25
+    gamma: 2.0

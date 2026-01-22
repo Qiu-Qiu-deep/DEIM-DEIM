@@ -3,7 +3,7 @@ from engine.core import YAMLConfig
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument('--config', '-c', default= "configs/yaml/deim_dfine_hgnetv2_n_mg_test.yml", type=str)
+    parser.add_argument('--config', '-c', default= "configs/yaml/my1_wapk.yml", type=str)
     args = parser.parse_args()
 
     cfg = YAMLConfig(args.config, resume=None)

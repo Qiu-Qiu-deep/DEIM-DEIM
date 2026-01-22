@@ -69,8 +69,12 @@ class PostProcessor(nn.Module):
         if self.use_focal_loss:
             # 使用 Focal Loss 计算类别分数
             scores = F.sigmoid(logits)    
+            # 动态调整num_top_queries（支持DAQS等动态query方法）
+            # 确保topk的k不超过实际query数量
+            actual_num_queries = logits.shape[1]  # 实际query数量
+            num_top_queries = min(self.num_top_queries, actual_num_queries)
             # 选择最高的 num_top_queries 个目标  
-            scores, index = torch.topk(scores.flatten(1), self.num_top_queries, dim=-1)   
+            scores, index = torch.topk(scores.flatten(1), num_top_queries, dim=-1)   
             # 计算类别标签     
             labels = index % self.num_classes  # 取模计算类别索引 
             index = index // self.num_classes  # 计算 box 索引
