@@ -13,6 +13,7 @@ einops
 prettytable
 pycocotools==2.0.8
 PyWavelets
+dill
 
 # ------------------ 装不成功可以先注释这两个
 #mmengine==0.10.7

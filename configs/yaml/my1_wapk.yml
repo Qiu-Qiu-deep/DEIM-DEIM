@@ -8,10 +8,10 @@ __include__: [
 ]
 
 
-output_dir: ./outputs/my1_wapk_t1_2
+output_dir: ./outputs/my1_wapk_t2_c5
 
 DEIM_MG:
-  yaml_path: configs/cfg/my1_wapk_t1.yaml
+  yaml_path: configs/cfg/my1_wapk_t2.yaml
 # Increase to search for the optimal ema
 epoches: 120
 train_dataloader:
