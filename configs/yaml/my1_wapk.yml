@@ -8,10 +8,10 @@ __include__: [
 ]
 
 
-output_dir: ./outputs/my1_wapk_t2_c5
+output_dir: ./outputs/my1_wapk_t1_v4T
 
 DEIM_MG:
-  yaml_path: configs/cfg/my1_wapk_t2.yaml
+  yaml_path: configs/cfg/my1_wapk_t1.yaml
 # Increase to search for the optimal ema
 epoches: 120
 train_dataloader:
@@ -24,4 +24,4 @@ train_dataloader:
     ema_restart_decay: 0.9999
     base_size_repeat: ~
 
-comment: 'clip max norm set to 2.0'
+comment: 'v4 downsample True V4 [-1, WAPKv4Stage, [256, True, 1, 1.5]] # 2-P3/8'

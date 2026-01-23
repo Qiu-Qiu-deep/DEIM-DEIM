@@ -43,7 +43,7 @@ from engine.extre_module.custom_nn.module.ARF import ARF
 from engine.extre_module.custom_nn.module.LWGA import LWGA
 
 # Paper First: 论文第一篇的创新模块
-from engine.extre_module.paper_first.wapk import WAPKBlock
+from engine.extre_module.paper_first.wapk import WAPKBlock, WAPKv4Stage
   
 RED, GREEN, BLUE, YELLOW, ORANGE, RESET = "\033[91m", "\033[92m", "\033[94m", "\033[93m", "\033[38;5;208m", "\033[0m"
 logger = get_logger(__name__)     
@@ -246,7 +246,7 @@ def parse_module(d, i, f, m, args, ch, nc=None, eval_spatial_size=None):
         c2 = ch[f]    
         args = [c2, *args]   
     # ============== Paper First Modules ==============
-    elif m is WAPKBlock:  # WAPK: 替换标准卷积，通道可变
+    elif m in {WAPKBlock, WAPKv4Stage}:  # WAPK: 替换标准卷积，通道可变
         c1, c2 = ch[f], args[0]
         args = [c1, c2, *args[1:]]
     # ============== Paper First Modules ==============

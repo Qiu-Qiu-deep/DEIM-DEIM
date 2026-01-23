@@ -4,7 +4,7 @@ backbone:
   # [from, module, args]
   - [-1, StemBlock, [16, 16, True]] # 0-P2/4
   - [-1, HG_Stage, [16, 64, 1, 3, False, False, 3, True, 'se']] # 1-P2/4
-  - [-1, WAPKBlock, [256, 1.5, "True"]] # 2-P3/8
+  - [-1, WAPKv4Stage, [256, True, 1, 1.5]] # 2-P3/8
   - [-1, HG_Stage, [64, 512, 2, 3, True, True, 5, True, 'se']]  # 3-P4/16
   - [-1, HG_Stage, [128, 1024, 1, 3, True, True, 5, True, 'se']] # 4-P5/32
 

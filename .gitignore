@@ -157,5 +157,6 @@ data/
 engine/extre_module/24/
 archive/
 *paper*/
-prompt/
 !engine/extre_module/paper_first
+!project_paper
+!papers_code

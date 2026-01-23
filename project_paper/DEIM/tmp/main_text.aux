@@ -1,0 +1,595 @@
+\relax 
+\providecommand\hyper@newdestlabel[2]{}
+\providecommand*\HyPL@Entry[1]{}
+\citation{lin2014microsoft}
+\citation{lin2014microsoft}
+\citation{chen2017multi,chen2016monocular}
+\citation{ess2010object}
+\citation{wang2024yolov9,wang2024yolov10,zheng2021yolox,bochkovskiy2020yolov4,redmon2016you}
+\citation{redmon2016you,bochkovskiy2020yolov4,zheng2021yolox,wang2024yolov9}
+\citation{zheng2021yolox}
+\citation{zhao2024detrs,wang2024yolov10}
+\HyPL@Entry{0<</S/D>>}
+\@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces Comparison with state-of-the-art real-time object detectors on COCO~\cite  {lin2014microsoft}. The proposed DEIM achieves faster convergence (a) and superior performance in terms of average precision (AP) and latency (b) when compared to state-of-the-art real-time object detectors.}}{1}{figure.caption.1}\protected@file@percent }
+\@writefile{brf}{\backcite{lin2014microsoft}{{1}{1}{figure.caption.1}}}
+\providecommand*\caption@xref[2]{\@setref\relax\@undefined{#1}}
+\newlabel{fig_front_comp}{{1}{1}{Comparison with state-of-the-art real-time object detectors on COCO~\cite {lin2014microsoft}. The proposed DEIM achieves faster convergence (a) and superior performance in terms of average precision (AP) and latency (b) when compared to state-of-the-art real-time object detectors}{figure.caption.1}{}}
+\newlabel{fig_front_comp@cref}{{[figure][1][]1}{[1][1][]1}{}{}{}}
+\providecommand \oddpage@label [2]{}
+\@writefile{toc}{\contentsline {section}{\numberline {1}\hskip -1em.~Introduction}{1}{section.1}\protected@file@percent }
+\newlabel{sec:intro}{{1}{1}{\texorpdfstring {\hskip -1em.~}{}Introduction}{section.1}{}}
+\newlabel{sec:intro@cref}{{[section][1][]1}{[1][1][]1}{}{}{}}
+\@writefile{brf}{\backcite{chen2016monocular}{{1}{1}{section.1}}}
+\@writefile{brf}{\backcite{chen2017multi}{{1}{1}{section.1}}}
+\@writefile{brf}{\backcite{ess2010object}{{1}{1}{section.1}}}
+\@writefile{brf}{\backcite{bochkovskiy2020yolov4}{{1}{1}{section.1}}}
+\@writefile{brf}{\backcite{redmon2016you}{{1}{1}{section.1}}}
+\@writefile{brf}{\backcite{wang2024yolov10}{{1}{1}{section.1}}}
+\@writefile{brf}{\backcite{wang2024yolov9}{{1}{1}{section.1}}}
+\@writefile{brf}{\backcite{zheng2021yolox}{{1}{1}{section.1}}}
+\citation{carion2020end}
+\citation{chen2023group,zhang2022dino,zong2023detrs}
+\citation{kuhn1955hungarian}
+\citation{chen2023group}
+\citation{zong2023detrs}
+\citation{ren2016faster}
+\citation{tian2022fully}
+\citation{bochkovskiy2020yolov4}
+\citation{zhang2017mixup}
+\citation{zhu2020deformable,li2022dn,zhang2022dino,zhao2024detrs}
+\citation{zhao2024detrs,zhang2022dino}
+\citation{lin2017focal,zhang2021varifocalnet}
+\citation{zhang2021varifocalnet}
+\citation{lin2014microsoft}
+\citation{lv2024rt}
+\citation{peng2024d}
+\citation{yolo11}
+\@writefile{brf}{\backcite{bochkovskiy2020yolov4}{{2}{1}{section.1}}}
+\@writefile{brf}{\backcite{redmon2016you}{{2}{1}{section.1}}}
+\@writefile{brf}{\backcite{wang2024yolov9}{{2}{1}{section.1}}}
+\@writefile{brf}{\backcite{zheng2021yolox}{{2}{1}{section.1}}}
+\@writefile{brf}{\backcite{zheng2021yolox}{{2}{1}{section.1}}}
+\@writefile{brf}{\backcite{wang2024yolov10}{{2}{1}{section.1}}}
+\@writefile{brf}{\backcite{zhao2024detrs}{{2}{1}{section.1}}}
+\@writefile{brf}{\backcite{carion2020end}{{2}{1}{section.1}}}
+\@writefile{brf}{\backcite{chen2023group}{{2}{1}{section.1}}}
+\@writefile{brf}{\backcite{zhang2022dino}{{2}{1}{section.1}}}
+\@writefile{brf}{\backcite{zong2023detrs}{{2}{1}{section.1}}}
+\@writefile{brf}{\backcite{kuhn1955hungarian}{{2}{1}{section.1}}}
+\@writefile{brf}{\backcite{chen2023group}{{2}{1}{section.1}}}
+\@writefile{brf}{\backcite{zong2023detrs}{{2}{1}{section.1}}}
+\@writefile{brf}{\backcite{ren2016faster}{{2}{1}{section.1}}}
+\@writefile{brf}{\backcite{tian2022fully}{{2}{1}{section.1}}}
+\@writefile{brf}{\backcite{bochkovskiy2020yolov4}{{2}{1}{section.1}}}
+\@writefile{brf}{\backcite{zhang2017mixup}{{2}{1}{section.1}}}
+\@writefile{brf}{\backcite{li2022dn}{{2}{1}{section.1}}}
+\@writefile{brf}{\backcite{zhang2022dino}{{2}{1}{section.1}}}
+\@writefile{brf}{\backcite{zhao2024detrs}{{2}{1}{section.1}}}
+\@writefile{brf}{\backcite{zhu2020deformable}{{2}{1}{section.1}}}
+\@writefile{brf}{\backcite{zhang2022dino}{{2}{1}{section.1}}}
+\@writefile{brf}{\backcite{zhao2024detrs}{{2}{1}{section.1}}}
+\@writefile{brf}{\backcite{lin2017focal}{{2}{1}{section.1}}}
+\@writefile{brf}{\backcite{zhang2021varifocalnet}{{2}{1}{section.1}}}
+\@writefile{brf}{\backcite{zhang2021varifocalnet}{{2}{1}{section.1}}}
+\@writefile{brf}{\backcite{lin2014microsoft}{{2}{1}{section.1}}}
+\@writefile{brf}{\backcite{lv2024rt}{{2}{1}{section.1}}}
+\@writefile{brf}{\backcite{peng2024d}{{2}{1}{section.1}}}
+\citation{zhang2021varifocalnet}
+\citation{zhang2021varifocalnet}
+\citation{carion2020end}
+\citation{kuhn1955hungarian}
+\citation{chen2023group}
+\citation{jia2023detrs}
+\citation{zong2023detrs}
+\citation{ren2016faster}
+\citation{tian2022fully}
+\citation{wang2022anchor}
+\citation{liu2022dab}
+\citation{li2022dn}
+\citation{zhang2023dense}
+\citation{ren2016faster,zhu2020deformable}
+\citation{zhang2022dino}
+\citation{zhao2024detrs}
+\citation{yao2021efficient}
+\citation{liu2023detection}
+\citation{zhao2024detrs}
+\citation{zhu2020deformable}
+\citation{zhao2024ms}
+\citation{dai2021dynamic}
+\citation{ye2023cascade}
+\citation{li2023lite}
+\citation{zhao2024detrs}
+\citation{peng2024d}
+\@writefile{brf}{\backcite{yolo11}{{3}{1}{section.1}}}
+\@writefile{toc}{\contentsline {section}{\numberline {2}\hskip -1em.~Related Work}{3}{section.2}\protected@file@percent }
+\newlabel{sec:relate}{{2}{3}{\texorpdfstring {\hskip -1em.~}{}Related Work}{section.2}{}}
+\newlabel{sec:relate@cref}{{[section][2][]2}{[1][3][]3}{}{}{}}
+\@writefile{brf}{\backcite{carion2020end}{{3}{2}{section.2}}}
+\@writefile{brf}{\backcite{kuhn1955hungarian}{{3}{2}{section.2}}}
+\@writefile{toc}{\contentsline {paragraph}{Increasing positive samples.}{3}{section*.3}\protected@file@percent }
+\@writefile{brf}{\backcite{chen2023group}{{3}{2}{section*.3}}}
+\@writefile{brf}{\backcite{jia2023detrs}{{3}{2}{section*.3}}}
+\@writefile{brf}{\backcite{zong2023detrs}{{3}{2}{section*.3}}}
+\@writefile{brf}{\backcite{ren2016faster}{{3}{2}{section*.3}}}
+\@writefile{brf}{\backcite{tian2022fully}{{3}{2}{section*.3}}}
+\@writefile{toc}{\contentsline {paragraph}{Optimizing low-quality matches.}{3}{section*.4}\protected@file@percent }
+\@writefile{brf}{\backcite{wang2022anchor}{{3}{2}{section*.4}}}
+\@writefile{brf}{\backcite{liu2022dab}{{3}{2}{section*.4}}}
+\@writefile{brf}{\backcite{li2022dn}{{3}{2}{section*.4}}}
+\@writefile{brf}{\backcite{zhang2023dense}{{3}{2}{section*.4}}}
+\@writefile{brf}{\backcite{ren2016faster}{{3}{2}{section*.4}}}
+\@writefile{brf}{\backcite{zhu2020deformable}{{3}{2}{section*.4}}}
+\@writefile{brf}{\backcite{zhang2022dino}{{3}{2}{section*.4}}}
+\@writefile{brf}{\backcite{zhao2024detrs}{{3}{2}{section*.4}}}
+\@writefile{brf}{\backcite{yao2021efficient}{{3}{2}{section*.4}}}
+\@writefile{brf}{\backcite{liu2023detection}{{3}{2}{section*.4}}}
+\@writefile{brf}{\backcite{zhao2024detrs}{{3}{2}{section*.4}}}
+\@writefile{toc}{\contentsline {paragraph}{Reducing computation cost.}{3}{section*.5}\protected@file@percent }
+\@writefile{brf}{\backcite{zhu2020deformable}{{3}{2}{section*.5}}}
+\@writefile{brf}{\backcite{zhao2024ms}{{3}{2}{section*.5}}}
+\@writefile{brf}{\backcite{dai2021dynamic}{{3}{2}{section*.5}}}
+\@writefile{brf}{\backcite{ye2023cascade}{{3}{2}{section*.5}}}
+\@writefile{brf}{\backcite{li2023lite}{{3}{2}{section*.5}}}
+\@writefile{brf}{\backcite{zhao2024detrs}{{3}{2}{section*.5}}}
+\@writefile{brf}{\backcite{peng2024d}{{3}{2}{section*.5}}}
+\citation{zheng2021yolox,feng2021tood}
+\citation{lin2017focal}
+\citation{zhu2020deformable,zhang2022dino}
+\newlabel{fig:toy_O2M}{{2a}{4}{\textbf {O2M}: 1 target and 4 pos}{figure.caption.2}{}}
+\newlabel{fig:toy_O2M@cref}{{[subfigure][1][2]2a}{[1][3][]4}{}{}{}}
+\newlabel{sub@fig:toy_O2M}{{a}{4}{\textbf {O2M}: 1 target and 4 pos}{figure.caption.2}{}}
+\newlabel{sub@fig:toy_O2M@cref}{{[subfigure][1][2]2a}{[1][3][]4}{}{}{}}
+\newlabel{fig:toy_O2O}{{2b}{4}{\textbf {O2O}: 1 target and 1 pos}{figure.caption.2}{}}
+\newlabel{fig:toy_O2O@cref}{{[subfigure][2][2]2b}{[1][3][]4}{}{}{}}
+\newlabel{sub@fig:toy_O2O}{{b}{4}{\textbf {O2O}: 1 target and 1 pos}{figure.caption.2}{}}
+\newlabel{sub@fig:toy_O2O@cref}{{[subfigure][2][2]2b}{[1][3][]4}{}{}{}}
+\newlabel{fig:toy_Dense_O2O}{{2c}{4}{\textbf {Dense O2O by stitching}: 4 targets and 4 pos}{figure.caption.2}{}}
+\newlabel{fig:toy_Dense_O2O@cref}{{[subfigure][3][2]2c}{[1][3][]4}{}{}{}}
+\newlabel{sub@fig:toy_Dense_O2O}{{c}{4}{\textbf {Dense O2O by stitching}: 4 targets and 4 pos}{figure.caption.2}{}}
+\newlabel{sub@fig:toy_Dense_O2O@cref}{{[subfigure][3][2]2c}{[1][3][]4}{}{}{}}
+\newlabel{fig:toy_lowquality}{{2d}{4}{Low-quality matching}{figure.caption.2}{}}
+\newlabel{fig:toy_lowquality@cref}{{[subfigure][4][2]2d}{[1][3][]4}{}{}{}}
+\newlabel{sub@fig:toy_lowquality}{{d}{4}{Low-quality matching}{figure.caption.2}{}}
+\newlabel{sub@fig:toy_lowquality@cref}{{[subfigure][4][2]2d}{[1][3][]4}{}{}{}}
+\newlabel{fig:lossscape_vfl}{{2e}{4}{Loss landscape of VFL}{figure.caption.2}{}}
+\newlabel{fig:lossscape_vfl@cref}{{[subfigure][5][2]2e}{[1][3][]4}{}{}{}}
+\newlabel{sub@fig:lossscape_vfl}{{e}{4}{Loss landscape of VFL}{figure.caption.2}{}}
+\newlabel{sub@fig:lossscape_vfl@cref}{{[subfigure][5][2]2e}{[1][3][]4}{}{}{}}
+\newlabel{fig:lossscape_ours}{{2f}{4}{Loss landscape of \ourclsloss }{figure.caption.2}{}}
+\newlabel{fig:lossscape_ours@cref}{{[subfigure][6][2]2f}{[1][3][]4}{}{}{}}
+\newlabel{sub@fig:lossscape_ours}{{f}{4}{Loss landscape of \ourclsloss }{figure.caption.2}{}}
+\newlabel{sub@fig:lossscape_ours@cref}{{[subfigure][6][2]2f}{[1][3][]4}{}{}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces \textbf  {An illustration of our proposed DEIM.} \textcolor {yellow}{Yellow}, \textcolor {red}{red}, and \textcolor {green}{green} boxes represent the GT, positive and negative samples, respectively. 'pos.' denotes the positive samples. \textit  {Top:} Our Dense O2O (Fig.~\ref {fig:toy_Dense_O2O}) can provide the same quality of positive samples as O2M (Fig.~\ref {fig:toy_O2M}). \textit  {Bottom:} For the low-quality matching, its loss values when using VFL~\cite  {zhang2021varifocalnet} and MAL\ are marked by \textcolor {red}{$\star $}, indicating MAL\ can optimize those cases more effectively.}}{4}{figure.caption.2}\protected@file@percent }
+\@writefile{brf}{\backcite{zhang2021varifocalnet}{{4}{2}{figure.caption.2}}}
+\newlabel{fig:overview}{{2}{4}{\textbf {An illustration of our proposed \ourmethod .} \textcolor {yellow}{Yellow}, \textcolor {red}{red}, and \textcolor {green}{green} boxes represent the GT, positive and negative samples, respectively. 'pos.' denotes the positive samples. \textit {Top:} Our Dense O2O (Fig.~\ref {fig:toy_Dense_O2O}) can provide the same quality of positive samples as O2M (Fig.~\ref {fig:toy_O2M}). \textit {Bottom:} For the low-quality matching, its loss values when using VFL~\cite {zhang2021varifocalnet} and \ourclsloss \ are marked by \textcolor {red}{$\star $}, indicating \ourclsloss \ can optimize those cases more effectively}{figure.caption.2}{}}
+\newlabel{fig:overview@cref}{{[figure][2][]2}{[1][3][]4}{}{}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {3}\hskip -1em.~Method}{4}{section.3}\protected@file@percent }
+\newlabel{sec:method}{{3}{4}{\texorpdfstring {\hskip -1em.~}{}Method}{section.3}{}}
+\newlabel{sec:method@cref}{{[section][3][]3}{[1][4][]4}{}{}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.1}\hskip -1em.~Preliminaries}{4}{subsection.3.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{O2M vs. O2O.}{4}{section*.6}\protected@file@percent }
+\@writefile{brf}{\backcite{feng2021tood}{{4}{3.1}{section*.6}}}
+\@writefile{brf}{\backcite{zheng2021yolox}{{4}{3.1}{section*.6}}}
+\newlabel{eq:assign}{{1}{4}{O2M vs. O2O}{equation.1}{}}
+\newlabel{eq:assign@cref}{{[equation][1][]1}{[1][4][]4}{}{}{}}
+\@writefile{toc}{\contentsline {paragraph}{Focal loss.}{4}{section*.7}\protected@file@percent }
+\@writefile{brf}{\backcite{lin2017focal}{{4}{3.1}{section*.7}}}
+\citation{zheng2021yolox}
+\citation{carion2020end}
+\citation{zheng2021yolox}
+\citation{carion2020end}
+\citation{kuhn1955hungarian}
+\citation{zheng2021yolox}
+\citation{lv2024rt}
+\citation{lin2014microsoft}
+\citation{zhang2021varifocalnet}
+\citation{lin2017focal}
+\citation{zhao2024detrs,lv2024rt,cai2023align}
+\citation{zhao2024detrs}
+\newlabel{fig:num_match}{{3a}{5}{Matching distribution}{figure.caption.8}{}}
+\newlabel{fig:num_match@cref}{{[subfigure][1][3]3a}{[1][5][]5}{}{}{}}
+\newlabel{sub@fig:num_match}{{a}{5}{Matching distribution}{figure.caption.8}{}}
+\newlabel{sub@fig:num_match@cref}{{[subfigure][1][3]3a}{[1][5][]5}{}{}{}}
+\newlabel{fig:ratio_match}{{3b}{5}{Ratios between O2M and O2O}{figure.caption.8}{}}
+\newlabel{fig:ratio_match@cref}{{[subfigure][2][3]3b}{[1][5][]5}{}{}{}}
+\newlabel{sub@fig:ratio_match}{{b}{5}{Ratios between O2M and O2O}{figure.caption.8}{}}
+\newlabel{sub@fig:ratio_match@cref}{{[subfigure][2][3]3b}{[1][5][]5}{}{}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces \textbf  {Anchor/Query Match Comparison}. Comparison of the number of matched anchors/queries per image in one COCO epoch using one-to-many (SimOTA~\cite  {zheng2021yolox}) and one-to-one (Hungarian~\cite  {carion2020end}) matching schemes.}}{5}{figure.caption.8}\protected@file@percent }
+\@writefile{brf}{\backcite{zheng2021yolox}{{5}{3}{figure.caption.8}}}
+\@writefile{brf}{\backcite{carion2020end}{{5}{3}{figure.caption.8}}}
+\newlabel{fig:many-vs-one}{{3}{5}{\textbf {Anchor/Query Match Comparison}. Comparison of the number of matched anchors/queries per image in one COCO epoch using one-to-many (SimOTA~\cite {zheng2021yolox}) and one-to-one (Hungarian~\cite {carion2020end}) matching schemes}{figure.caption.8}{}}
+\newlabel{fig:many-vs-one@cref}{{[figure][3][]3}{[1][5][]5}{}{}{}}
+\@writefile{brf}{\backcite{zhang2022dino}{{5}{3.1}{section*.7}}}
+\@writefile{brf}{\backcite{zhu2020deformable}{{5}{3.1}{section*.7}}}
+\newlabel{eq:fl}{{2}{5}{Focal loss}{equation.2}{}}
+\newlabel{eq:fl@cref}{{[equation][2][]2}{[1][5][]5}{}{}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.2}\hskip -1em.~Improving matching efficiency: Dense O2O}{5}{subsection.3.2}\protected@file@percent }
+\@writefile{brf}{\backcite{kuhn1955hungarian}{{5}{3.2}{subsection.3.2}}}
+\@writefile{brf}{\backcite{zheng2021yolox}{{5}{3.2}{subsection.3.2}}}
+\@writefile{brf}{\backcite{lv2024rt}{{5}{3.2}{subsection.3.2}}}
+\@writefile{brf}{\backcite{lin2014microsoft}{{5}{3.2}{subsection.3.2}}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.3}\hskip -1em.~Improving matching quality: Matchability-Aware Loss}{5}{subsection.3.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Limitations of VFL.}{5}{section*.9}\protected@file@percent }
+\@writefile{brf}{\backcite{zhang2021varifocalnet}{{5}{3.3}{section*.9}}}
+\@writefile{brf}{\backcite{lin2017focal}{{5}{3.3}{section*.9}}}
+\@writefile{brf}{\backcite{cai2023align}{{5}{3.3}{section*.9}}}
+\@writefile{brf}{\backcite{lv2024rt}{{5}{3.3}{section*.9}}}
+\@writefile{brf}{\backcite{zhao2024detrs}{{5}{3.3}{section*.9}}}
+\newlabel{eq:vfl}{{3}{5}{Limitations of VFL}{equation.3}{}}
+\newlabel{eq:vfl@cref}{{[equation][3][]3}{[1][5][]5}{}{}{}}
+\@writefile{brf}{\backcite{zhao2024detrs}{{5}{3.3}{equation.3}}}
+\citation{lin2014microsoft}
+\citation{peng2024d}
+\citation{peng2024d}
+\citation{lin2014microsoft}
+\citation{peng2024d}
+\citation{peng2024d}
+\citation{yolov8}
+\citation{yolov8}
+\citation{wang2024yolov9}
+\citation{wang2024yolov9}
+\citation{wang2024gold}
+\citation{wang2024yolov10}
+\citation{wang2024yolov10}
+\citation{yolo11}
+\citation{yolo11}
+\citation{zhao2024detrs}
+\citation{zhao2024detrs}
+\citation{peng2024d}
+\citation{peng2024d}
+\citation{bochkovskiy2020yolov4}
+\citation{zhang2017mixup}
+\citation{lin2014microsoft}
+\citation{loshchilov2017decoupled}
+\citation{lv2024rt,zhao2024detrs}
+\citation{peng2024d}
+\citation{lyu2022rtmdet}
+\citation{zhao2024detrs}
+\citation{deng2009imagenet}
+\citation{lin2014microsoft}
+\citation{he2016deep}
+\citation{he2016deep}
+\citation{he2016deep}
+\citation{he2016deep}
+\citation{lin2014microsoft}
+\citation{he2016deep}
+\citation{he2016deep}
+\citation{he2016deep}
+\citation{he2016deep}
+\citation{he2016deep}
+\citation{carion2020end}
+\citation{wang2022anchor}
+\citation{meng2021conditional}
+\citation{yao2021efficient}
+\citation{gao2021fast}
+\citation{zhu2020deformable}
+\citation{liu2022dab}
+\citation{li2022dn}
+\citation{zhang2022dino}
+\citation{zhao2024detrs}
+\citation{lv2024rt}
+\citation{he2016deep}
+\citation{carion2020end}
+\citation{wang2022anchor}
+\citation{meng2021conditional}
+\citation{yao2021efficient}
+\citation{gao2021fast}
+\citation{zhao2024detrs}
+\citation{lv2024rt}
+\citation{peng2024d}
+\citation{peng2024d}
+\citation{yolov8}
+\citation{wang2024yolov9}
+\citation{wang2024yolov9}
+\citation{yolo11}
+\citation{lv2024rt}
+\citation{peng2024d}
+\citation{peng2024d}
+\citation{lv2024rt}
+\citation{peng2024d}
+\citation{yolo11}
+\citation{wang2024yolov9}
+\citation{wang2024yolov9}
+\citation{peng2024d}
+\newlabel{fig:low_quality}{{4a}{6}{\textbf {Low quality}: IoU = 0.05}{figure.caption.12}{}}
+\newlabel{fig:low_quality@cref}{{[subfigure][1][4]4a}{[1][6][]6}{}{}{}}
+\newlabel{sub@fig:low_quality}{{a}{6}{\textbf {Low quality}: IoU = 0.05}{figure.caption.12}{}}
+\newlabel{sub@fig:low_quality@cref}{{[subfigure][1][4]4a}{[1][6][]6}{}{}{}}
+\newlabel{fig:high_quality}{{4b}{6}{\textbf {High quality}: IoU = 0.95}{figure.caption.12}{}}
+\newlabel{fig:high_quality@cref}{{[subfigure][2][4]4b}{[1][6][]6}{}{}{}}
+\newlabel{sub@fig:high_quality}{{b}{6}{\textbf {High quality}: IoU = 0.95}{figure.caption.12}{}}
+\newlabel{sub@fig:high_quality@cref}{{[subfigure][2][4]4b}{[1][6][]6}{}{}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces \textbf  {VFL vs. MAL\ Comparison.} Comparison of VFL and our MAL\ for low-quality (IoU = 0.05, Fig.~\ref {fig:low_quality}) and high-quality (IoU = 0.95, Fig.~\ref {fig:high_quality}) matching cases.}}{6}{figure.caption.12}\protected@file@percent }
+\newlabel{fig:loss_case}{{4}{6}{\textbf {VFL vs. \ourclsloss \ Comparison.} Comparison of VFL and our \ourclsloss \ for low-quality (IoU = 0.05, Fig.~\ref {fig:low_quality}) and high-quality (IoU = 0.95, Fig.~\ref {fig:high_quality}) matching cases}{figure.caption.12}{}}
+\newlabel{fig:loss_case@cref}{{[figure][4][]4}{[1][6][]6}{}{}{}}
+\@writefile{toc}{\contentsline {paragraph}{Matchability-Aware Loss.}{6}{section*.10}\protected@file@percent }
+\newlabel{eq:xfl}{{4}{6}{Matchability-Aware Loss}{equation.4}{}}
+\newlabel{eq:xfl@cref}{{[equation][4][]4}{[1][6][]6}{}{}{}}
+\@writefile{toc}{\contentsline {paragraph}{Comparison with VFL.}{6}{section*.11}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {4}\hskip -1em.~Experiments}{6}{section.4}\protected@file@percent }
+\newlabel{sec:exps}{{4}{6}{\texorpdfstring {\hskip -1em.~}{}Experiments}{section.4}{}}
+\newlabel{sec:exps@cref}{{[section][4][]4}{[1][6][]6}{}{}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.1}\hskip -1em.~Training details}{6}{subsection.4.1}\protected@file@percent }
+\@writefile{brf}{\backcite{bochkovskiy2020yolov4}{{6}{4.1}{subsection.4.1}}}
+\@writefile{brf}{\backcite{zhang2017mixup}{{6}{4.1}{subsection.4.1}}}
+\@writefile{brf}{\backcite{lin2014microsoft}{{6}{4.1}{subsection.4.1}}}
+\@writefile{brf}{\backcite{loshchilov2017decoupled}{{6}{4.1}{subsection.4.1}}}
+\@writefile{brf}{\backcite{lv2024rt}{{6}{4.1}{subsection.4.1}}}
+\@writefile{brf}{\backcite{zhao2024detrs}{{6}{4.1}{subsection.4.1}}}
+\@writefile{brf}{\backcite{peng2024d}{{6}{4.1}{subsection.4.1}}}
+\@writefile{brf}{\backcite{lyu2022rtmdet}{{6}{4.1}{subsection.4.1}}}
+\@writefile{brf}{\backcite{zhao2024detrs}{{6}{4.1}{subsection.4.1}}}
+\@writefile{brf}{\backcite{deng2009imagenet}{{6}{4.1}{subsection.4.1}}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.2}\hskip -1em.~Comparisons with real-time detectors}{6}{subsection.4.2}\protected@file@percent }
+\@writefile{brf}{\backcite{peng2024d}{{6}{4.2}{subsection.4.2}}}
+\@writefile{brf}{\backcite{peng2024d}{{6}{4.2}{subsection.4.2}}}
+\@writefile{brf}{\backcite{yolov8}{{6}{4.2}{subsection.4.2}}}
+\@writefile{brf}{\backcite{wang2024yolov9}{{6}{4.2}{subsection.4.2}}}
+\@writefile{brf}{\backcite{wang2024yolov9}{{6}{4.2}{subsection.4.2}}}
+\@writefile{brf}{\backcite{yolo11}{{6}{4.2}{subsection.4.2}}}
+\@writefile{brf}{\backcite{lv2024rt}{{6}{4.2}{subsection.4.2}}}
+\@writefile{brf}{\backcite{peng2024d}{{6}{4.2}{subsection.4.2}}}
+\@writefile{brf}{\backcite{peng2024d}{{6}{4.2}{subsection.4.2}}}
+\@writefile{brf}{\backcite{lv2024rt}{{6}{4.2}{subsection.4.2}}}
+\@writefile{brf}{\backcite{peng2024d}{{6}{4.2}{subsection.4.2}}}
+\@writefile{brf}{\backcite{yolo11}{{6}{4.2}{subsection.4.2}}}
+\@writefile{brf}{\backcite{wang2024yolov9}{{6}{4.2}{subsection.4.2}}}
+\citation{he2016deep}
+\citation{he2016deep}
+\citation{lv2024rt}
+\citation{lv2024rt}
+\citation{he2016deep}
+\citation{he2016deep}
+\citation{zhang2022dino}
+\citation{he2016deep}
+\@writefile{lot}{\contentsline {table}{\numberline {1}{\ignorespaces \textbf  {Comparison with real-time object detectors on COCO~\cite  {lin2014microsoft} val2017.} By integrating our method into D-FINE-L~\cite  {peng2024d} and D-FINE-X~\cite  {peng2024d}, we build DEIM-D-FINE-L and DEIM-D-FINE-X. We compare our method with YOLO-based and DETR-based real-time object detectors. ${\star }$ indicates that the NMS is tuned with a confidence threshold of 0.01.}}{7}{table.caption.13}\protected@file@percent }
+\@writefile{brf}{\backcite{lin2014microsoft}{{7}{1}{table.caption.13}}}
+\@writefile{brf}{\backcite{peng2024d}{{7}{1}{table.caption.13}}}
+\@writefile{brf}{\backcite{peng2024d}{{7}{1}{table.caption.13}}}
+\@writefile{brf}{\backcite{yolov8}{{7}{1}{table.caption.13}}}
+\@writefile{brf}{\backcite{yolov8}{{7}{1}{table.caption.13}}}
+\@writefile{brf}{\backcite{wang2024yolov9}{{7}{1}{table.caption.13}}}
+\@writefile{brf}{\backcite{wang2024yolov9}{{7}{1}{table.caption.13}}}
+\@writefile{brf}{\backcite{wang2024gold}{{7}{1}{table.caption.13}}}
+\@writefile{brf}{\backcite{wang2024yolov10}{{7}{1}{table.caption.13}}}
+\@writefile{brf}{\backcite{wang2024yolov10}{{7}{1}{table.caption.13}}}
+\@writefile{brf}{\backcite{yolo11}{{7}{1}{table.caption.13}}}
+\@writefile{brf}{\backcite{yolo11}{{7}{1}{table.caption.13}}}
+\@writefile{brf}{\backcite{zhao2024detrs}{{7}{1}{table.caption.13}}}
+\@writefile{brf}{\backcite{zhao2024detrs}{{7}{1}{table.caption.13}}}
+\@writefile{brf}{\backcite{peng2024d}{{7}{1}{table.caption.13}}}
+\@writefile{brf}{\backcite{peng2024d}{{7}{1}{table.caption.13}}}
+\newlabel{tab:comp_rt}{{1}{7}{\textbf {Comparison with real-time object detectors on COCO~\cite {lin2014microsoft} val2017.} By integrating our method into D-FINE-L~\cite {peng2024d} and D-FINE-X~\cite {peng2024d}, we build \ourmethod -D-FINE-L and \ourmethod -D-FINE-X. We compare our method with YOLO-based and DETR-based real-time object detectors. ${\star }$ indicates that the NMS is tuned with a confidence threshold of 0.01}{table.caption.13}{}}
+\newlabel{tab:comp_rt@cref}{{[table][1][]1}{[1][6][]7}{}{}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {2}{\ignorespaces \textbf  {Comparison with ResNet-based DETRs on COCO~\cite  {lin2014microsoft} val2017.} By integrating our method into ResNet50~\cite  {he2016deep} and ResNet101~\cite  {he2016deep}, we build DEIM-RT-DETRv2-R50 and DEIM-RT-DETRv2-R101. We compare our method with competitive DETR-based object detectors that use ResNet50~\cite  {he2016deep} or ResNet101~\cite  {he2016deep} as backbones.}}{7}{table.caption.14}\protected@file@percent }
+\@writefile{brf}{\backcite{lin2014microsoft}{{7}{2}{table.caption.14}}}
+\@writefile{brf}{\backcite{he2016deep}{{7}{2}{table.caption.14}}}
+\@writefile{brf}{\backcite{he2016deep}{{7}{2}{table.caption.14}}}
+\@writefile{brf}{\backcite{he2016deep}{{7}{2}{table.caption.14}}}
+\@writefile{brf}{\backcite{he2016deep}{{7}{2}{table.caption.14}}}
+\@writefile{brf}{\backcite{he2016deep}{{7}{2}{table.caption.14}}}
+\@writefile{brf}{\backcite{carion2020end}{{7}{2}{table.caption.14}}}
+\@writefile{brf}{\backcite{wang2022anchor}{{7}{2}{table.caption.14}}}
+\@writefile{brf}{\backcite{meng2021conditional}{{7}{2}{table.caption.14}}}
+\@writefile{brf}{\backcite{yao2021efficient}{{7}{2}{table.caption.14}}}
+\@writefile{brf}{\backcite{gao2021fast}{{7}{2}{table.caption.14}}}
+\@writefile{brf}{\backcite{zhu2020deformable}{{7}{2}{table.caption.14}}}
+\@writefile{brf}{\backcite{liu2022dab}{{7}{2}{table.caption.14}}}
+\@writefile{brf}{\backcite{li2022dn}{{7}{2}{table.caption.14}}}
+\@writefile{brf}{\backcite{zhang2022dino}{{7}{2}{table.caption.14}}}
+\@writefile{brf}{\backcite{zhao2024detrs}{{7}{2}{table.caption.14}}}
+\@writefile{brf}{\backcite{lv2024rt}{{7}{2}{table.caption.14}}}
+\@writefile{brf}{\backcite{he2016deep}{{7}{2}{table.caption.14}}}
+\@writefile{brf}{\backcite{carion2020end}{{7}{2}{table.caption.14}}}
+\@writefile{brf}{\backcite{wang2022anchor}{{7}{2}{table.caption.14}}}
+\@writefile{brf}{\backcite{meng2021conditional}{{7}{2}{table.caption.14}}}
+\@writefile{brf}{\backcite{yao2021efficient}{{7}{2}{table.caption.14}}}
+\@writefile{brf}{\backcite{gao2021fast}{{7}{2}{table.caption.14}}}
+\@writefile{brf}{\backcite{zhao2024detrs}{{7}{2}{table.caption.14}}}
+\@writefile{brf}{\backcite{lv2024rt}{{7}{2}{table.caption.14}}}
+\newlabel{tab:comp_detrs}{{2}{7}{\textbf {Comparison with ResNet-based DETRs on COCO~\cite {lin2014microsoft} val2017.} By integrating our method into ResNet50~\cite {he2016deep} and ResNet101~\cite {he2016deep}, we build \ourmethod -RT-DETRv2-R50 and \ourmethod -RT-DETRv2-R101. We compare our method with competitive DETR-based object detectors that use ResNet50~\cite {he2016deep} or ResNet101~\cite {he2016deep} as backbones}{table.caption.14}{}}
+\newlabel{tab:comp_detrs@cref}{{[table][2][]2}{[1][6][]7}{}{}{}}
+\@writefile{brf}{\backcite{wang2024yolov9}{{7}{4.2}{subsection.4.2}}}
+\@writefile{brf}{\backcite{peng2024d}{{7}{4.2}{subsection.4.2}}}
+\@writefile{brf}{\backcite{he2016deep}{{7}{4.3}{subsection.4.3}}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.3}\hskip -1em.~Comparisons with ResNet~\cite  {he2016deep}-based DETRs}{7}{subsection.4.3}\protected@file@percent }
+\@writefile{brf}{\backcite{he2016deep}{{7}{4.3}{subsection.4.3}}}
+\@writefile{brf}{\backcite{lv2024rt}{{7}{4.3}{subsection.4.3}}}
+\citation{lv2024rt}
+\citation{shao2018crowdhuman}
+\citation{shao2018crowdhuman}
+\citation{shao2018crowdhuman}
+\citation{lv2024rt}
+\citation{he2016deep}
+\citation{bochkovskiy2020yolov4}
+\citation{zhang2017mixup}
+\citation{lin2014microsoft}
+\citation{lin2014microsoft}
+\citation{lv2024rt}
+\citation{peng2024d}
+\citation{lv2024rt}
+\citation{peng2024d}
+\citation{lv2024rt}
+\citation{peng2024d}
+\@writefile{lot}{\contentsline {table}{\numberline {3}{\ignorespaces \textbf  {Comparison of the D-FINE and when with our DEIM{} on CrowdHuman~\cite  {shao2018crowdhuman}.} Both are trained with 120 epochs.}}{8}{table.caption.15}\protected@file@percent }
+\@writefile{brf}{\backcite{shao2018crowdhuman}{{8}{3}{table.caption.15}}}
+\newlabel{tab:crowdhuman}{{3}{8}{\textbf {Comparison of the D-FINE and when with our \ourmethod {} on CrowdHuman~\cite {shao2018crowdhuman}.} Both are trained with 120 epochs}{table.caption.15}{}}
+\newlabel{tab:crowdhuman@cref}{{[table][3][]3}{[1][8][]8}{}{}{}}
+\@writefile{brf}{\backcite{lv2024rt}{{8}{4.3}{subsection.4.3}}}
+\@writefile{brf}{\backcite{he2016deep}{{8}{4.3}{subsection.4.3}}}
+\@writefile{brf}{\backcite{he2016deep}{{8}{4.3}{subsection.4.3}}}
+\@writefile{brf}{\backcite{zhang2022dino}{{8}{4.3}{subsection.4.3}}}
+\@writefile{brf}{\backcite{he2016deep}{{8}{4.3}{subsection.4.3}}}
+\@writefile{brf}{\backcite{lv2024rt}{{8}{4.3}{subsection.4.3}}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.4}\hskip -1em.~Comparisons on CrowdHuman}{8}{subsection.4.4}\protected@file@percent }
+\@writefile{brf}{\backcite{shao2018crowdhuman}{{8}{4.4}{subsection.4.4}}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.5}\hskip -1em.~Analysis}{8}{subsection.4.5}\protected@file@percent }
+\newlabel{sec_discuss}{{4.5}{8}{\texorpdfstring {\hskip -1em.~}{}Analysis}{subsection.4.5}{}}
+\newlabel{sec_discuss@cref}{{[subsection][5][4]4.5}{[1][8][]8}{}{}{}}
+\@writefile{brf}{\backcite{lv2024rt}{{8}{4.5}{subsection.4.5}}}
+\@writefile{brf}{\backcite{he2016deep}{{8}{4.5}{subsection.4.5}}}
+\@writefile{toc}{\contentsline {paragraph}{Methods for achieving Dense O2O.}{8}{section*.17}\protected@file@percent }
+\@writefile{brf}{\backcite{bochkovskiy2020yolov4}{{8}{4.5}{section*.17}}}
+\@writefile{brf}{\backcite{zhang2017mixup}{{8}{4.5}{section*.17}}}
+\@writefile{lot}{\contentsline {table}{\numberline {4}{\ignorespaces \textbf  {Comparison of Dense O2O methods with different combinations of mosaic and mixup augmentation strategies.} The probability values denote the likelihood of applying mosaic and mixup in each mini-batch during training.}}{8}{table.caption.16}\protected@file@percent }
+\newlabel{tab:data_aug}{{4}{8}{\textbf {Comparison of Dense O2O methods with different combinations of mosaic and mixup augmentation strategies.} The probability values denote the likelihood of applying mosaic and mixup in each mini-batch during training}{table.caption.16}{}}
+\newlabel{tab:data_aug@cref}{{[table][4][]4}{[1][8][]8}{}{}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {5}{\ignorespaces \textbf  {Impact of $\gamma $ in MAL(Eqn.~\ref {eq:xfl}).} We report the performance on COCO~\cite  {lin2014microsoft} val2017 for 24 epochs.}}{8}{table.caption.18}\protected@file@percent }
+\@writefile{brf}{\backcite{lin2014microsoft}{{8}{5}{table.caption.18}}}
+\newlabel{tab:gammas}{{5}{8}{\textbf {Impact of $\gamma $ in \ourclsloss (Eqn.~\ref {eq:xfl}).} We report the performance on COCO~\cite {lin2014microsoft} val2017 for 24 epochs}{table.caption.18}{}}
+\newlabel{tab:gammas@cref}{{[table][5][]5}{[1][8][]8}{}{}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {6}{\ignorespaces \textbf  {Impact of Dense O2O and MAL.} We conduct experiments with RT-DETRv2-R50~\cite  {lv2024rt} and D-FINE-L~\cite  {peng2024d}.}}{8}{table.caption.19}\protected@file@percent }
+\@writefile{brf}{\backcite{lv2024rt}{{8}{6}{table.caption.19}}}
+\@writefile{brf}{\backcite{peng2024d}{{8}{6}{table.caption.19}}}
+\@writefile{brf}{\backcite{lv2024rt}{{8}{6}{table.caption.19}}}
+\@writefile{brf}{\backcite{peng2024d}{{8}{6}{table.caption.19}}}
+\newlabel{tab:ab_all}{{6}{8}{\textbf {Impact of Dense O2O and \ourclsloss .} We conduct experiments with RT-DETRv2-R50~\cite {lv2024rt} and D-FINE-L~\cite {peng2024d}}{table.caption.19}{}}
+\newlabel{tab:ab_all@cref}{{[table][6][]6}{[1][8][]8}{}{}{}}
+\@writefile{toc}{\contentsline {paragraph}{Impact of $\gamma $ in MAL(Eqn.~\ref {eq:xfl}). }{8}{section*.20}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {7}{\ignorespaces \textbf  {Training time in GPU hours.}}}{9}{table.caption.23}\protected@file@percent }
+\newlabel{tab:ab_time}{{7}{9}{\textbf {Training time in GPU hours.}}{table.caption.23}{}}
+\newlabel{tab:ab_time@cref}{{[table][7][]7}{[1][9][]9}{}{}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {8}{\ignorespaces \textbf  {Fine-tuned results from Object365 pre-training.}}}{9}{table.caption.25}\protected@file@percent }
+\newlabel{tab:ab_obj}{{8}{9}{\textbf {Fine-tuned results from Object365 pre-training.}}{table.caption.25}{}}
+\newlabel{tab:ab_obj@cref}{{[table][8][]8}{[1][9][]9}{}{}{}}
+\@writefile{toc}{\contentsline {paragraph}{Effectiveness of Dense O2O and MAL.}{9}{section*.21}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Training speed.}{9}{section*.22}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Finetuning from Object365.}{9}{section*.24}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {5}\hskip -1em.~Conclusion}{9}{section.5}\protected@file@percent }
+\bibstyle{ieee_fullname}
+\bibdata{main}
+\bibcite{bochkovskiy2020yolov4}{{1}{}{{}}{{}}}
+\bibcite{cai2023align}{{2}{}{{}}{{}}}
+\bibcite{carion2020end}{{3}{}{{}}{{}}}
+\bibcite{chen2023group}{{4}{}{{}}{{}}}
+\bibcite{chen2016monocular}{{5}{}{{}}{{}}}
+\bibcite{chen2017multi}{{6}{}{{}}{{}}}
+\bibcite{dai2021dynamic}{{7}{}{{}}{{}}}
+\bibcite{deng2009imagenet}{{8}{}{{}}{{}}}
+\bibcite{ess2010object}{{9}{}{{}}{{}}}
+\bibcite{feng2021tood}{{10}{}{{}}{{}}}
+\bibcite{gao2021fast}{{11}{}{{}}{{}}}
+\bibcite{yolov8}{{12}{}{{}}{{}}}
+\bibcite{yolo11}{{13}{}{{}}{{}}}
+\bibcite{he2016deep}{{14}{}{{}}{{}}}
+\bibcite{jia2023detrs}{{15}{}{{}}{{}}}
+\bibcite{kuhn1955hungarian}{{16}{}{{}}{{}}}
+\bibcite{li2023lite}{{17}{}{{}}{{}}}
+\bibcite{li2022dn}{{18}{}{{}}{{}}}
+\bibcite{lin2017focal}{{19}{}{{}}{{}}}
+\bibcite{lin2014microsoft}{{20}{}{{}}{{}}}
+\bibcite{liu2022dab}{{21}{}{{}}{{}}}
+\bibcite{liu2023detection}{{22}{}{{}}{{}}}
+\bibcite{loshchilov2017decoupled}{{23}{}{{}}{{}}}
+\bibcite{lv2024rt}{{24}{}{{}}{{}}}
+\bibcite{lyu2022rtmdet}{{25}{}{{}}{{}}}
+\bibcite{meng2021conditional}{{26}{}{{}}{{}}}
+\bibcite{peng2024d}{{27}{}{{}}{{}}}
+\bibcite{redmon2016you}{{28}{}{{}}{{}}}
+\bibcite{ren2016faster}{{29}{}{{}}{{}}}
+\bibcite{shao2018crowdhuman}{{30}{}{{}}{{}}}
+\bibcite{tian2022fully}{{31}{}{{}}{{}}}
+\bibcite{wang2024yolov10}{{32}{}{{}}{{}}}
+\bibcite{wang2024gold}{{33}{}{{}}{{}}}
+\bibcite{wang2024yolov9}{{34}{}{{}}{{}}}
+\bibcite{wang2022anchor}{{35}{}{{}}{{}}}
+\bibcite{yao2021efficient}{{36}{}{{}}{{}}}
+\bibcite{ye2023cascade}{{37}{}{{}}{{}}}
+\bibcite{zhang2017mixup}{{38}{}{{}}{{}}}
+\bibcite{zhang2022dino}{{39}{}{{}}{{}}}
+\bibcite{zhang2021varifocalnet}{{40}{}{{}}{{}}}
+\bibcite{zhang2023dense}{{41}{}{{}}{{}}}
+\bibcite{zhao2024ms}{{42}{}{{}}{{}}}
+\bibcite{zhao2024detrs}{{43}{}{{}}{{}}}
+\bibcite{zheng2021yolox}{{44}{}{{}}{{}}}
+\bibcite{zhu2020deformable}{{45}{}{{}}{{}}}
+\bibcite{zong2023detrs}{{46}{}{{}}{{}}}
+\citation{lin2014microsoft}
+\citation{peng2024d}
+\citation{zhao2024detrs,lv2024rt}
+\citation{lyu2022rtmdet}
+\citation{lv2024rt}
+\citation{peng2024d}
+\citation{lin2014microsoft}
+\citation{lin2014microsoft}
+\citation{yolov8}
+\citation{yolov8}
+\citation{wang2024yolov9}
+\citation{wang2024yolov9}
+\citation{wang2024gold}
+\citation{wang2024gold}
+\citation{wang2024yolov10}
+\citation{wang2024yolov10}
+\citation{yolo11}
+\citation{yolo11}
+\citation{zhao2024detrs}
+\citation{zhao2024detrs}
+\citation{lv2024rt}
+\citation{lv2024rt}
+\citation{lv2024rt}
+\citation{peng2024d}
+\citation{peng2024d}
+\citation{peng2024d}
+\HyPL@Entry{11<</S/D>>}
+\@writefile{toc}{\contentsline {section}{\numberline {1}\hskip -1em.~Experimental Settings}{1}{section.1}\protected@file@percent }
+\@writefile{brf}{\backcite{lin2014microsoft}{{1}{1}{section.1}}}
+\@writefile{lot}{\contentsline {table}{\numberline {9}{\ignorespaces \textbf  {Different hyperparameters for D-FINE models trained with DEIM{}}.}}{1}{table.caption.27}\protected@file@percent }
+\newlabel{tab:hyper_dfine}{{9}{1}{\textbf {Different hyperparameters for D-FINE models trained with \ourmethod {}}}{table.caption.27}{}}
+\newlabel{tab:hyper_dfine@cref}{{[table][9][]9}{[1][1][]1}{}{}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {10}{\ignorespaces \textbf  {Different hyperparameters for RT-DETRv2 models trained with DEIM{}}.}}{1}{table.caption.28}\protected@file@percent }
+\newlabel{tab:hyper_rtdetrv2}{{10}{1}{\textbf {Different hyperparameters for RT-DETRv2 models trained with \ourmethod {}}}{table.caption.28}{}}
+\newlabel{tab:hyper_rtdetrv2@cref}{{[table][10][]10}{[1][1][]1}{}{}{}}
+\@writefile{brf}{\backcite{peng2024d}{{1}{1}{figure.caption.29}}}
+\@writefile{brf}{\backcite{lv2024rt}{{1}{1}{figure.caption.29}}}
+\@writefile{brf}{\backcite{zhao2024detrs}{{1}{1}{figure.caption.29}}}
+\@writefile{brf}{\backcite{lyu2022rtmdet}{{1}{1}{figure.caption.29}}}
+\@writefile{lof}{\contentsline {figure}{\numberline {5}{\ignorespaces  An illustrated example of our proposed novel training scheme for learning rate and data augmentation scheduler. }}{1}{figure.caption.29}\protected@file@percent }
+\newlabel{fig:sup_train_scheme}{{5}{1}{An illustrated example of our proposed novel training scheme for learning rate and data augmentation scheduler}{figure.caption.29}{}}
+\newlabel{fig:sup_train_scheme@cref}{{[figure][5][]5}{[1][1][]1}{}{}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {2}\hskip -1em.~Comparison with Lighter YOLO Detectors}{1}{section.2}\protected@file@percent }
+\newlabel{sec: comparison}{{2}{1}{\texorpdfstring {\hskip -1em.~}{}Comparison with Lighter YOLO Detectors}{section.2}{}}
+\newlabel{sec: comparison@cref}{{[section][2][]2}{[1][1][]1}{}{}{}}
+\@writefile{brf}{\backcite{lv2024rt}{{1}{2}{section.2}}}
+\@writefile{brf}{\backcite{peng2024d}{{1}{2}{section.2}}}
+\@writefile{toc}{\contentsline {section}{\numberline {3}\hskip -1em.~Additional Results}{1}{section.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Effectiveness of the minor modifications.}{1}{section*.31}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {11}{\ignorespaces \textbf  {Comparison with S and M sized real-time object detectors on COCO~\cite  {lin2014microsoft} \texttt  {val2017}.} ${\star }$ indicates that the NMS is tuned with a confidence threshold of 0.01.}}{2}{table.caption.30}\protected@file@percent }
+\@writefile{brf}{\backcite{lin2014microsoft}{{2}{11}{table.caption.30}}}
+\@writefile{brf}{\backcite{yolov8}{{2}{11}{table.caption.30}}}
+\@writefile{brf}{\backcite{yolov8}{{2}{11}{table.caption.30}}}
+\@writefile{brf}{\backcite{wang2024yolov9}{{2}{11}{table.caption.30}}}
+\@writefile{brf}{\backcite{wang2024yolov9}{{2}{11}{table.caption.30}}}
+\@writefile{brf}{\backcite{wang2024gold}{{2}{11}{table.caption.30}}}
+\@writefile{brf}{\backcite{wang2024gold}{{2}{11}{table.caption.30}}}
+\@writefile{brf}{\backcite{wang2024yolov10}{{2}{11}{table.caption.30}}}
+\@writefile{brf}{\backcite{wang2024yolov10}{{2}{11}{table.caption.30}}}
+\@writefile{brf}{\backcite{yolo11}{{2}{11}{table.caption.30}}}
+\@writefile{brf}{\backcite{yolo11}{{2}{11}{table.caption.30}}}
+\@writefile{brf}{\backcite{zhao2024detrs}{{2}{11}{table.caption.30}}}
+\@writefile{brf}{\backcite{zhao2024detrs}{{2}{11}{table.caption.30}}}
+\@writefile{brf}{\backcite{lv2024rt}{{2}{11}{table.caption.30}}}
+\@writefile{brf}{\backcite{lv2024rt}{{2}{11}{table.caption.30}}}
+\@writefile{brf}{\backcite{lv2024rt}{{2}{11}{table.caption.30}}}
+\@writefile{brf}{\backcite{peng2024d}{{2}{11}{table.caption.30}}}
+\@writefile{brf}{\backcite{peng2024d}{{2}{11}{table.caption.30}}}
+\@writefile{brf}{\backcite{peng2024d}{{2}{11}{table.caption.30}}}
+\newlabel{tab:model_of_SM}{{11}{2}{\textbf {Comparison with S and M sized real-time object detectors on COCO~\cite {lin2014microsoft} \texttt {val2017}.} ${\star }$ indicates that the NMS is tuned with a confidence threshold of 0.01}{table.caption.30}{}}
+\newlabel{tab:model_of_SM@cref}{{[table][11][]11}{[1][1][]2}{}{}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {6}{\ignorespaces \textbf  {$\#$ Positive Samples with and without Dense O2O in One Epoch of Training.} \textit  {Base} indicates without Dense O2O.}}{2}{figure.caption.33}\protected@file@percent }
+\newlabel{fig:data_augs}{{6}{2}{\textbf {$\#$ Positive Samples with and without Dense O2O in One Epoch of Training.} \textit {Base} indicates without Dense O2O}{figure.caption.33}{}}
+\newlabel{fig:data_augs@cref}{{[figure][6][]6}{[1][2][]2}{}{}{}}
+\@writefile{toc}{\contentsline {paragraph}{Number of positive samples between with/without Dense O2O.}{2}{section*.32}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {12}{\ignorespaces \textbf  {Varying the number of objects per training image.}}}{2}{table.caption.34}\protected@file@percent }
+\newlabel{tab:ab_number}{{12}{2}{\textbf {Varying the number of objects per training image.}}{table.caption.34}{}}
+\newlabel{tab:ab_number@cref}{{[table][12][]12}{[1][2][]2}{}{}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {13}{\ignorespaces \textbf  {Training and validation accuracy.}}}{2}{table.caption.35}\protected@file@percent }
+\newlabel{tab:ab_overfitting}{{13}{2}{\textbf {Training and validation accuracy.}}{table.caption.35}{}}
+\newlabel{tab:ab_overfitting@cref}{{[table][13][]13}{[1][2][]2}{}{}{}}
+\@writefile{toc}{\contentsline {paragraph}{Studies of the number of positive samples.}{2}{section*.36}\protected@file@percent }
+\providecommand\NAT@force@numbers{}\NAT@force@numbers
+\@writefile{lof}{\contentsline {figure}{\numberline {7}{\ignorespaces \textbf  {Qualitative Comparison between D-FINE-L and DEIM{}.} In each paired image, the left is from D-FINE-L while the right is predicted by DEIM{}-D-FINE-L (Score threshold $=$ 0.5).}}{3}{figure.caption.38}\protected@file@percent }
+\newlabel{fig:visual}{{7}{3}{\textbf {Qualitative Comparison between D-FINE-L and \ourmethod {}.} In each paired image, the left is from D-FINE-L while the right is predicted by \ourmethod {}-D-FINE-L (Score threshold $=$ 0.5)}{figure.caption.38}{}}
+\newlabel{fig:visual@cref}{{[figure][7][]7}{[1][3][]3}{}{}{}}
+\@writefile{toc}{\contentsline {paragraph}{Training vs. validation accuracy.}{3}{section*.37}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {4}\hskip -1em.~Visualizations}{3}{section.4}\protected@file@percent }
+\gdef \@abspage@last{14}
