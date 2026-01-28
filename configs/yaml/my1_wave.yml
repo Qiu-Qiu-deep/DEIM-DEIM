@@ -7,14 +7,12 @@ __include__: [
   '../base/common.yml'
 ]
 
-comment: 'dfine, x'
+comment: 'WaveEncoderBlock, s'
 
-output_dir: ./outputs/dfine_x
+output_dir: ./outputs/my1_wave_s
 
 DEIM_MG:
-  yaml_path: configs/cfg/dfine-x.yaml
-
-
+  yaml_path: configs/cfg/my1_wave_s.yaml
 # Increase to search for the optimal ema
 epoches: 72
 train_dataloader:

@@ -4,16 +4,23 @@ comment: ""
 
 model: DEIM_MG
 
+clip_max_norm: 0.1
+# Add, default for step lr scheduler 
+lrsheduler: flatcosine
+lr_gamma: 0.5
+warmup_iter: 500
+flat_epoch: 40
+no_aug_epoch: 0
 
 optimizer:
   type: AdamW
   params:
     -
       params: '^(?=.*backbone)(?!.*norm|bn).*$'
-      lr: 0.0004
+      lr: 0.0006
     -
       params: '^(?=.*backbone)(?=.*norm|bn).*$'
-      lr: 0.0004
+      lr: 0.0006
       weight_decay: 0.
     -
       params: '^(?=.*(?:encoder|decoder))(?=.*(?:norm|bn|bias)).*$'
