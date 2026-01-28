@@ -17,10 +17,10 @@ optimizer:
   params:
     -
       params: '^(?=.*backbone)(?!.*norm|bn).*$'
-      lr: 0.0004
+      lr: 0.0006
     -
       params: '^(?=.*backbone)(?=.*norm|bn).*$'
-      lr: 0.0004
+      lr: 0.0006
       weight_decay: 0.
     -
       params: '^(?=.*(?:encoder|decoder))(?=.*(?:norm|bn|bias)).*$'
@@ -30,6 +30,17 @@ optimizer:
   betas: [0.9, 0.999]
   weight_decay: 0.0001
 
+# Increase to search for the optimal ema
+epoches: 72
+train_dataloader:
+  dataset:
+    transforms:
+      policy:
+        epoch: 52
+  collate_fn:
+    stop_epoch: 52
+    ema_restart_decay: 0.9999
+    base_size_repeat: ~
 
 train_dataloader:
   total_batch_size: 8
