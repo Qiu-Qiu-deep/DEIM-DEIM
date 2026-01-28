@@ -1,0 +1,171 @@
+% \documentclass[runningheads]{llncs}
+\renewcommand\thefigure{\Alph{section}\arabic{figure}}
+\renewcommand\thetable{\Alph{section}\arabic{table}}
+\setcounter{figure}{0}
+\setcounter{table}{0}
+\renewcommand{\thesection}{\Alph{section}}
+\setcounter{section}{0}
+
+% \usepackage{eccvabbrv}
+% \usepackage{algorithm}
+% \usepackage{algpseudocode}
+% % Include other packages here, before hyperref.
+% \usepackage{graphicx}
+% \usepackage{booktabs}
+% \usepackage{tabularray}
+% % The "axessiblity" package can be found at: https://ctan.org/pkg/axessibility?lang=en
+% \usepackage[accsupp]{axessibility} 
+%\clearpage
+%\setcounter{page}{1}
+% \maketitlesupplementary
+\appendix
+\title{Appendix}
+
+\author{}
+\institute{}
+
+\maketitle
+
+\vspace{-3em}
+
+\section{Quantitative Results}
+
+\subsection{FP/FN Under Different Density Situation}
+\hspace{\parindent}In Table \ref{ablation:LRP}, we explore our DQ-DETR's performance under different density situations, including sparse and dense images. 
+We classify images with less than 100 objects as sparse and images with over 900 objects as dense.
+LRP FP and LRP FN~\cite{LRP_ECCV} are used as the evaluation metric.
+Unlike AP metrics, a lower LRP value implies better performance.
+Previous DETR-like models apply a fixed number of object queries, while our DQ-DETR uses a dynamic number of queries depending on the object’s density in the picture.
+
+DINO-DETR uses a fixed number of 900 queries for detection, no matter whether in dense or sparse situations. The number of queries exceeds the number of objects in the sparse image and hence introduces many underlying false positive samples (FP).
+In contrast, for dense images, the number of queries DINO-DETR uses is far less than the number of objects in images, which is beyond the detection capability of DINO-DETR, leaving lots of instances undetected (FN) and causes a large LRP FN score.
+Our proposed DQ-DETR dynamically adjusts the number of queries used for detection, resulting in fewer FP in sparse images and fewer FN in dense images.
+\vspace{-10pt}
+% \usepackage{tabularray}
+\begin{table}[h!]
+\centering
+\caption{LRP FP and LRP FN score under different density situations in AI-TOD-V2. DINO-DETR is compared as the baseline.}
+\begin{tblr}{
+  width = \linewidth,
+  column{3} = {c},
+  column{4} = {c},
+  column{2} = {c},
+  cell{2}{1} = {r=2}{},
+  cell{4}{1} = {r=2}{},
+  vline{2} = {1-5}{},
+  vline{3} = {1-5}{},
+  hline{1-2} = {-}{},
+  hline{4,6} = {-}{},
+}
+Method    & Situation & LRP FP & LRP FN \\
+DINO-DETR & Sparse    & 29.4   & 40.7   \\
+          & Dense     & 36.8   & 75.1   \\
+DQ-DETR   & Sparse    & 25.7   & 36.4   \\
+          & Dense     & 35.4   & 51.5   
+\end{tblr}
+\label{ablation:LRP}
+\end{table}
+\vspace{-20pt}
+\subsection{Ablation of Categorical Counting Module}
+
+\hspace{\parindent}In the categorical counting module, we categorize the number of objects $N$ per image into four levels, which are $N \leq 10$, $10 < N \leq  100$, $100 < N \leq 500$, and $N > 500$.
+We selected the numbers 10, 100, and 500 based on the AI-TOD-V2 dataset's characteristics, i.e., the mean and standard deviation of the number of instances $N$ per image.
+Further, we only classify the number of objects $N$ into four levels due to the long-tail distribution of the training samples.
+For the $N > 500$ situation, there are only 46 training images in this situation, which is much fewer than other cases and leads to a poor classification performance with only 56.6\% accuracy.
+Although there are at most 2267 instances per image in the AI-TOD-V2 dataset, the long-tail distribution of the training samples restricts us from classifying the number of instances $N$ per image in a more detailed manner.
+
+Table \ref{ablation:num_cls} and Table \ref{ablation:5class} demonstrate the detection performance and the accuracy of the classification task in our categorical counting module.
+We can observe that if we classify the number of objects $N$ into more classes, e.g., 5 classes, AP drops 1.4 compared to the 4-class scenario.
+That is because the poor classification results from the categorical counting module will directly affect the number of object queries used for detection and the inappropriate number of queries might harm the detection performance.
+In the 5-class classification scenario, while the total classification accuracy maintains 93.8\%, the accuracy in the $500 <$ N $\leq 900$, and $N > 900$ situations are only 37.1\% and 57.4\%.
+Since there are only a few training images, the categorical counting module doesn't perform well in these two situations and further impacts the detection performance.
+Hence, we only categorize the number of objects $N$ per image into four levels without partitioning the $N > 500$ situation into more detailed settings.
+\vspace{-15pt}
+
+
+% \usepackage{tabularray}
+\begin{table}[h!]
+\centering
+\caption{Ablation of categorical counting module. DINO-DETR is compared as the baseline.}
+\resizebox{0.7\linewidth}{!}{
+\begin{tblr}{
+  %width = \linewidth,
+  column{even} = {c},
+  column{3} = {c},
+  column{5} = {c},
+  vline{2} = {-}{},
+  hline{1-2,5} = {-}{},
+}
+Method               & AP   & $\text{AP}_{vt}$ & $\text{AP}_{t}$ & $\text{AP}_{s}$ & $\text{AP}_{m}$ \\
+Baseline             & 25.9 & 12.7   & 25.3  & 32.0  & 39.7  \\
+Classification (4cls) & \textbf{30.2} & \textbf{15.3}   & \textbf{30.5}  & \textbf{36.5}  & \textbf{44.6}  \\
+Classification (5cls) & 28.8 & 14.3   & 29.2  & 34.1  & 43.1  
+\end{tblr}
+}
+\label{ablation:num_cls}
+\end{table}
+
+% \usepackage{tabularray}
+\begin{table}[h!]
+\centering
+\caption{The classification accuracy of our categorical counting module with different numbers of classes.}
+\resizebox{0.9\linewidth}{!}{
+\begin{tblr}{
+  width = \linewidth,
+  column{even} = {c},
+  column{3} = {c},
+  vline{2-4} = {-}{},
+  hline{1-2,7-8} = {-}{},
+}
+\#Objects in image           & Accuracy(\%) @ 4cls & Accuracy(\%) @ 5cls & \#Sample \\
+N $\leq 10$                  & 97.7                & 97.5                & 8674     \\
+$10 <$ N $\leq 100$          & 90.5                & 89.3                & 4393     \\
+$100 <$ N $\leq 500$         & 86.5                & 83.2                & 905      \\
+$500 <$ N $\leq 900$         & 56.5                & 37.1                & 35       \\
+$900 <$ N                    & -                   & 54.4                & 11       \\
+Total                        & 94.6                & 93.8                & 14018    
+\end{tblr}
+}
+\label{ablation:5class}
+\end{table}
+
+
+\subsection{Categorical Counting Module (CCM) for Different Datasets.}
+Since the characteristics of different datasets may vary a lot, it is vital to tailor our categorical counting module to the dataset property and determine how many queries should be used for object detection. 
+In the categorical counting module for AI-TOD-V2, we estimate the counting number $N$, i.e., the number of instances per image, by a classification head and categorize them into four levels, which are $N \leq 10$, $10 < N \leq  100$, $100 < N \leq 500$, and $N > 500$. It is worth noting that the hyperparameters 10, 100, and 500 are tailored for AI-TOD-V2. For other datasets, we recommend adjusting the hyperparameters used in the CCM through a logical process that considers the mean and variance of the objects per image in the dataset. 
+This approach can reduce the need to manually design the CCM for different datasets.
+
+% % We believe customizing our model to fit different datasets is essential for higher performance. For the previous DETR-like models, their model characteristics remain the same for distinct datasets since they mostly focus on solving general object detection tasks, such as COCO. However, for aerial object detection, since the characteristics of different datasets may vary a lot, we thought it was vital to tailor our models depending on the dataset property. Furthermore, the hyperparameters used in the categorical counting module can be pipelined into a logical process just using the mean and variance of the objects per image in the dataset, there is no need to hand-design the categorical counting module for different datasets.
+
+
+\begin{algorithm}
+\caption{Pseudo Code for Categorical Counting Module}
+\begin{algorithmic}[1]
+\Function{Categorical-Counting}{$features$}
+    \State $mean \gets \text{Mean}(dataset)$
+    \State $var \gets \text{Variance}(dataset)$
+    
+    \State $GT \gets \text{Predict}(features)$
+    \State $class1 \gets \{GT < mean - var \}$
+    \State $class2 \gets \{mean - var \leq GT < mean\}$
+    \State $class3 \gets \{mean \leq GT < mean + var\}$
+    \State $class4 \gets \{GT \geq mean + var\}$
+    
+\EndFunction
+\end{algorithmic}
+\end{algorithm}
+
+
+\renewcommand{\thefigure}{B1}
+\begin{figure}[ht!]
+    \centering
+    \includegraphics[width=0.7\linewidth]{images/vis_v3.pdf}
+    \caption{Visualization of detection results and feature maps. The green, red, and blue boxes represent TP, FP, and FN, respectively.}
+    \label{fig:visual}
+\end{figure}
+
+\vspace{-20pt}
+\section{Visualization}
+Fig. \ref{fig:visual} presents the detection results of our DQ-DETR alongside Deformable-DETR. By selecting an appropriate number of object queries, DQ-DETR effectively detects most of the tiny objects in dense scenes, demonstrating superior performance in capturing fine details. Conversely, Deformable-DETR suffers from an insufficient number of object queries, leading to a higher rate of undetected objects (false negatives). In sparse scenes, Deformable-DETR further struggles due to the use of excessive object queries with unrefined positional information, resulting in an increased number of false positives in the detection outcomes.
+
+% \end{document}

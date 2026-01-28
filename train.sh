@@ -24,6 +24,6 @@ NUM_GPUS=2
 
 # torchrun --master_port=9928 --nproc_per_node=$NUM_GPUS train.py -c configs/deim/deim_hgnetv2_n_custom.yml
 
-CUDA_VISIBLE_DEVICES=5 python train.py -c configs/yaml/my1_wave.yml
+CUDA_VISIBLE_DEVICES=2 python train.py -c configs/yaml/my1_daqs.yml
 python train.py -c configs/yaml/dfine.yml
 echo "✅ Training completed!"

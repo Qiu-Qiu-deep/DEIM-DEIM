@@ -201,6 +201,13 @@ class DEIMCriterion(nn.Module):
             loss = F.binary_cross_entropy_with_logits(src_logits, target_score, weight=weight, reduction='none')
         else:  
             loss = F.binary_cross_entropy_with_logits(src_logits, target_score, reduction='none')
+        
+        # IDAQG padding_mask support: 忽略padding位置的loss
+        if 'idaqg_padding_mask' in outputs:
+            padding_mask = outputs['idaqg_padding_mask']  # (B, Q) True表示padding
+            valid_mask = ~padding_mask  # (B, Q) True表示有效query
+            loss = loss * valid_mask.unsqueeze(-1).float()  # (B, Q, C) * (B, Q, 1)
+        
         loss = loss.mean(1).sum() * src_logits.shape[1] / num_boxes
         return {'loss_vfl': loss}    
 
@@ -625,22 +632,66 @@ class DEIMCriterion(nn.Module):
                     l_dict = {k + '_dn_pre': v for k, v in l_dict.items()}
                     losses.update(l_dict)
 
-        # DAQS density loss (方案A简化集成)
-        if 'daqs_density_map' in outputs and self.training:
-            # 生成密度GT（高斯核）
+        # DAQS density loss (V2版本 - DAQS queries直接参与训练)
+        if 'daqs_density_map' in outputs:
+            # 生成密度GT（自适应高斯核）
             density_gt = self._generate_density_gt(targets, outputs['daqs_density_map'].shape[-2:])
             gt_count = torch.tensor([len(t['labels']) for t in targets], 
                                    dtype=torch.float32, 
                                    device=outputs['daqs_density_map'].device).unsqueeze(1)
             
-            # 密度图L1损失
-            loss_density_map = F.l1_loss(outputs['daqs_density_map'], density_gt)
+            # 密度图损失（使用Smooth L1，对outliers更鲁棒）
+            loss_density_map = F.smooth_l1_loss(outputs['daqs_density_map'], density_gt)
             
-            # 计数Smooth L1损失
+            # 计数损失（Smooth L1）
             loss_density_count = F.smooth_l1_loss(outputs['daqs_predicted_count'], gt_count)
             
-            # 组合损失（权重0.1，不干扰主任务）
-            losses['loss_density'] = 0.1 * (loss_density_map + loss_density_count)
+            # V2改进：训练时权重更高（0.5），因为DAQS queries参与端到端训练
+            # 推理时也计算损失用于监控（但不反向传播）
+            weight = 0.5 if self.training else 0.0
+            losses['loss_daqs_density_map'] = weight * loss_density_map
+            losses['loss_daqs_density_count'] = weight * loss_density_count
+            
+            # 分开记录便于监控（不计入总损失）
+            with torch.no_grad():
+                losses['daqs_density_map_value'] = loss_density_map.detach()
+                losses['daqs_density_count_value'] = loss_density_count.detach()
+                # 记录平均误差（用于调试）
+                losses['daqs_count_error'] = (outputs['daqs_predicted_count'] - gt_count).abs().mean()
+
+        # IDAQG density loss (V3版本 - 全新密度自适应架构)
+        if 'idaqg_density_map' in outputs:
+            # 生成密度GT（自适应高斯核，与DAQS共享生成函数）
+            density_gt = self._generate_density_gt(targets, outputs['idaqg_density_map'].shape[-2:])
+            gt_count = torch.tensor([len(t['labels']) for t in targets], 
+                                   dtype=torch.float32, 
+                                   device=outputs['idaqg_density_map'].device).unsqueeze(1)
+            
+            # 密度图损失（Smooth L1）
+            loss_density_map = F.smooth_l1_loss(outputs['idaqg_density_map'], density_gt)
+            
+            # 计数损失（Smooth L1）
+            loss_density_count = F.smooth_l1_loss(outputs['idaqg_predicted_count'], gt_count)
+            
+            # V3特性：
+            # - 密度加权采样依赖于准确的密度图，因此密度loss权重适中（0.3）
+            # - Agent-based提取 + 语义内容更重要，密度loss作为辅助
+            weight = 0.3 if self.training else 0.0
+            losses['loss_idaqg_density_map'] = weight * loss_density_map
+            losses['loss_idaqg_density_count'] = weight * loss_density_count
+            
+            # 监控信息（不计入总损失）
+            with torch.no_grad():
+                losses['idaqg_density_map_value'] = loss_density_map.detach()
+                losses['idaqg_density_count_value'] = loss_density_count.detach()
+                losses['idaqg_count_error'] = (outputs['idaqg_predicted_count'] - gt_count).abs().mean()
+                
+                # V3特有：记录per-sample的query数量统计
+                if 'idaqg_num_queries_per_sample' in outputs:
+                    num_queries_list = outputs['idaqg_num_queries_per_sample']
+                    losses['idaqg_avg_queries'] = torch.tensor(num_queries_list, dtype=torch.float32).mean()
+                    losses['idaqg_max_queries'] = torch.tensor(num_queries_list, dtype=torch.float32).max()
+                    losses['idaqg_min_queries'] = torch.tensor(num_queries_list, dtype=torch.float32).min()
 
         # For debugging Objects365 pre-train.   
         losses = {k:torch.nan_to_num(v, nan=0.0) for k, v in losses.items()}  

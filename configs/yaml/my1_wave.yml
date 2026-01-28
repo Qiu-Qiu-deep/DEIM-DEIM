@@ -9,18 +9,8 @@ __include__: [
 
 comment: 'WaveEncoderBlock, s'
 
-output_dir: ./outputs/my1_wave_s
+output_dir: ./outputs/my1_wave_v2_s
 
 DEIM_MG:
-  yaml_path: configs/cfg/my1_wave_s.yaml
+  yaml_path: configs/cfg/my1_wave_v2_s.yaml
 # Increase to search for the optimal ema
-epoches: 72
-train_dataloader:
-  dataset:
-    transforms:
-      policy:
-        epoch: 60
-  collate_fn:
-    stop_epoch: 60
-    ema_restart_decay: 0.9999
-    base_size_repeat: ~

@@ -1,0 +1,63 @@
+\section{Introduction}
+\label{sec:intro}
+
+% Over the past decades, object detection has made remarkable progress in computer vision. 
+\hspace{\parindent}Convolutional neural networks (CNNs) excel at processing the RGB semantic and spatial texture features. 
+Most object detection methods are primarily based on CNNs.
+For example, Faster R-CNN~\cite{frcnn} introduces a region proposal network to generate potential object regions.
+FCOS~\cite{fcos} applies a center prediction branch to increase the quality of the bounding boxes.
+
+However, CNNs are unsuitable for capturing long-range dependencies in the image, restricting the detection performance.
+Recently, DETR~\cite{DETR} incorporates CNN and transformer architecture to establish a new object detection framework. DETR utilizes the transformer encoder to integrate the partitioned image patches and passes them with the learnable object queries to the transformer decoder for final detection results. Moreover, a series of DETR-like methods~\cite{Deformable-DETR,DN-DETR,DINO,DAB-DETR} aim to advance DETR performance and accelerate convergence speed. For example, Deformable-DETR~\cite{Deformable-DETR} uses multi-scale feature maps to improve its ability to detect different sizes of objects. Also, the use of deformable attention modules can not only capture more informative and contextually relevant features but accelerate training convergence as well.
+
+% \usepackage{tabularray}
+\begin{table}
+\caption{Comparison of DETR-like models' query strategies under different situations.}
+\centering
+\resizebox{0.999\linewidth}{!}{
+\begin{tblr}{
+  hlines,
+  vline{2-5} = {-}{},
+  column{2-4} = {c},
+  column{5} = {c}, % Center the Characteristics column
+}
+                  & Sparse & Dense & Imbalance & Characteristics                                                     \\
+Deformable
+  DETR~\cite{Deformable-DETR} & \checkmark      &       &           & Sparse Queries
+  (K=300) with One-To-One Assignment; Low Recall~    \\
+DDQ-DETR~\cite{DDQ}          & \checkmark      & \checkmark     &           & Dense
+  Distinct Queries (K=900); Low Recall if \#Object $\gg$ \#Query \\
+DQ-DETR (Ours)     & \checkmark      & \checkmark     & \checkmark         & Dynamically
+  adjust the "Number" and "Position" of Queries~        
+\end{tblr}
+}
+\label{intro}
+\end{table}
+
+In this work, we argue that the previous DETR-like methods are inappropriate in aerial image datasets, which only contain tiny objects and have an imbalance of instances between different images. In the previous DETR-like methods, the object queries used in the transformer decoder do not consider the number and position of instances in the image. Generally, they apply a fixed number K of object queries, where K represents the maximum number of the detection objects, e.g., K=100, 300 in DETR and Deformable-DETR, respectively. 
+DETR~\cite{DETR} and Deformable-DETR~\cite{Deformable-DETR} apply a fixed number of sparse queries, suffering from a low recall rate. To address this problem, DDQ~\cite{DDQ} selects dense distinct queries, K=900, with a class-agnostic NMS based on a hand-designed IoU threshold. Though DDQ applies dense queries for detection, the number of queries is still limited. 
+
+%The fixed number of queries will cause low detection accuracy in aerial datasets since the number of objects may vary drastically in different images.
+However, aerial datasets often exhibit imbalances in the distribution of instances across different images.
+A fixed number of queries can lead to poor detection accuracy when the number of objects varies drastically between images.
+For example, in the AI-TOD-V2 dataset~\cite{AITODv2}, some images have more than 1500 objects, but others have less than 10 objects. Under the situation that the number of objects in images is more than DETR's query number K, a low recall rate is an expected issue. 
+Using smaller K restricts the recall of the objects in dense images, leaving many instances undetected (FN).
+Conversely, using a large K in the sparse images not only introduces many underlying false positive samples (FP) but also causes a waste of computing resources since the computing complexity in the decoder’s self-attention layers grows quadratic with the number of queries K. 
+
+Furthermore, in the previous DETR-like methods, the object queries do not consider the position of instances in the image. 
+The position of object queries is a set of learned embeddings, which are irrelevant to the current image and do not have explicit physical meaning to tell where the queries are focusing on.  
+The static positions of object queries are unsuitable for aerial image datasets, where the distribution of instances varies extremely in different images, i.e., some images contain dense objects concentrated in specific areas, while some only have a few objects scattered throughout the images.
+
+Stemming from the above-mentioned weakness, we propose a novel DETR-like method named DQ-DETR, which mainly focuses on dynamically adapting the numbers of queries and enhancing the position of queries to locate the tiny objects precisely.
+In this study, we propose a dynamic query selection module for adaptively choosing different numbers of object queries in DETR's decoder stage, resulting in fewer FP in sparse images and fewer FN in dense images. 
+Moreover, we generate the density maps and estimate the number of instances in an image by the categorical counting module. The number of object queries is adjusted based on the predicted counting number.
+In addition, we aggregate the density maps with the visual feature from the transformer encoder to reinforce the foreground features, enhancing the spatial information for tiny objects.
+The strengthened visual feature will be further used to improve the positional information of object queries.
+As such, we can simultaneously handle the images with few and crowded tiny objects by dynamically adjusting the number and position of object queries used in the decoder.
+
+Our contributions are summarized as follows:
+\begin{itemize}
+    \item We point out the crucial limitation of previous DETR-like methods that make them unsuitable for aerial image datasets.
+    \item We propose three components: the categorical counting module, counting-guided feature enhancement, and dynamic query selection. These components significantly enhance performance on tiny objects.
+    \item Experimental result shows that our proposed DQ-DETR significantly surpasses the state-of-the-art method by 16.6\%, 20.5\% in terms of AP, $\text{AP}_{vt}$ on the AI-TOD-V2 dataset.
+\end{itemize}

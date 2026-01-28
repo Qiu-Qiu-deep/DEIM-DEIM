@@ -1,0 +1,271 @@
+\section{Method}
+\begin{figure*}[ht!]
+    \centering
+    \includegraphics[width=1\linewidth]{images/model_final_V4.pdf}
+    \caption{The overall architecture of our method. (a) Categorical Counting Module, which classifies the number of instances in images into 4 levels. (b) Counting-Guided Feature Enhancement, which refines the encoder's visual feature with a density map. (c) Dynamic Query Selection, which dynamically adjusts the number of queries and enhances the content and position of queries.}
+    \label{fig:model_method}
+\end{figure*}
+
+%------------------------------------------------------------
+\subsection{Overview} 
+\hspace{\parindent}The overall structure of DQ-DETR is shown in Fig. \ref{fig:model_method}.
+As a DETR-like method, DQ-DETR is an end-to-end detector that contains a CNN backbone, a deformable encoder and decoder~\cite{Deformable-DETR}, and several prediction heads.
+%The image features are first extracted by a CNN backbone and then fed into a deformable transformer encoder with positional encoding to attain refined visual features. 
+We further implement a new categorical counting module, a counting-guided feature enhancement module, and dynamic query selection based on DETR's architecture. 
+Given an input image, we first extract multi-scale features with a CNN backbone and feed them into the transformer encoder to attain visual features. 
+Afterward, our categorical counting module determines how many object queries are used in the transformer decoder, as shown in Fig.~\ref{fig:model_method}(a).
+Besides, we propose a novel counting-guided feature enhancement module, as illustrated in Fig.~\ref{fig:model_method}(b), to strengthen the encoder's visual features with spatial information for tiny objects. 
+Last, the object queries are refined with additional information about the location and size of tiny objects through dynamic query selection, as shown in Fig.~\ref{fig:model_method}(c).
+The following section will describe the proposed Categorical Counting Module, Counting-Guided Feature Enhancement, and Dynamic Query Selection.
+
+%------------------------------------------------------------
+\subsection{Unflattening of Encoder's Feature Map}
+\hspace{\parindent}Following DETR's pipeline, we use multi-scale feature maps ${P}_{i} \in \{1, 2, \dots, l\}$ extracted from different stages of the backbone as the input of the transformer encoder.
+To form the input sequence of the transformer encoder, we flatten each layer of multi-scale feature maps ${P}_{i}$ from $\mathbb{R}^{d \times h_{i}\times w_{i}}$ to $\mathbb{R}^{d \times h_{i}w_{i}}$ and then concatenate them together.
+The higher resolution feature contains more spatial details, which is beneficial to object counting and detecting tiny objects.
+%Since the transformer encoder expects a sequence as input, we flatten each layer of multi-scale feature maps ${P}_{i}$ from $\mathbb{R}^{d \times h_{i}\times w_{i}}$ to $\mathbb{R}^{d \times h_{i}w_{i}}$ and then concatenated together.
+% For multi-scale feature maps, the high-level layers provide more semantic information, while the low-level layers at the high-resolution preserve more geometric information, i.e., the size and location of instances, which is appropriate for detecting tiny objects.
+
+In our proposed categorical counting module, we apply dilated convolution operations on the transformer encoder features.
+Hence, we unflatten the encoder's multi-scale visual features by reshaping its spatial dimension, resulting in 2-D feature maps ${S}_{i} \in \mathbb{R}^{d \times h_{i} \times w_{i}}$.
+We denote the reconstructed encoder’s multi-scale visual features as EMSV features for brevity.
+% encoder’s multi-scale feature pyramid
+% lower-level? high--level?
+
+
+
+\subsection{Categorical Counting Module}
+\hspace{\parindent}The categorical counting module aims to estimate the number of objects in the images. It consists of a density extractor and a classification head. 
+% First, we input the largest feature map $C_{1}$ of the multi-scale pyramid features and generate the density map $S_{1}$ through the density extractor.  
+\subsubsection{Density Extractor.}
+We take the largest feature map $S_{1}$ of the EMSV features and generate the density map ${F}_{c}$ through the density extractor. High-resolution features are essential for detecting tiny objects, as they provide a clearer representation of such objects.
+%The input feature map $S_{1}$ is firstly fed into a $1 \times 1$ convolution layer for channel reduction ($\mathbb{R}^{b\times 256\times h\times w}\rightarrow \mathbb{R}^{b\times 512\times h\times w}$).
+The input feature map $S_{1}$ is sent into a series of dilated convolution layers to acquire a density map ${F}_{c}$, which contains counting-related information.  
+Specifically, dilated convolution layers enlarge the receptive field and capture rich long-range dependency for tiny objects.
+
+\subsubsection{Counting Number Classification.}
+\hspace{\parindent}Lastly, we estimate the counting number $N$, i.e., the number of instances per image, by a classification head and categorize them into four levels, which are $N \leq 10$, $10 < N \leq  100$, $100 < N \leq 500$, and $N > 500$. The classification head consists of two linear layers.
+Further, the numbers 10, 100, and 500 are selected based on the AI-TOD-V2 dataset's characteristics, i.e., the mean and standard deviation of the number of instances $N$ per image.
+Notably, we do not use the regression head as in the traditional crowd-counting methods, which regresses the counting number to a specific number.
+We attribute the reason to the drastic difference in the number of instances in each image, where $N$ ranges from 1 to 2267 in different images of AI-TOD-V2. It is difficult to regress an accurate number, hurting the detection performance. 
+
+% Last, a classification head is used to predict the level of ground truth number.
+% The role of the counting module is to classify the number of ground truths in the picture into four different levels and further affect the number of queries in the transformer decoder with dynamic query selection.
+% The four classes represent different levels of the ground truth number, separated by four distinct numbers: 10, 100, 500, or more, the first class represents the pictures with less than 10 targets, the second class has ground truth between [10, 100], and so on. 
+% The numbers 10, 100, and 500 are selected based on the dataset's characteristics, i.e., the mean and standard deviation of the GT number.
+
+%------------------------------------------------------------
+\subsection{Counting-Guided Feature Enhancement Module (CGFE)}
+\hspace{\parindent} 
+%Referring to the previous DETR-like methods, the position of object queries are static, resulting in poor object localization, i.e., more false negatives (FN).
+The EMSV feature is refined using the density map from the categorical counting module through the proposed Counting-Guided Feature Enhancement Module (CGFE) to improve the spatial information of tiny objects.
+The refined features are then used to enhance the position information of queries.
+%To enhance the positional information of object queries, we incorporate the density map $F_{c}$ with the MSV feature through the proposed Counting-Guided Feature Enhancement Module (CGFE).
+%Referring to the previous DETR-like methods, object queries are randomly initialized and densely distributed, resulting in poor object localization, i.e., more false negatives (FN).
+%To enhance the positional information of object queries, we incorporate the density map $F_{c}$ with the MSV feature through the proposed Counting-Guided Feature Enhancement Module (CGFE).
+This module comprises spatial cross-attention and channel attention operations~\cite{CBAM}. 
+
+\subsubsection{Spatial cross-attention map.}
+To utilize the abundant spatial information in the density map ${F}_{c}$, a 2-D cross-spatial attention is calculated.
+We employ a $1 \times 1$ convolution layers to down-sample the density map ${F}_{c}$, creating multi-scale counting feature maps ${F}_{c, i} \in \{1, 2, \dots, l\}$ to in line with the shape of each layer of encoder’s multi-scale feature maps $S_{i} \in \{1, 2, \dots, l\}$.
+Subsequently, we first apply average pooling (AvgP.) and max pooling (MaxP.) on each layer of multi-scale counting features ${F}_{c, i} \in \mathbb{R}^{b\times 256\times h\times w}$ along the channel axis. 
+Then, the two pooling features $\mathbb{R}^{b \times 1 \times h\times w}$ are concatenated and sent into a 7x7 convolution layer followed by a sigmoid function to produce spatial attention map ${W}_{s} \in \mathbb{R}^{b \times 1 \times h\times w}$. We formulate this process in Eq.~\ref{eq:sp_map}. 
+
+Since the density maps ${F}_{c}$ contain the location and density information about the object, the spatial attention maps generated by them can focus on the important region, i.e., foreground objects, and enhance the EMSV feature with abundant spatial information. 
+\noindent
+\begin{equation}
+\begin{aligned}
+{W}_{s, i} = \sigma(\underset{7 \times 7}{Conv}(Concat\begin{bmatrix}
+  AvgP.(\underset{1 \times 1}{Conv}({F}_{c, i})) \\
+MaxP.(\underset{1 \times 1}{Conv}({F}_{c, i}))
+\end{bmatrix}
+))
+\end{aligned}
+\label{eq:sp_map}
+.
+\end{equation}
+
+The generated spatial attention map ${W}_{s, i}$ multiplies with EMSV feature $S_{i}$ element-wisely and further obtains the spatial-intensified features ${E}_{i}$, as shown in Eq.~\ref{eq:ei}.
+\noindent
+\begin{equation}
+\begin{aligned}
+{E}_{i} = W_{s, i} \otimes S_{i},
+\end{aligned}
+\label{eq:ei}
+\end{equation}
+
+%\paragraph{Counting-guided intensified features.}
+\subsubsection{Channel attention map.}
+% After the spatial attention module, channel attention is applied to the counting-guided intensified features ${E}_{i}$. 
+% In the spatial attention module, we first apply average pooling and max pooling on ${F}_{c, i} \in \mathbb{R}^{b\times 256\times h\times w}$ along the channel axis. 
+After the spatial cross-attention, we further apply 1-D channel attention to the spatial-intensified features ${E}_{i}$, exploiting the inter-channel relationship of features.
+Specifically, we first apply average pooling and max pooling on each layer of ${E}_{i} \in \mathbb{R}^{b\times 256\times h\times w}$ along the spatial dimension. 
+Next, the two pooling features $\mathbb{R}^{b \times 256 \times 1 \times 1}$ are sent into a shared MLP and merged together with element-wise addition to create channel attention map ${W}_{c, i}$.
+Finally, the channel attention map ${W}_{c, i} \in \mathbb{R}^{b \times 256 \times 1 \times 1}$ is multiplied with original $E_{i} \in \mathbb{R}^{b \times 256 \times h \times w}$ and further get the counting-guided intensified feature maps ${F}_{t}$. The formulas are defined in Eq.~\ref{eq:wci} and Eq.~\ref{eq:fti}: 
+\noindent
+\begin{equation}
+\begin{aligned}
+{W}_{c, i} = \sigma(MLP(AvgP.({E}_{i})) + MLP(MaxP.({E}_{i}))),
+\end{aligned}
+\label{eq:wci}
+\end{equation}
+\noindent
+\vspace{-5pt}
+\begin{equation}
+\begin{aligned}
+{F}_{t, i} = W_{c, i} \otimes E_{i}.
+\end{aligned}
+\label{eq:fti}
+\end{equation}
+
+%------------------------------------------------------------
+\subsection{Dynamic Query Selection}
+%This paragraph introduces how the counting result from the categorical counting module guides the object query number.
+\subsubsection{Number of queries.}
+In dynamic query selection, we first use the classification result from the categorical counting module to determine the number of queries $K$ used in the transformer decoder. 
+The four classification classes in the categorical counting module correspond to four distinct numbers of queries, which are $K$ = 300, 500, 900, and 1500, i.e., if the image is classified as $N \leq 10$, we use $K=300$ queries in the subsequent detection task, and so forth.
+
+\subsubsection{Enhancement of queries.}
+For query formulation, we follow the idea of DAB-DETR~\cite{DAB-DETR}, where the queries are composed of content and positional information. The content of queries is a high-dimension vector, while the position of queries is formulated as a 4-D anchor box (x, y, w, h) to accelerate training convergence. 
+
+Further, we use the intensified multi-scale feature maps ${F}_{t}$ from the previous CGFE module to improve the content ${Q}_{content}$ and position ${Q}_{position}$ of queries. 
+Each layer of ${F}_{t}$ is firstly flattened into pixel level and concatenated together, forming ${F}_{flat} \in \mathbb{R}^{b\times 256\times hw}$.
+The top-K features are selected as priors to enhance decoder queries, where $K$ is the number of queries used in the transformer decoder stage.  
+The selection is based on the classification score. We feed ${F}_{flat}$ into an FFN for the object classification task and generate the classification score $\in \mathbb{R}^{b\times m\times hw}$, where m is the number of object classes in the dataset.
+Consequently, we generate the content and position of queries using the selected top-K features ${F}_{select}$.
+\noindent
+\begin{equation}
+\begin{aligned}
+& Score = FFN({F}_{flat}), \\
+& {F}_{select} = topK_{Score}({F}_{flat}). \\
+\end{aligned}
+\label{eq:dynamic_select1}
+\end{equation}
+
+The content of queries is generated by a linear transform of the selected features ${F}_{select}$.
+As for the position of queries, we use an FFN to predict bias $\hat{b_{i}} = (\Delta b_{ix}, \Delta b_{iy}, \Delta b_{iw}, \Delta b_{ih})$ to refine the original anchor boxes. 
+Let $(x, y)_{i}$ index a selected feature from multi-level features $F_{t} \in \{1, 2, \dots, l\}$ at position (x, y).
+The selected feature has its original anchor box $(x_{i}, y_{i}, w_{i}, h_{i})$ as the position prior of queries, where $(x_{i}, y_{i}) $ are normalized coordinates $\in {[0, 1]}^2$ and $(w_{i}, h_{i}) $ are setting related to the scale of feature $F_{t}$.
+The predicted bias $\hat{b_{i}} = (\Delta b_{ix}, \Delta b_{iy}, \Delta b_{iw}, \Delta b_{ih})$ are then added to original anchor box to refine the position of object queries.
+\noindent
+\begin{equation}
+\begin{aligned}
+& Q_{content} = linear({F}_{select}), \\
+& Q_{position, bias} = FFN({F}_{select}). \\
+\end{aligned}
+\label{eq:dynamic_select2}
+\end{equation}
+
+Since the features ${F}_{select}$ are selected from ${F}_{t}$, which is generated from the previous CGFE module, they contain abundant scale and location information of tiny objects.
+% Hence, the enhanced content and position of object queries are tailored based on each image's crowded or sparse situation and make the queries easier to localize the tiny objects in the transformer decoder stage.
+Hence, the enhanced content and position of object queries are tailored based on each image's density (crowded or sparse), facilitating easier localization of tiny objects in the transformer decoder.
+%------------------------------------------------------------
+\subsection{Overall Objective}
+
+\subsubsection{Hungarian Loss}
+Based on DETR~\cite{DETR}, we use a Hungarian algorithm to find an optimal bipartite matching between ground truth and prediction and optimize losses. 
+The Hungarian loss consists of L1 loss and GIoU loss~\cite{GIOU} for bounding box regression and focal loss~\cite{focal_loss} with $\alpha = 0.25$, $\gamma = 2$ for classification task, which can be denoted as Eq.~\ref{eq:hugarian}. 
+Follow the settings of DAB-DETR~\cite{DAB-DETR}, we use ${\lambda}_{1} = 5$, ${\lambda}_{2} = 2$, ${\lambda}_{3} = 1$ in our implementation.
+\noindent
+\begin{equation}
+\begin{aligned}
+L_{hungarian} = {\lambda}_{1}L_{1} + {\lambda}_{2}L_{GIoU} + {\lambda}_{3}L_{focal}.
+\end{aligned}
+\label{eq:hugarian}
+\end{equation}
+
+% \paragraph{Counting Loss}
+In addition, we use the cross-entropy loss in the categorical counting module to supervise the classification task. Further, the Hungarian loss is also applied as the auxiliary loss for each decoder stage. The overall loss can be denoted as:
+\begin{equation}
+\begin{aligned}
+L_{total} = L_{hungarian} + L_{aux} + L_{counting}.
+\end{aligned}
+\label{eq:loss}
+\end{equation}
+
+
+
+% \begin{table}[tb]
+%   \caption{Font sizes of headings. 
+%     Table captions should always be positioned \emph{above} the tables.
+%   }
+%   \label{tab:headings}
+%   \centering
+%   \begin{tabular}{@{}lll@{}}
+%     \toprule
+%     Heading level & Example & Font size and style\\
+%     \midrule
+%     Title (centered)  & {\Large\bf Lecture Notes \dots} & 14 point, bold\\
+%     1st-level heading & {\large\bf 1 Introduction} & 12 point, bold\\
+%     2nd-level heading & {\bf 2.1 Printing Area} & 10 point, bold\\
+%     3rd-level heading & {\bf Headings.} Text follows \dots & 10 point, bold\\
+%     4th-level heading & {\it Remark.} Text follows \dots & 10 point, italic\\
+%   \bottomrule
+%   \end{tabular}
+% \end{table}
+
+% Here are some examples of headings: 
+% ``Criteria to Disprove Context-Freeness of Collage Languages'', ``On Correcting the Intrusion of Tracing Non-deterministic Programs by Software'', ``A User-Friendly and Extendable Data Distribution System'', ``Multi-flip Networks: Parallelizing GenSAT'', ``Self-determinations of Man''.
+
+
+
+% \begin{figure}[tb]
+%   \centering
+%   \includegraphics[height=6.5cm]{eijkel2}
+%   \caption{One kernel at $x_s$ (\emph{dotted kernel}) or two kernels at $x_i$ and $x_j$ (\emph{left and right}) lead to the same summed estimate at $x_s$.
+%     This shows a figure consisting of different types of lines.
+%     Elements of the figure described in the caption should be set in italics, in parentheses, as shown in this sample caption. 
+%     The last sentence of a figure caption should generally end with a full stop, except when the caption is not a full sentence.
+%   }
+%   \label{fig:example}
+% \end{figure}
+
+% \begin{figure}[tb]
+%   \centering
+%   \begin{subfigure}{0.68\linewidth}
+%     \fbox{\rule{0pt}{0.5in} \rule{.9\linewidth}{0pt}}
+%     \caption{An example of a subfigure}
+%     \label{fig:short-a}
+%   \end{subfigure}
+%   \hfill
+%   \begin{subfigure}{0.28\linewidth}
+%     \fbox{\rule{0pt}{0.5in} \rule{.9\linewidth}{0pt}}
+%     \caption{Another example of a subfigure}
+%     \label{fig:short-b}
+%   \end{subfigure}
+%   \caption{Centered, short example caption}
+%   \label{fig:short}
+% \end{figure}
+
+
+
+
+% \subsection{Citations}
+% Arabic numbers are used for citation, which is sequential either by order of citation or by alphabetical order of the references, depending on which sequence is used in the list of references. 
+% The reference numbers are given in brackets and are not superscript.
+% Please observe the following guidelines:
+% \begin{itemize}
+% \item Single citation: \cite{Anonymous24}
+% \item Multiple citation: \cite{Alpher02,Alpher03,Alpher05,Anonymous24b,Anonymous24}. 
+%   The numbers should be listed in numerical order.
+%   If you use the template as advised, this will be taken care of automatically.
+% \item If an author's name is used in the text: Alpher \cite{Alpher02} was the first \ldots
+% \end{itemize}
+
+
+
+% The space after \eg, meaning ``for example'', should not be a sentence-ending space.
+% So \eg is correct, \emph{e.g.} is not.
+% The provided \verb'\eg' macro takes care of this.
+
+% When citing a multi-author paper, you may save space by using ``et alia'', 
+% shortened to ``\etal'' (not ``{\em et.\ al.}'' as ``{\em et\hskip 0.1em}'' is a complete word).
+% If you use the \verb'\etal' macro provided, then you need not worry about double periods when used at the end of a sentence as in Alpher \etal.
+% However, use it only when there are three or more authors.
+% Thus, the following is correct:
+%    ``Frobnication has been trendy lately.
+%    It was introduced by Alpher~\cite{Alpher02}, and subsequently developed by
+%    Alpher and Fotheringham-Smythe~\cite{Alpher03}, and Alpher \etal~\cite{Alpher04}.''
+
+% This is incorrect: ``... subsequently developed by Alpher \etal~\cite{Alpher03} ...'' because reference~\cite{Alpher03} has just two authors.
+

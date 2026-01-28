@@ -82,10 +82,10 @@ class ChannelGate(nn.Module):
         channel_att_sum = None
         for pool_type in self.pool_types:   
             if pool_type=='avg':  
-                avg_pool = F.adaptive_avg_pool2d(x, output_size=(1, 1))
+                avg_pool = F.adaptive_avg_pool2d(x, (1, 1))
                 channel_att_raw = self.mlp( avg_pool )
             elif pool_type=='max':   
-                max_pool = F.adaptive_max_pool2d(x, output_size=(1, 1))
+                max_pool = F.adaptive_max_pool2d(x, (1, 1))
                 channel_att_raw = self.mlp( max_pool )   
             elif pool_type=='lp':   
                 lp_pool = F.lp_pool2d( x, 2, (x.size(2), x.size(3)), stride=(x.size(2), x.size(3)))
@@ -412,7 +412,7 @@ class CategoricalCounting(nn.Module):
         self.ccm_cfg = [self.in_channels, self.dim]
         self.conv1 = nn.Conv2d(dim, self.in_channels, kernel_size=1)        
         self.ccm = make_layers(self.ccm_cfg, in_channels=self.in_channels, d_rate=2)  
-        self.output = nn.AdaptiveAvgPool2d(output_size=(1, 1))
+        self.output = nn.AdaptiveAvgPool2d((1, 1))
         self.linear = nn.Linear(dim, cls_num)   
         
     def forward(self, features, spatial_shapes=None):     
@@ -437,7 +437,7 @@ class LightCategoricalCounting(nn.Module):
         self.ccm_cfg = [self.dim, self.dim]
         self.conv1 = nn.Conv2d(self.dim, self.dim, kernel_size=1)   
         self.ccm = make_layers(self.ccm_cfg, in_channels=self.dim, d_rate=2)    
-        self.output = nn.AdaptiveAvgPool2d(output_size=(1, 1))
+        self.output = nn.AdaptiveAvgPool2d((1, 1))
         self.linear = nn.Linear(self.dim, cls_num)
  
     def forward(self, features, spatial_shapes=None):
@@ -462,7 +462,7 @@ class LightCategoricalCounting_PKI(nn.Module):
         self.ccm_cfg = [self.dim, self.dim]
         self.conv1 = nn.Conv2d(self.dim, self.dim, kernel_size=1)    
         self.ccm = PKIBlock(self.dim, self.dim)   
-        self.output = nn.AdaptiveAvgPool2d(output_size=(1, 1)) 
+        self.output = nn.AdaptiveAvgPool2d((1, 1)) 
         self.linear = nn.Linear(self.dim, cls_num)
         
     def forward(self, features, spatial_shapes=None):

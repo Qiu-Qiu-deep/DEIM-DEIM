@@ -1,0 +1,477 @@
+[
+  {
+    "stage": "Train",
+    "num_images": 3605,
+    "num_instances": 163690,
+    "avg_density": 45.40638002773925,
+    "std_density": 20.518951378549385,
+    "max_density": 129.0,
+    "min_density": 1.0,
+    "avg_overlap": 0.06144970407345402,
+    "median_overlap": 0.01216019886077032,
+    "std_overlap": 0.10043905894014653,
+    "occlusion_ratio": {
+      "Low": 63.85973486468324,
+      "Medium": 27.311992180340887,
+      "High": 8.82827295497587
+    },
+    "avg_area": 6377.742653796811,
+    "median_area": 4914.0
+  },
+  {
+    "stage": "Val",
+    "num_images": 1448,
+    "num_instances": 44347,
+    "avg_density": 30.626381215469614,
+    "std_density": 17.709692235019066,
+    "max_density": 179.0,
+    "min_density": 1.0,
+    "avg_overlap": 0.0638243573443995,
+    "median_overlap": 0.014300492910606706,
+    "std_overlap": 0.09544136810338587,
+    "occlusion_ratio": {
+      "Low": 61.368299997745055,
+      "Medium": 29.289467156741157,
+      "High": 9.342232845513788
+    },
+    "avg_area": 9469.857239497598,
+    "median_area": 7905.0
+  },
+  {
+    "stage": "Test_All",
+    "num_images": 1334,
+    "num_instances": 67431,
+    "avg_density": 50.547976011994,
+    "std_density": 27.13189547885084,
+    "max_density": 190.0,
+    "min_density": 1.0,
+    "avg_overlap": 0.04285011717664655,
+    "median_overlap": 0.0,
+    "std_overlap": 0.08370738290879959,
+    "occlusion_ratio": {
+      "Low": 74.40791327431003,
+      "Medium": 19.514763239459594,
+      "High": 6.077323486230369
+    },
+    "avg_area": 3456.8858388574986,
+    "median_area": 2340.0
+  },
+  {
+    "stage": "Domain_ARC_1",
+    "num_images": 30,
+    "num_instances": 1169,
+    "avg_density": 38.96666666666667,
+    "std_density": 12.639840013052204,
+    "max_density": 78.0,
+    "min_density": 21.0,
+    "avg_overlap": 0.05777443456152141,
+    "median_overlap": 0.0072932206199237525,
+    "std_overlap": 0.0940191250358757,
+    "occlusion_ratio": {
+      "Low": 65.44054747647561,
+      "Medium": 26.34730538922156,
+      "High": 8.212147134302823
+    },
+    "avg_area": 7700.828058169375,
+    "median_area": 5587.0
+  },
+  {
+    "stage": "Domain_CIMMYT_1",
+    "num_images": 66,
+    "num_instances": 2843,
+    "avg_density": 43.07575757575758,
+    "std_density": 9.173926501579462,
+    "max_density": 67.0,
+    "min_density": 10.0,
+    "avg_overlap": 0.04481004031671724,
+    "median_overlap": 0.0,
+    "std_overlap": 0.08886196152545726,
+    "occlusion_ratio": {
+      "Low": 73.90080900457264,
+      "Medium": 19.16989096025325,
+      "High": 6.929300035174111
+    },
+    "avg_area": 5497.713682729511,
+    "median_area": 3285.0
+  },
+  {
+    "stage": "Domain_CIMMYT_2",
+    "num_images": 74,
+    "num_instances": 2771,
+    "avg_density": 37.445945945945944,
+    "std_density": 10.637950793181892,
+    "max_density": 62.0,
+    "min_density": 1.0,
+    "avg_overlap": 0.025202709265514132,
+    "median_overlap": 0.0,
+    "std_overlap": 0.06418638749088346,
+    "occlusion_ratio": {
+      "Low": 84.62648863226272,
+      "Medium": 12.125586430891374,
+      "High": 3.247924936845904
+    },
+    "avg_area": 3725.0155178635873,
+    "median_area": 2295.0
+  },
+  {
+    "stage": "Domain_CIMMYT_3",
+    "num_images": 52,
+    "num_instances": 1561,
+    "avg_density": 30.01923076923077,
+    "std_density": 12.504599745409664,
+    "max_density": 55.0,
+    "min_density": 2.0,
+    "avg_overlap": 0.03978252622099451,
+    "median_overlap": 0.0,
+    "std_overlap": 0.07669563109809191,
+    "occlusion_ratio": {
+      "Low": 75.208199871877,
+      "Medium": 20.435618193465725,
+      "High": 4.356181934657271
+    },
+    "avg_area": 5306.276105060859,
+    "median_area": 3796.0
+  },
+  {
+    "stage": "Domain_KSU_1",
+    "num_images": 100,
+    "num_instances": 6435,
+    "avg_density": 64.35,
+    "std_density": 16.381926016192356,
+    "max_density": 99.0,
+    "min_density": 25.0,
+    "avg_overlap": 0.05359008543882518,
+    "median_overlap": 0.0011933174224343676,
+    "std_overlap": 0.08904062536620418,
+    "occlusion_ratio": {
+      "Low": 67.1950271950272,
+      "Medium": 25.15928515928516,
+      "High": 7.645687645687646
+    },
+    "avg_area": 3126.773271173271,
+    "median_area": 2541.0
+  },
+  {
+    "stage": "Domain_KSU_2",
+    "num_images": 100,
+    "num_instances": 5302,
+    "avg_density": 53.02,
+    "std_density": 14.15837561304262,
+    "max_density": 110.0,
+    "min_density": 17.0,
+    "avg_overlap": 0.03250025721833229,
+    "median_overlap": 0.0,
+    "std_overlap": 0.07440247366947468,
+    "occlusion_ratio": {
+      "Low": 79.55488494907583,
+      "Medium": 16.295737457563185,
+      "High": 4.149377593360995
+    },
+    "avg_area": 3173.4313466616372,
+    "median_area": 2378.5
+  },
+  {
+    "stage": "Domain_KSU_3",
+    "num_images": 95,
+    "num_instances": 5217,
+    "avg_density": 54.915789473684214,
+    "std_density": 15.322953650887861,
+    "max_density": 108.0,
+    "min_density": 21.0,
+    "avg_overlap": 0.04936269928180133,
+    "median_overlap": 0.0,
+    "std_overlap": 0.08912981164708508,
+    "occlusion_ratio": {
+      "Low": 71.24784358826912,
+      "Medium": 21.27659574468085,
+      "High": 7.475560667050028
+    },
+    "avg_area": 4885.449108683151,
+    "median_area": 3375.0
+  },
+  {
+    "stage": "Domain_KSU_4",
+    "num_images": 60,
+    "num_instances": 3285,
+    "avg_density": 54.75,
+    "std_density": 12.927522319970418,
+    "max_density": 78.0,
+    "min_density": 16.0,
+    "avg_overlap": 0.04458193179975469,
+    "median_overlap": 0.0,
+    "std_overlap": 0.08073428722797586,
+    "occlusion_ratio": {
+      "Low": 72.3896499238965,
+      "Medium": 21.643835616438356,
+      "High": 5.966514459665144
+    },
+    "avg_area": 4772.19299847793,
+    "median_area": 3280.0
+  },
+  {
+    "stage": "Domain_NAU_2",
+    "num_images": 100,
+    "num_instances": 4918,
+    "avg_density": 49.18,
+    "std_density": 16.994928655337155,
+    "max_density": 109.0,
+    "min_density": 14.0,
+    "avg_overlap": 0.028462338460143965,
+    "median_overlap": 0.0,
+    "std_overlap": 0.06768725144550503,
+    "occlusion_ratio": {
+      "Low": 81.8422122814152,
+      "Medium": 14.985766571777145,
+      "High": 3.172021146807645
+    },
+    "avg_area": 3304.8338755591703,
+    "median_area": 2419.0
+  },
+  {
+    "stage": "Domain_NAU_3",
+    "num_images": 100,
+    "num_instances": 4596,
+    "avg_density": 45.96,
+    "std_density": 17.757770130283813,
+    "max_density": 97.0,
+    "min_density": 17.0,
+    "avg_overlap": 0.03292472508686821,
+    "median_overlap": 0.0,
+    "std_overlap": 0.07372935138008099,
+    "occlusion_ratio": {
+      "Low": 79.76501305483029,
+      "Medium": 16.057441253263708,
+      "High": 4.177545691906006
+    },
+    "avg_area": 3926.677328111401,
+    "median_area": 2700.5
+  },
+  {
+    "stage": "Domain_Terraref_1",
+    "num_images": 133,
+    "num_instances": 3360,
+    "avg_density": 25.263157894736842,
+    "std_density": 14.055151698783657,
+    "max_density": 62.0,
+    "min_density": 1.0,
+    "avg_overlap": 0.013816928473108224,
+    "median_overlap": 0.0,
+    "std_overlap": 0.04342319768642801,
+    "occlusion_ratio": {
+      "Low": 90.68452380952381,
+      "Medium": 7.8273809523809526,
+      "High": 1.488095238095238
+    },
+    "avg_area": 2640.8252976190474,
+    "median_area": 2025.0
+  },
+  {
+    "stage": "Domain_Terraref_2",
+    "num_images": 86,
+    "num_instances": 1274,
+    "avg_density": 14.813953488372093,
+    "std_density": 10.740611506460905,
+    "max_density": 40.0,
+    "min_density": 1.0,
+    "avg_overlap": 0.012273478253514903,
+    "median_overlap": 0.0,
+    "std_overlap": 0.048178656100805343,
+    "occlusion_ratio": {
+      "Low": 91.67974882260597,
+      "Medium": 6.907378335949764,
+      "High": 1.4128728414442702
+    },
+    "avg_area": 2046.2417582417581,
+    "median_area": 1722.0
+  },
+  {
+    "stage": "Domain_UQ_10",
+    "num_images": 106,
+    "num_instances": 8629,
+    "avg_density": 81.40566037735849,
+    "std_density": 19.962596298552853,
+    "max_density": 122.0,
+    "min_density": 31.0,
+    "avg_overlap": 0.04543861567309838,
+    "median_overlap": 0.0,
+    "std_overlap": 0.08287932254706937,
+    "occlusion_ratio": {
+      "Low": 73.47317186232472,
+      "Medium": 19.82848534013211,
+      "High": 6.698342797543168
+    },
+    "avg_area": 2510.9762429018424,
+    "median_area": 1710.0
+  },
+  {
+    "stage": "Domain_UQ_11",
+    "num_images": 84,
+    "num_instances": 4345,
+    "avg_density": 51.726190476190474,
+    "std_density": 21.696143606463576,
+    "max_density": 121.0,
+    "min_density": 11.0,
+    "avg_overlap": 0.028010215300733207,
+    "median_overlap": 0.0,
+    "std_overlap": 0.07027761313718375,
+    "occlusion_ratio": {
+      "Low": 83.88952819332566,
+      "Medium": 11.760644418872266,
+      "High": 4.349827387802072
+    },
+    "avg_area": 1786.9086306098964,
+    "median_area": 1344.0
+  },
+  {
+    "stage": "Domain_UQ_7",
+    "num_images": 17,
+    "num_instances": 1335,
+    "avg_density": 78.52941176470588,
+    "std_density": 18.58246373540141,
+    "max_density": 114.0,
+    "min_density": 41.0,
+    "avg_overlap": 0.03896248497742613,
+    "median_overlap": 0.0,
+    "std_overlap": 0.0778231253610179,
+    "occlusion_ratio": {
+      "Low": 76.32958801498127,
+      "Medium": 18.651685393258425,
+      "High": 5.0187265917602994
+    },
+    "avg_area": 3079.2389513108615,
+    "median_area": 2117.0
+  },
+  {
+    "stage": "Domain_UQ_8",
+    "num_images": 41,
+    "num_instances": 4835,
+    "avg_density": 117.92682926829268,
+    "std_density": 20.329469470963836,
+    "max_density": 190.0,
+    "min_density": 88.0,
+    "avg_overlap": 0.06182264480788441,
+    "median_overlap": 0.016456068175139584,
+    "std_overlap": 0.09990018815354626,
+    "occlusion_ratio": {
+      "Low": 64.03309203722854,
+      "Medium": 26.887280248190283,
+      "High": 9.079627714581179
+    },
+    "avg_area": 2386.278386763185,
+    "median_area": 1632.0
+  },
+  {
+    "stage": "Domain_UQ_9",
+    "num_images": 33,
+    "num_instances": 2886,
+    "avg_density": 87.45454545454545,
+    "std_density": 30.33958401373891,
+    "max_density": 144.0,
+    "min_density": 16.0,
+    "avg_overlap": 0.06842898075896765,
+    "median_overlap": 0.023952095808383235,
+    "std_overlap": 0.10277718179197316,
+    "occlusion_ratio": {
+      "Low": 60.325710325710325,
+      "Medium": 30.284130284130285,
+      "High": 9.39015939015939
+    },
+    "avg_area": 3607.585932085932,
+    "median_area": 2250.0
+  },
+  {
+    "stage": "Domain_Ukyoto_1",
+    "num_images": 58,
+    "num_instances": 2670,
+    "avg_density": 46.03448275862069,
+    "std_density": 24.742094186476237,
+    "max_density": 86.0,
+    "min_density": 1.0,
+    "avg_overlap": 0.08345314683787362,
+    "median_overlap": 0.039877251698785046,
+    "std_overlap": 0.11222115240023105,
+    "occlusion_ratio": {
+      "Low": 53.10861423220974,
+      "Medium": 32.546816479400746,
+      "High": 14.344569288389513
+    },
+    "avg_area": 3925.840074906367,
+    "median_area": 2841.0
+  },
+  {
+    "stage": "Stage_Post_Flowering",
+    "num_images": 634,
+    "num_instances": 30845,
+    "avg_density": 48.65141955835962,
+    "std_density": 19.048334822210826,
+    "max_density": 121.0,
+    "min_density": 1.0,
+    "avg_overlap": 0.04088191950340001,
+    "median_overlap": 0.0,
+    "std_overlap": 0.08241163793265181,
+    "occlusion_ratio": {
+      "Low": 75.37688442211056,
+      "Medium": 18.803695898849085,
+      "High": 5.8194196790403625
+    },
+    "avg_area": 3426.1863511103907,
+    "median_area": 2376.0
+  },
+  {
+    "stage": "Stage_Filling",
+    "num_images": 311,
+    "num_instances": 12256,
+    "avg_density": 39.40836012861736,
+    "std_density": 21.793914772363273,
+    "max_density": 108.0,
+    "min_density": 1.0,
+    "avg_overlap": 0.04014539523089102,
+    "median_overlap": 0.0,
+    "std_overlap": 0.08167378519388116,
+    "occlusion_ratio": {
+      "Low": 76.01174934725849,
+      "Medium": 18.30939947780679,
+      "High": 5.678851174934726
+    },
+    "avg_area": 4499.312744778068,
+    "median_area": 2968.0
+  },
+  {
+    "stage": "Stage_Filling_Ripening",
+    "num_images": 139,
+    "num_instances": 11515,
+    "avg_density": 82.84172661870504,
+    "std_density": 23.00117575750033,
+    "max_density": 144.0,
+    "min_density": 16.0,
+    "avg_overlap": 0.051200681989886795,
+    "median_overlap": 0.0,
+    "std_overlap": 0.08884886240852169,
+    "occlusion_ratio": {
+      "Low": 70.17802865827181,
+      "Medium": 22.448979591836736,
+      "High": 7.372991749891446
+    },
+    "avg_area": 2785.819105514546,
+    "median_area": 1825.0
+  },
+  {
+    "stage": "Stage_Ripening",
+    "num_images": 251,
+    "num_instances": 12815,
+    "avg_density": 51.05577689243028,
+    "std_density": 37.052090989675534,
+    "max_density": 190.0,
+    "min_density": 1.0,
+    "avg_overlap": 0.042434953626439544,
+    "median_overlap": 0.0,
+    "std_overlap": 0.08318970814545412,
+    "occlusion_ratio": {
+      "Low": 74.44401092469762,
+      "Medium": 19.687865782286384,
+      "High": 5.868123293015997
+    },
+    "avg_area": 3136.813655872025,
+    "median_area": 2142.0
+  }
+]

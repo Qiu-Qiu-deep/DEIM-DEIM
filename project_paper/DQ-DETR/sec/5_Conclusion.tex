@@ -1,0 +1,10 @@
+\section{Conclusion}
+\label{sec:conclusion}
+\hspace{\parindent}In this paper, we analyze that the fixed number and position of queries in previous DETR-like methods are unsuitable for detecting tiny objects in aerial datasets and propose a new end-to-end transformer detector DQ-DETR with a categorical counting module, counting-guided feature enhancement, and dynamic query selection.
+Our DQ-DETR dynamically adjusts the number of object queries used for detection to solve the imbalance of instances between different aerial images.
+Also, we improve the positional information of queries, making it easier for the decoder to localize the tiny object.
+DQ-DETR is the first DETR-like model focusing on tiny object detection and achieves 30.2\% $\mathrm{AP}$, which is the state-of-the-art of AI-TOD-V2.
+The result shows that our proposed DQ-DETR improves the performance of detecting tiny objects, outperforming all previous CNN-based detectors and DETR-like methods on the AI-TOD-V2 dataset with ResNet50 as the backbone. 
+
+\section*{Acknowledgment}
+This work is partially supported by the National Science and Technology Council, Taiwan under Grants NSTC-112-2221-E-A49-059-MY3, NSTC-112-2221-E-A49-094-MY3, NSTC-112-2628-E-002-033-MY4 and NSTC-112-2634-F-002-002-MBK, and was financially supported in part by the Center of Data Intelligence: Technologies, Applications, and Systems, National Taiwan University (Grants: 113L900901/113L900902/113L900903), from the Featured Areas Research Center Program within the framework of the Higher Education Sprout Project by the Ministry of Education, Taiwan.

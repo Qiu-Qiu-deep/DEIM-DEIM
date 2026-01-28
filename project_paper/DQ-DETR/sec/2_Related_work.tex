@@ -1,0 +1,26 @@
+\section{Related work}
+\label{sec:related work}
+
+\subsection{Tiny Object Detection}
+Detecting small objects is challenging due to their lack of pixels.
+Early works apply data augmentation to oversample the instance of tiny objects. For example,~\cite{da_sm}, copy-paste small objects into the same image.~\cite{learn_da} proposes a K sub-policies that automatically transform features from the instance level. 
+In addition, several approaches, such as~\cite{AITODv2,nwd,rfla,dot}, indicate that traditional Intersection over Union (IoU) metrics are ill-suited for tiny objects.
+When the object size difference is significant, IoU becomes highly sensitive.
+To design the appropriate metrics for the tiny object, DotD~\cite{dot} considers the object's absolute and relative size to formulate a new loss function.~\cite{nwd,rfla,dot} design a new label assignment based on Gaussian distribution, which alleviates the sensitivity of the object size. However, these methods heavily rely on the predefined threshold, which is unstable for a different dataset.
+
+\subsection{DETR-like Methods}
+DETR~\cite{DETR} proposes an end-to-end object detection framework based on the transformer, where the transformer encoder extracts instance-level features from an image,  and the transformer decoder uses a set of learnable queries to probe and pool features from images.
+While DETR achieves comparable results with the previous classical CNN-based detectors~\cite{frcnn,fcos}, it suffers severely from the problem of slow training convergence, needing 500 epochs of training to perform well. Many follow-up works have attempted to address the slow training convergence of DETR from different perspectives. 
+
+Some argue that DETR's slow convergence stems from the instability of Hungarian matching and the cross-attention mechanism in the transformer decoder.~\cite{Sun_2021_ICCV} proposes an encoder-only DETR, discarding the transformer decoder. Dynamic DETR~\cite{Dynamic_DETR} designs an ROI-based dynamic attention mechanism in the decoder that can focus on regions of interest from a coarse-to-fine manner. Deformable-DETR~\cite{Deformable-DETR} proposes an attention module that only attends to a few sampling points around a reference point. DN-DETR~\cite{DN-DETR} introduces denoising training to reduce the difficulty of bipartite graph matching.
+
+Another series of works makes improvements in decoder object queries. Since the object queries are just a set of learnable embedding in DETR,~\cite{Anchor_DETR, Conditional_DETR, DAB-DETR} imputes the slow convergence of DETR to the implicit physical explanation of object queries. Conditional DETR~\cite{Conditional_DETR} decouples the decoder’s cross-attention formulation and generates conditional queries based on reference coordinates. DAB-DETR~\cite{DAB-DETR} formulates the positional information of object queries as 4-D anchor boxes $(x, y, w, h)$ that are used to provide RoI (Region of Interest) information for probing and pooling features. Although DETR-like methods have improved the formulation of queries, they are constrained in their ability to handle tiny objects and datasets with widely varying numbers of objects. The object queries in these methods are learned from the training data and the number of queries remains the same across different input images. 
+%Although DETR-like methods have improved the formulation of queries, they are constrained in their ability to handle tiny objects and datasets with widely varying numbers of objects. The object queries in these methods are learned from the training data and remain static for different input images. 
+%
+%In contrast, our DQ-DETR features a categorical counting module that dynamically adjusts the number of object queries, enhancing the detection performance.
+
+ rmore, while DETR-like methods have improved the formulation of queries, they are constrained in their ability to handle tiny objects and datasets with widely varying numbers of objects.
+% For example, the object queries in~\cite{DAB-DETR, Conditional_DETR, DETR, DN-DETR} are learned from the training data and remain the same for different input images.
+Our proposed DQ-DETR stands out as the first DETR-like model specifically designed to detect tiny objects and dynamically adjust the number of queries to enhance precision in imbalanced datasets.
+% Our proposed DQ-DETR is the first DETR-like model that focuses on tiny object detection.
+% DQ-DETR dynamically adjusts the number of object queries and enhances the position information of queries to detect tiny objects precisely under imbalanced situations in aerial datasets.

@@ -1,0 +1,102 @@
+\begin{thebibliography}{10}
+\providecommand{\url}[1]{\texttt{#1}}
+\providecommand{\urlprefix}{URL }
+\providecommand{\doi}[1]{https://doi.org/#1}
+
+\bibitem{crcnn}
+Cai, Z., Vasconcelos, N.: Cascade r-cnn: Delving into high quality object detection. In: CVPR (2018)
+
+\bibitem{DETR}
+Carion, N., Massa, F., Synnaeve, G., Usunier, N., Kirillov, A., Zagoruyko, S.: End-to-end object detection with transformers. In: ECCV (2020)
+
+\bibitem{Dynamic_DETR}
+Dai, X., Chen, Y., Yang, J., Zhang, P., Yuan, L., Zhang, L.: Dynamic detr: End-to-end object detection with dynamic attention. In: ICCV (2021)
+
+\bibitem{CEASC}
+Du, B., Huang, Y., Chen, J., Huang, D.: Adaptive sparse convolutional networks with global context enhancement for faster object detection on drone images. In: CVPR (2023)
+
+\bibitem{yolov5}
+Jocher, G.: Yolov5 by ultralytics. \url{https://github.com/ultralytics/yolov5} (2023), accessed: 2024-07-08
+
+\bibitem{da_sm}
+Kisantal, M., Wojna, Z., Murawski, J., Naruniec, J., Cho, K.: Augmentation for small object detection. arXiv preprint arXiv:1902.07296  (2019)
+
+\bibitem{DN-DETR}
+Li, F., Zhang, H., Liu, S., Guo, J., Ni, L.M., Zhang, L.: Dn-detr: Accelerate detr training by introducing query denoising. In: CVPR (2022)
+
+\bibitem{FPN}
+Lin, T.Y., Dollár, P., Girshick, R.B., He, K., Hariharan, B., Belongie, S.J.: Feature pyramid networks for object detection. In: CVPR (2017)
+
+\bibitem{focal_loss}
+Lin, T.Y., Goyal, P., Girshick, R., He, K., Dollar, P.: Focal loss for dense object detection. TPAMI  \textbf{42}(2),  318--327 (2020)
+
+\bibitem{dntr}
+Liu, H.I., Tseng, Y.W., Chang, K.C., Wang, P.J., Shuai, H.H., Cheng, W.H.: A denoising fpn with transformer r-cnn for tiny object detection. TGRS  \textbf{62},  1--15 (2024)
+
+\bibitem{DAB-DETR}
+Liu, S., Li, F., Zhang, H., Yang, X., Qi, X., Su, H., Zhu, J., Zhang, L.: {DAB}-{DETR}: Dynamic anchor boxes are better queries for {DETR}. In: ICLR (2022)
+
+\bibitem{SDP}
+Ma, Y., Chai, L., Jin, L.: Scale decoupled pyramid for object detection in aerial images. TGRS  \textbf{61},  1--14 (2023)
+
+\bibitem{Conditional_DETR}
+Meng, D., Chen, X., Fan, Z., Zeng, G., Li, H., Yuan, Y., Sun, L., Wang, J.: Conditional detr for fast training convergence. In: ICCV (2021)
+
+\bibitem{LRP_ECCV}
+Oksuz, K., Cam, B.C., Akbas, E., Kalkan, S.: Localization recall precision (lrp): A new performance metric for object detection. In: ECCV. pp. 504--519 (2018)
+
+\bibitem{detectors}
+Qiao, S., Chen, L.C., Yuille, A.: Detectors: Detecting objects with recursive feature pyramid and switchable atrous convolution. In: CVPR (2021)
+
+\bibitem{yolov3}
+Redmon, J., Farhadi, A.: Yolov3: An incremental improvement. arXiv preprint arXiv:1804.02767  (2018)
+
+\bibitem{frcnn}
+Ren, S., He, K., Girshick, R., Sun, J.: Faster r-cnn: Towards real-time object detection with region proposal networks. Advances in neural information processing systems  \textbf{28} (2015)
+
+\bibitem{GIOU}
+Rezatofighi, S.H., Tsoi, N., Gwak, J., Sadeghian, A., Reid, I.D., Savarese, S.: Generalized intersection over union: A metric and a loss for bounding box regression. In: CVPR (2019)
+
+\bibitem{Sun_2021_ICCV}
+Sun, Z., Cao, S., Yang, Y., Kitani, K.M.: Rethinking transformer-based set prediction for object detection. In: ICCV (2021)
+
+\bibitem{fcos}
+Tian, Z., Shen, C., Chen, H., He, T.: Fcos: Fully convolutional one-stage object detection. In: ICCV (2019)
+
+\bibitem{nwd}
+Wang, J., Xu, C., Yang, W., Yu, L.: A normalized gaussian wasserstein distance for tiny object detection. arXiv preprint arXiv:2110.13389  (2021)
+
+\bibitem{AI-TOD}
+Wang, J., Yang, W., Guo, H., Zhang, R., Xia, G.S.: Tiny object detection in aerial images. In: ICPR (2021)
+
+\bibitem{Anchor_DETR}
+Wang, Y., Zhang, X., Yang, T., Sun, J.: Anchor detr: Query design for transformer-based detector. In: AAAI (2022)
+
+\bibitem{CBAM}
+Woo, S., Park, J., Lee, J.Y., Kweon, I.S.: Cbam: Convolutional block attention module. In: ECCV (2018)
+
+\bibitem{AITODv2}
+Xu, C., Wang, J., Yang, W., Yu, H., Yu, L., Xia, G.S.: Detecting tiny objects in aerial images: A normalized wasserstein distance and a new benchmark. ISPRS  \textbf{190},  79--93 (2022)
+
+\bibitem{rfla}
+Xu, C., Wang, J., Yang, W., Yu, H., Yu, L., Xia, G.S.: Rfla: Gaussian receptive field based label assignment for tiny object detection. In: ECCV (2022)
+
+\bibitem{dot}
+Xu, C., Wang, J., Yang, W., Yu, L.: Dot distance for tiny object detection in aerial images. In: CVPRW (2021)
+
+\bibitem{DINO}
+Zhang, H., Li, F., Liu, S., Zhang, L., Su, H., Zhu, J., Ni, L.M., Shum, H.Y.: Dino: Detr with improved denoising anchor boxes for end-to-end object detection. In: ICLR (2023)
+
+\bibitem{DDQ}
+Zhang, S., Wang, X., Wang, J., Pang, J., Lyu, C., Zhang, W., Luo, P., Chen, K.: Dense distinct query for end-to-end object detection. In: CVPR (2023)
+
+\bibitem{visdrone}
+Zhu, P., Wen, L., Du, D., Bian, X., Fan, H., Hu, Q., Ling, H.: Detection and tracking meet drones challenge. TPAMI  \textbf{44}(11),  7380--7399 (2021)
+
+\bibitem{Deformable-DETR}
+Zhu, X., Su, W., Lu, L., Li, B., Wang, X., Dai, J.: Deformable detr: Deformable transformers for end-to-end object detection. In: ICLR (2021)
+
+\bibitem{learn_da}
+Zoph, B., Cubuk, E.D., Ghiasi, G., Lin, T.Y., Shlens, J., Le, Q.V.: Learning data augmentation strategies for object detection. In: ECCV (2020)
+
+\end{thebibliography}
