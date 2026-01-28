@@ -14,7 +14,7 @@ from engine.backbone.hgnetv2 import StemBlock, HG_Stage
 from engine.deim.hybrid_encoder import RepNCSPELAN4, ConvNormLayer_fuse, SCDown, CSPLayer, TransformerEncoderBlock
 from engine.deim.dfine_decoder import DFINETransformer     
 from engine.deim.dq_dfine_decoder import DQDFINETransformer
-from engine.deim.dqs_dfine_decoder import DQSDFINETransformer, ADQSDFINETransformer
+from engine.deim.dqs_dfine_decoder import DQSDFINETransformer
 from engine.deim.dfine_decoder_with_daqs import DFINETransformerWithDAQS
 from engine.deim.dfine_decoder_v3 import DFINETransformerV3  # V3全新架构
 # Wave模块集成
@@ -300,7 +300,7 @@ def parse_module(d, i, f, m, args, ch, nc=None, eval_spatial_size=None):
         c1 = [ch[x] for x in f]     
         c2 = args[0]
         args = [c1, c2, *args[1:]]
-    elif m in {DFINETransformer, DQDFINETransformer, DQSDFINETransformer, ADQSDFINETransformer, DFINETransformerWithDAQS, DFINETransformerV3}:
+    elif m in {DFINETransformer, DQDFINETransformer, DQSDFINETransformer, DFINETransformerWithDAQS, DFINETransformerV3}:
         args["feat_channels"] = [ch[x] for x in f]
         args["num_classes"] = nc
         args["eval_spatial_size"] = eval_spatial_size 
