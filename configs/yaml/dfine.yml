@@ -7,12 +7,12 @@ __include__: [
   '../base/common.yml'
 ]
 
-comment: 'dfine, x'
+comment: 'dfine, s'
 
-output_dir: ./outputs/dfine_x
+output_dir: ./outputs/dfine_s
 
 DEIM_MG:
-  yaml_path: configs/cfg/dfine-x.yaml
+  yaml_path: configs/cfg/dfine-s.yaml
 
 
 # Increase to search for the optimal ema
