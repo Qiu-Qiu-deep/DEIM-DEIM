@@ -646,11 +646,13 @@ class DEIMCriterion(nn.Module):
             # 计数损失（Smooth L1）
             loss_density_count = F.smooth_l1_loss(outputs['daqs_predicted_count'], gt_count)
             
-            # V2改进：训练时权重更高（0.5），因为DAQS queries参与端到端训练
-            # 推理时也计算损失用于监控（但不反向传播）
-            weight = 0.5 if self.training else 0.0
-            losses['loss_daqs_density_map'] = weight * loss_density_map
-            losses['loss_daqs_density_count'] = weight * loss_density_count
+            # V2改进：从weight_dict读取权重（支持配置文件动态调整）
+            # DAQS queries参与端到端训练，推理时仅监控
+            if self.training:
+                weight_density = self.weight_dict.get('loss_daqs_density_map', 0.0)
+                weight_count = self.weight_dict.get('loss_daqs_density_count', 0.0)
+                losses['loss_daqs_density_map'] = weight_density * loss_density_map
+                losses['loss_daqs_density_count'] = weight_count * loss_density_count
             
             # 分开记录便于监控（不计入总损失）
             with torch.no_grad():
@@ -673,12 +675,15 @@ class DEIMCriterion(nn.Module):
             # 计数损失（Smooth L1）
             loss_density_count = F.smooth_l1_loss(outputs['idaqg_predicted_count'], gt_count)
             
-            # V3特性：
-            # - 密度加权采样依赖于准确的密度图，因此密度loss权重适中（0.3）
+            # V3特性：从weight_dict读取权重（支持配置文件动态调整）
+            # - 密度加权采样依赖于准确的密度图
             # - Agent-based提取 + 语义内容更重要，密度loss作为辅助
-            weight = 0.3 if self.training else 0.0
-            losses['loss_idaqg_density_map'] = weight * loss_density_map
-            losses['loss_idaqg_density_count'] = weight * loss_density_count
+            # 训练时计算损失，推理时仅监控
+            if self.training:
+                weight_density = self.weight_dict.get('loss_idaqg_density_map', 0.0)
+                weight_count = self.weight_dict.get('loss_idaqg_density_count', 0.0)
+                losses['loss_idaqg_density_map'] = weight_density * loss_density_map
+                losses['loss_idaqg_density_count'] = weight_count * loss_density_count
             
             # 监控信息（不计入总损失）
             with torch.no_grad():

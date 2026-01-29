@@ -10,7 +10,7 @@ lrsheduler: flatcosine
 lr_gamma: 0.5
 warmup_iter: 500
 flat_epoch: 40
-no_aug_epoch: 4
+no_aug_epoch: 2
 
 optimizer:
   type: AdamW
@@ -41,8 +41,7 @@ train_dataloader:
     stop_epoch: 52
     ema_restart_decay: 0.9999
     base_size_repeat: ~
-
-train_dataloader:
   total_batch_size: 8
+
 val_dataloader:
   total_batch_size: 8

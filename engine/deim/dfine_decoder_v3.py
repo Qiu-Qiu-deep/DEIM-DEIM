@@ -205,16 +205,22 @@ class AgentDensityEstimator(nn.Module):
             nn.BatchNorm2d(hidden_dim // 2),
             nn.GELU(),
             nn.Conv2d(hidden_dim // 2, 1, 1),
-            nn.ReLU()  # 密度非负
         )
+        # 初始化最后一层bias为负值，让初始密度接近0
+        nn.init.constant_(self.density_head[-1].bias, -4.0)
+        nn.init.normal_(self.density_head[-1].weight, std=0.001)
         
         # 7. 计数预测头（从agent tokens）
         self.count_head = nn.Sequential(
             nn.Linear(hidden_dim, hidden_dim // 2),
             nn.GELU(),
             nn.Linear(hidden_dim // 2, 1),
-            nn.ReLU()
         )
+        # 初始化最后一层bias，让初始计数接近GWHD均值35
+        # 使用softplus: softplus(x) = log(1+exp(x))
+        # 想要初始值≈35: softplus(bias) + 1 ≈ 35 → bias ≈ 3.5
+        nn.init.constant_(self.count_head[-1].bias, 3.5)
+        nn.init.normal_(self.count_head[-1].weight, std=0.01)
         
     def forward(self, features: List[torch.Tensor]) -> Tuple[torch.Tensor, torch.Tensor, torch.Tensor]:
         """
@@ -259,10 +265,13 @@ class AgentDensityEstimator(nn.Module):
         
         # 5. 密度图预测
         density_map = self.density_head(x)  # (B, 1, H, W)
+        density_map = torch.sigmoid(density_map) * 20.0  # 限制在[0, 20]范围，适配真实密度
         
         # 6. 计数预测（从agent tokens的平均）
         agent_mean = agent_out.mean(dim=1)  # (B, C)
-        count = self.count_head(agent_mean)  # (B, 1)
+        count_logit = self.count_head(agent_mean)  # (B, 1)
+        # 使用softplus而非sigmoid，避免饱和梯度
+        count = F.softplus(count_logit) + 1.0  # 范围[1, +∞)，但初期接近合理值
         
         return density_map, count, agent_out
 
@@ -282,7 +291,9 @@ class SemanticAwareQuerySampler(nn.Module):
         min_queries=100,
         max_queries=800,
         alpha=2.0,
-        temperature=0.1  # 密度采样温度
+        temperature=0.1,  # 密度采样温度（训练后期集中采样）
+        warmup_temperature=1.5,  # 训练初期温度（改为1.5而非2.0，避免过度随机）
+        warmup_epochs=10  # warm-up epoch数
     ):
         super().__init__()
         self.embed_dim = embed_dim
@@ -290,6 +301,9 @@ class SemanticAwareQuerySampler(nn.Module):
         self.max_queries = max_queries
         self.alpha = alpha
         self.temperature = temperature
+        self.warmup_temperature = warmup_temperature
+        self.warmup_epochs = warmup_epochs
+        self.current_epoch = 0  # 需要外部设置
         
         # 位置编码MLP
         self.position_encoder = nn.Sequential(
@@ -331,11 +345,24 @@ class SemanticAwareQuerySampler(nn.Module):
             nq = num_queries_per_sample[b]
             dm = density_map[b, 0]  # (H, W)
             
-            # 密度归一化为概率分布
-            dm_flat = dm.flatten()  # (H*W,)
-            prob = F.softmax(dm_flat / self.temperature, dim=0)
+            # 改进Curriculum策略：初期仍使用density指导，但温度较高允许探索
+            # 关键改进：不使用完全uniform，而是高温density采样
+            if self.current_epoch < self.warmup_epochs:
+                # 温度从1.5降到0.1（而非2.0→0.1，避免过度均匀）
+                # Epoch 0: temp=1.5 → 较温和的探索
+                # Epoch 5: temp=0.8 → 开始集中
+                # Epoch 10: temp=0.1 → 完全集中
+                curr_temp = 1.5 - (1.5 - self.temperature) * (self.current_epoch / self.warmup_epochs)
+            else:
+                curr_temp = self.temperature
             
-            # 多项式采样
+            # 密度归一化为概率分布（始终使用density，不混合uniform）
+            # 关键：即使初期密度不准，也比完全随机好
+            dm_flat = dm.flatten()  # (H*W,)
+            dm_flat = torch.clamp(dm_flat, min=1e-6)  # 避免零值
+            
+            prob = F.softmax(dm_flat / curr_temp, dim=0)
+            prob = prob / (prob.sum() + 1e-8)  # 数值稳定
             sampled_indices = torch.multinomial(prob, nq, replacement=True)
             
             # 转换为坐标
@@ -440,7 +467,8 @@ class SemanticAwareQuerySampler(nn.Module):
         # 1. 计算每个样本的query数量（per-sample动态）
         num_queries_per_sample = []
         for b in range(B):
-            count = predicted_count[b, 0].item()
+            # 使用torch.clamp限制范围，避免极端值
+            count = torch.clamp(predicted_count[b, 0], min=1.0, max=300.0).item()
             nq = int(count * self.alpha)
             nq = max(self.min_queries, min(nq, self.max_queries))
             num_queries_per_sample.append(nq)
@@ -587,8 +615,8 @@ class DFINETransformerV3(DFINETransformer):
         idaqg_num_agents: int = 49,
         idaqg_min_queries: int = 100,
         idaqg_max_queries: int = 800,
-        idaqg_alpha: float = 2.0,
-        idaqg_temperature: float = 0.1,
+        idaqg_alpha: float = 1.5,  # 降低到1.5，避免初期query过多
+        idaqg_temperature: float = 0.5,  # 提高到0.5，训练初期更稳定
     ):
         # 调用父类初始化
         super().__init__(
@@ -621,6 +649,8 @@ class DFINETransformerV3(DFINETransformer):
         )
         
         self.enable_idaqg = enable_idaqg
+        self.current_epoch = 0  # 当前epoch（外部通过set_epoch设置）
+        self.encoder_warmup_epochs = 10  # 前10个epoch使用encoder top-k
         
         # 如果启用IDAQG，创建模块
         if enable_idaqg:
@@ -673,20 +703,46 @@ class DFINETransformerV3(DFINETransformer):
         output_memory = self.enc_output(memory)
         enc_outputs_logits = self.enc_score_head(output_memory)
         
-        # 3. **核心：IDAQG生成动态queries**
-        if not hasattr(self, '_cached_idaqg_output'):
-            raise RuntimeError("IDAQG需要缓存的输出，请确保forward中正确调用")
-        
-        idaqg_output = self._cached_idaqg_output
-        queries = idaqg_output['queries']  # (B, max_Q, C)
-        query_pos = idaqg_output['query_pos']
-        padding_mask = idaqg_output['padding_mask']
-        
-        # 缓存padding_mask供decoder使用
-        self._cached_padding_mask = padding_mask
-        
-        # 4. 生成bbox（使用IDAQG的queries）
-        enc_topk_bbox_unact = self.enc_bbox_head(queries)  # (B, max_Q, 4)
+        # 3. **核心：IDAQG生成动态queries OR 传统encoder top-k**
+        if hasattr(self, '_cached_idaqg_output') and self._cached_idaqg_output is not None:
+            # 使用IDAQG生成的queries（Epoch 10+）
+            idaqg_output = self._cached_idaqg_output
+            queries = idaqg_output['queries']  # (B, max_Q, C)
+            query_pos = idaqg_output['query_pos']
+            padding_mask = idaqg_output['padding_mask']
+            
+            # 缓存padding_mask供decoder使用
+            self._cached_padding_mask = padding_mask
+            
+            # 生成bbox（使用IDAQG的queries）
+            enc_topk_bbox_unact = self.enc_bbox_head(queries)  # (B, max_Q, 4)
+        else:
+            # 使用传统encoder top-k（Epoch 0-9 warmup期间）
+            # 这里使用父类的逻辑：基于encoder输出的top-k选择
+            if self.query_select_method == 'agnostic':
+                topk_ind = torch.topk(enc_outputs_logits.squeeze(-1), self.num_queries, dim=-1)[1]
+            else:
+                topk_ind = torch.topk(enc_outputs_logits.max(-1).values, self.num_queries, dim=-1)[1]
+            
+            # 提取top-k的memory和anchors
+            enc_topk_memory = output_memory.gather(
+                dim=1, index=topk_ind.unsqueeze(-1).repeat(1, 1, output_memory.shape[-1])
+            )
+            enc_topk_anchors = anchors.gather(
+                dim=1, index=topk_ind.unsqueeze(-1).repeat(1, 1, 4)
+            )
+            
+            # 生成bbox
+            enc_topk_bbox_unact = self.enc_bbox_head(enc_topk_memory) + enc_topk_anchors
+            
+            # 对于warmup，不需要padding_mask（所有queries都有效）
+            self._cached_padding_mask = None
+            
+            # queries使用encoder memory
+            if self.learn_query_content:
+                queries = self.tgt_embed.weight.unsqueeze(0).tile([bs, 1, 1])
+            else:
+                queries = enc_topk_memory.detach()
         
         # 5. 训练时的encoder top-k（用于辅助损失）
         enc_topk_bboxes_list, enc_topk_logits_list = [], []
@@ -727,17 +783,36 @@ class DFINETransformerV3(DFINETransformer):
             enc_topk_bbox_unact = torch.concat([denoising_bbox_unact, enc_topk_bbox_unact], dim=1)
             content = torch.concat([denoising_logits, content], dim=1)
             
-            # 扩展padding_mask
+            # 扩展padding_mask（如果存在）
             B, denoising_num = denoising_bbox_unact.shape[:2]
             denoising_mask = torch.zeros(B, denoising_num, dtype=torch.bool, device=device)
-            padding_mask = torch.cat([denoising_mask, padding_mask], dim=1)
-            self._cached_padding_mask = padding_mask
+            if self._cached_padding_mask is not None:
+                # IDAQG模式：拼接denoising和padding mask
+                padding_mask = torch.cat([denoising_mask, self._cached_padding_mask], dim=1)
+                self._cached_padding_mask = padding_mask
+            else:
+                # Warmup模式：只有denoising mask（encoder queries全部有效）
+                self._cached_padding_mask = denoising_mask
         
         return content, enc_topk_bbox_unact, enc_topk_bboxes_list, enc_topk_logits_list, enc_outputs_logits
     
+    def set_epoch(self, epoch: int):
+        """设置当前epoch用于curriculum learning和encoder warmup"""
+        self.current_epoch = epoch
+        if self.enable_idaqg and hasattr(self.idaqg.query_sampler, 'current_epoch'):
+            self.idaqg.query_sampler.current_epoch = epoch
+    
     def forward(self, feats: List[torch.Tensor], targets: Optional[List[Dict]] = None):
-        """V3前向传播：单次IDAQG运行，无重复计算"""
-        if not self.enable_idaqg:
+        """V3前向传播：Encoder warmup + IDAQG动态采样"""
+        # 清空上次的缓存（避免warmup和IDAQG混用）
+        self._cached_idaqg_output = None
+        self._cached_padding_mask = None
+        
+        # ========== 判断是否使用Encoder Warmup ==========
+        use_encoder_warmup = self.enable_idaqg and (self.current_epoch < self.encoder_warmup_epochs)
+        
+        if not self.enable_idaqg or use_encoder_warmup:
+            # 初期（epoch < 10）使用传统encoder top-k，避免训练不稳定
             return super().forward(feats, targets)
         
         # ========== 预处理：投影特征 ==========

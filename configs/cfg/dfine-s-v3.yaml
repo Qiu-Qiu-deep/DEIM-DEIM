@@ -45,9 +45,9 @@ decoder:
       "enable_idaqg": True,
       "idaqg_hidden_dim": 64,       # 密度估计器隐藏维度（影响参数量）
       "idaqg_num_agents": 49,       # 7x7 agent tokens（密度代理）
-      "idaqg_min_queries": 100,     # 最小query数量（稀疏场景保底）
-      "idaqg_max_queries": 800,     # 最大query数量（密集场景限制）
-      "idaqg_alpha": 2.0,           # query数量 = alpha × 预测数量
+      "idaqg_min_queries": 100,     # 最小query数量（保持动态性，稀疏场景保底）
+      "idaqg_max_queries": 800,     # 最大query数量（适配密集场景）
+      "idaqg_alpha": 2.0,           # query数量 = alpha × 预测计数（相信密度估计）
       "idaqg_temperature": 0.1      # 密度采样温度（越小越集中于高密度区）
                                     # 推荐范围：0.05（极集中） - 0.2（均匀）
     }]

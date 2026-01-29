@@ -22,6 +22,6 @@ DEIMCriterion:
     loss_giou: 2, 
     loss_fgl: 0.15, 
     loss_ddf: 1.5,
-    loss_idaqg_density_map: 0.3,    # V3密度图损失
-    loss_idaqg_density_count: 0.3   # V3计数损失
+    loss_idaqg_density_map: 0.3,    # V3密度图损失（密度采样的基础）
+    loss_idaqg_density_count: 0.3   # V3计数损失（动态query的基础）
   }
