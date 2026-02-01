@@ -1,0 +1,15 @@
+__include__: [
+  '../dataset/custom_detection.yml',
+  '../runtime.yml',
+  '../base/dataloader_dfine.yml',
+  '../base/optimizer.yml',
+  '../base/dfine_hgnetv2.yml',
+  '../base/common.yml'
+]
+
+comment: 'dfine, DFF, s'
+
+output_dir: ./outputs/dfine_DFF_s
+
+DEIM_MG:
+  yaml_path: configs/cfg/dfine-s-DFF.yaml
