@@ -7,28 +7,13 @@ __include__: [
   '../base/common.yml'
 ]
 
-output_dir: ./outputs/my1_ugdr
+comment: 'UGDR损失'
+
+output_dir: ./outputs/my1_ugdr_s
 
 
 DEIM_MG:
-  yaml_path: configs/cfg/dfine-n.yaml
-
-# Increase to search for the optimal ema
-epoches: 120
-train_dataloader:
-  dataset:
-    transforms:
-      policy:
-        epoch: 108
-  collate_fn:
-    stop_epoch: 108
-    ema_restart_decay: 0.9999
-    base_size_repeat: ~
-
-# ============ Paper First 创新点配置 ============
-# 1. WAPK: 已在yaml_path配置中集成到backbone
-# 2. DAQS: 已在yaml_path配置中集成到decoder
-# 3. UGDR: 使用CriterionWithUGDR包装DEIMCriterion
+  yaml_path: configs/cfg/dfine-s.yaml
 
 criterion: CriterionWithUGDR
 

@@ -92,10 +92,7 @@ class DetSolver(BaseSolver):
         for epoch in range(start_epoch, args.epoches):
 
             self.train_dataloader.set_epoch(epoch)
-            self.criterion.set_epoch(epoch)
-            # V3 curriculum learning支持（其他模型无set_epoch方法不受影响）
-            if hasattr(self.model, 'set_epoch'):
-                self.model.set_epoch(epoch)
+            self.criterion.set_epoch(epoch)  
             # self.train_dataloader.dataset.set_epoch(epoch)
             if dist_utils.is_dist_available_and_initialized():
                 self.train_dataloader.sampler.set_epoch(epoch)    
@@ -660,9 +657,6 @@ class DetSolver(BaseSolver):
 
             self.train_dataloader.set_epoch(epoch) 
             self.criterion.set_epoch(epoch)
-            # V3 curriculum learning支持（其他模型无set_epoch方法不受影响）
-            if hasattr(self.model, 'set_epoch'):
-                self.model.set_epoch(epoch)
             # self.train_dataloader.dataset.set_epoch(epoch)
             if dist_utils.is_dist_available_and_initialized():    
                 self.train_dataloader.sampler.set_epoch(epoch)   
