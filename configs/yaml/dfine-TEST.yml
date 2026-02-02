@@ -9,7 +9,7 @@ __include__: [
 
 comment: 'dfine-s-MS, s'
 
-output_dir: ./outputsdfine-s-MS
+output_dir: ./outputs/dfine-s-MS
 
 DEIM_MG:
   yaml_path: configs/cfg/dfine-s-MS.yaml
