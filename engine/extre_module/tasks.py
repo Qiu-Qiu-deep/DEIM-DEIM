@@ -49,6 +49,7 @@ from engine.extre_module.paper_first.wapk import WAPKBlock, WAPKv4Stage
 from engine.extre_module.paper_first.dff import DensityFrequencyFusion
 from engine.extre_module.paper_first.wheat_freq_fusion import WheatFreqFusion
 from engine.extre_module.paper_first.msstage import MS_Stage
+from engine.extre_module.paper_first.hypergraph import HyperGraphEnhance, HyperGraphEnhanceLite, Route
 
 RED, GREEN, BLUE, YELLOW, ORANGE, RESET = "\033[91m", "\033[92m", "\033[94m", "\033[93m", "\033[38;5;208m", "\033[0m"
 logger = get_logger(__name__)     
@@ -257,6 +258,16 @@ def parse_module(d, i, f, m, args, ch, nc=None, eval_spatial_size=None):
     elif m in {WAPKBlock, WAPKv4Stage, MS_Stage}:  # WAPK: 替换标准卷积，通道可变
         c1, c2 = ch[f], args[0]
         args = [c1, c2, *args[1:]]
+    elif m is HyperGraphEnhance:  # 超图多尺度增强: 输入多个尺度，输出增强后的多尺度特征
+        # 输入是多个尺度的特征 [P3, P4, P5]，输出也是多个尺度
+        # 这里c2应该保持为最后一个输入的通道数（因为后续decoder需要）
+        c2 = ch[f[-1]]  # 使用最后一个输入的通道数
+        args = [args[0], *args[1:]]  # hidden_dim, threshold, target_size, residual_weight
+    elif m is HyperGraphEnhanceLite:  # 超图轻量级增强: 单尺度输入输出
+        c2 = ch[f]
+        args = [c2, *args]
+    elif m is Route:
+        args = [*args]
     # ============== Paper First Modules ==============
     elif m is HyperACE:
         c1 = ch[f[1]]

@@ -7,9 +7,9 @@ __include__: [
   '../base/common.yml'
 ]
 
-comment: 'dfine-s-MS, s'
+comment: 'dfine-s-TEST, s'
 
-output_dir: ./outputs/dfine-s-MS
+output_dir: ./outputs/dfine-s-TEST
 
 DEIM_MG:
-  yaml_path: configs/cfg/dfine-s-MS.yaml
+  yaml_path: configs/cfg/dfine-s-hyper.yaml
