@@ -13,7 +13,7 @@ encoder:
 
   - [-1, TransformerEncoderBlock, [8, 1024, 0.1, "relu", 10000, False]] # 8-P5/32
 
-  - [[8, 6, 5], LDFAF, [0.5, [5, 7], 4]] # 9-P4/16
+  - [[8, 6, 5], WheatFreqFusion, []] # 9-P4/16
   - [-1, ConvNormLayer_fuse, [256, 3, 2]] # 10-P5/32
   - [9, nn.Upsample, [None, 2, "nearest"]] # 11-P3/8
 
@@ -23,7 +23,7 @@ encoder:
   - [[11, 5], Concat, []] # 14-P3/8
   - [-1, RepNCSPELAN4, [256, 512, 64, 1, False, 'silu']] # 15-P3/8
 
-  - [[13, 9, 15], LDFAF, [0.5, [5, 7], 4]] # 16-P4/16
+  - [[13, 9, 15], WheatFreqFusion, []] # 16-P4/16
   - [-1, ConvNormLayer_fuse, [256, 3, 2]] # 17-P5/32
   - [16, nn.Upsample, [None, 2, "nearest"]] # 18-P3/8
 

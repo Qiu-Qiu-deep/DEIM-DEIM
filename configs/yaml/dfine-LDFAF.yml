@@ -7,9 +7,9 @@ __include__: [
   '../base/common.yml'
 ]
 
-comment: 'dfine, LDFAF, s'
+comment: 'dfine, WheatFreqFusion, s'
 
-output_dir: ./outputs/dfine_LDFAF_s
+output_dir: ./outputs/dfine_WheatFreqFusion_s
 
 DEIM_MG:
   yaml_path: configs/cfg/dfine-s-LDFAF.yaml

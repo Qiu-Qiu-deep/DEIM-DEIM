@@ -47,7 +47,7 @@ from engine.extre_module.custom_nn.module.LWGA import LWGA
 # Paper First: 论文第一篇的创新模块
 from engine.extre_module.paper_first.wapk import WAPKBlock, WAPKv4Stage
 from engine.extre_module.paper_first.dff import DensityFrequencyFusion
-from engine.extre_module.paper_first.ldfaf import LDFAF
+from engine.extre_module.paper_first.wheat_freq_fusion import WheatFreqFusion
   
 RED, GREEN, BLUE, YELLOW, ORANGE, RESET = "\033[91m", "\033[92m", "\033[94m", "\033[93m", "\033[38;5;208m", "\033[0m"
 logger = get_logger(__name__)     
@@ -267,7 +267,7 @@ def parse_module(d, i, f, m, args, ch, nc=None, eval_spatial_size=None):
         c1 = [ch[i] for i in f]
         c2 = args[0] 
         args = [c1, c2, *args[1:]] 
-    elif m in {FocusFeature, DensityFrequencyFusion, LDFAF}:  # 多尺度融合模块
+    elif m in {FocusFeature, DensityFrequencyFusion, WheatFreqFusion}:  # 多尺度融合模块
         c1 = [ch[i] for i in f]
         c2 = c1[1]    
         args = [c1, *args]   
