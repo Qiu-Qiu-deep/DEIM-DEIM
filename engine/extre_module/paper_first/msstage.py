@@ -66,12 +66,15 @@ class MSBlock(nn.Module):
         return out
   
 class MS_Stage(nn.Module):   
-    def __init__(self, inc, ouc, downsample=True, layers_num=3, kernel_sizes=[1, 3, 3], in_expand_ratio=3., mid_expand_ratio=2., in_down_ratio=2.) -> None:
+    def __init__(self, inc, ouc, downsample=True, deep_conv=False, layers_num=3, kernel_sizes=[1, 3, 3], in_expand_ratio=3., mid_expand_ratio=2., in_down_ratio=2.) -> None:
         super().__init__()
         
         # 1. 下采样层（可选）    
         if downsample: 
-            self.downsample = Conv(inc, inc, k=3, s=2, p=1)
+            if deep_conv:
+                self.downsample = Conv(inc, inc, k=3, s=2, p=1, g=inc)
+            else:
+                self.downsample = Conv(inc, inc, k=3, s=2, p=1)
         else:
             self.downsample = nn.Identity()  # 如果不下采样，则直接返回输入  
         self.blocks = MSBlock(inc, ouc, kernel_sizes, in_expand_ratio, mid_expand_ratio, layers_num, in_down_ratio)

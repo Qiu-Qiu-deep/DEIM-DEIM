@@ -3,8 +3,8 @@ backbone:
   - [-1, StemBlock, [16, 16, True]] # 0-P2/4
   - [-1, MS_Stage, [64, False]] # 1-P2/4
   - [-1, MS_Stage, [256, True]] # 2-P3/8
-  - [-1, MS_Stage, [512, True]]  # 3-P4/16
-  - [-1, MS_Stage, [1024, True]] # 4-P5/32
+  - [-1, MS_Stage, [512, True, True]]  # 3-P4/16
+  - [-1, MS_Stage, [1024, True, True]] # 4-P5/32
 
 encoder:
   - [2, ConvNormLayer_fuse, [256, 1, 1]] # 5-P3/8
