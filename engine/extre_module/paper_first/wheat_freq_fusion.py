@@ -242,92 +242,75 @@ class FrequencyStripAttention(nn.Module):
 # ============================================================================
 class PhaseEdgeEnhancement(nn.Module):
     """
-    相位边缘增强模块
+    相位边缘增强模块（修复版本）
     
-    设计动机（针对密集边界混叠）：
-    1. 傅里叶变换的物理意义
-       - 幅值（magnitude）：全局结构、亮度信息
-       - 相位（phase）：边缘、纹理、空间位置信息
+    关键修复：
+    1. 使用fft2（完整FFT）而非rfft2，避免维度不匹配
+    2. 相位增强不使用激活函数，保持周期性（-π到π）
+    3. 简化幅值调制，避免过拟合
     
-    2. 密集场景的边界问题
-       - 相邻小麦头部边界模糊
-       - 传统方法在空间域难以分离
-       - 相位增强可以在频域锐化边缘
-    
-    3. FreqSal的相位增强策略
-       - 相位调制网络学习边缘特征
-       - 保持幅值不变（保留全局结构）
-       - 重构后获得边缘增强的特征
-    
-    核心优势：
-    - 直接在频域操作边缘信息
-    - 不受空间域卷积感受野限制
-    - 全局一致的边缘增强
+    核心机制（参考FreqSal真实实现）：
+    - 相位直接调制（不破坏周期性）
+    - 幅值保持或简单缩放
+    - 频域-空间域残差连接
     
     参考：
     - FreqSal (TCSVT 2025): Deep Fourier-embedded Network for RGB-T SOD
     - 论文链接：https://ieeexplore.ieee.org/document/11230613
-    - GitHub：https://github.com/JoshuaLPF/FreqSal
     """
     def __init__(self, channels):
         super().__init__()
         
         self.channels = channels
         
-        # 相位增强网络（轻量级2层卷积）
+        # 相位增强网络（无激活函数，保持周期性）
         self.phase_enhance = nn.Sequential(
             nn.Conv2d(channels, channels, 1, 1, 0),
-            nn.LeakyReLU(0.1, inplace=True),
             nn.Conv2d(channels, channels, 1, 1, 0)
         )
         
-        # 可选：幅值调制（保持全局结构）
-        self.mag_modulation = nn.Sequential(
+        # 简化的特征调制（基于全局统计）
+        self.feature_weight = nn.Sequential(
             nn.AdaptiveAvgPool2d(1),
-            nn.Conv2d(channels, channels // 4, 1),
-            nn.ReLU(inplace=True),
-            nn.Conv2d(channels // 4, channels, 1),
+            nn.Conv2d(channels, channels, 1),
             nn.Sigmoid()
         )
     
     def forward(self, x):
         """
-        前向传播：
-        1. FFT到频域
-        2. 分离幅值和相位
-        3. 增强相位（边缘信息）
-        4. 调制幅值（全局结构）
-        5. 重构回空间域
-        
-        数学原理：
-        x_fft = mag * exp(1j * phase)
-        phase_enh = PhaseNet(phase)
-        x_edge = mag * exp(1j * phase_enh)
-        output = IFFT(x_edge)
+        修复后的前向传播：
+        1. 使用完整FFT（fft2）保证维度一致
+        2. 相位增强不破坏周期性
+        3. 添加残差连接保持原始信息
         """
         B, C, H, W = x.shape
         
-        # 步骤1：FFT到频域（实数输入 → 复数频域）
-        x_fft = torch.fft.rfft2(x, dim=(2, 3), norm='ortho')
+        # 步骤1：完整FFT到频域（避免rfft2的维度问题）
+        x_fft = torch.fft.fft2(x, dim=(2, 3), norm='ortho')
         
         # 步骤2：分离幅值和相位
-        mag = torch.abs(x_fft)       # 幅值：全局结构
-        phase = torch.angle(x_fft)   # 相位：边缘信息
+        mag = torch.abs(x_fft)       # [B, C, H, W] 完整维度
+        phase = torch.angle(x_fft)   # [B, C, H, W] 完整维度
         
-        # 步骤3：相位增强（核心：增强边缘）
+        # 步骤3：相位增强（保持周期性，无激活函数）
         phase_enh = self.phase_enhance(phase)
+        # 残差连接：phase_enh = phase + delta
+        phase_enh = phase + phase_enh
         
-        # 步骤4：幅值调制（可选：保持全局一致性）
-        mag_weight = self.mag_modulation(x)
-        mag_modulated = mag * mag_weight
+        # 步骤4：重构复数（欧拉公式）
+        real = mag * torch.cos(phase_enh)
+        imag = mag * torch.sin(phase_enh)
+        x_freq = torch.complex(real, imag)
         
-        # 步骤5：重构复数（欧拉公式：e^(iθ) = cos(θ) + i*sin(θ)）
-        real = mag_modulated * torch.cos(phase_enh)
-        imag = mag_modulated * torch.sin(phase_enh)
-        x_edge = torch.complex(real, imag)
+        # 步骤5：IFFT回空间域
+        x_edge = torch.fft.ifft2(x_freq, dim=(2, 3), norm='ortho').real
         
-        # 步骤6：IFFT回空间域
-        output = torch.fft.irfft2(x_edge, s=(H, W), dim=(2, 3), norm='ortho')
+        # 步骤6：特征调制（可选增强）
+        weight = self.feature_weight(x)
+        x_edge = x_edge * weight
+        
+        # 步骤7：残差连接（保持原始信息）
+        output = x + x_edge
         
         return output
 
@@ -450,6 +433,7 @@ class WheatFreqFusion(nn.Module):
         x_strip = self.strip_attention(x_concat)
         
         # 步骤4：相位边缘增强（核心2：边界清晰化）
+        # 注意：PhaseEdgeEnhancement内部已包含残差，输出已是x_concat + edge
         x_edge = self.phase_enhancement(x_concat)
         
         # 步骤5：密度自适应融合
@@ -457,9 +441,6 @@ class WheatFreqFusion(nn.Module):
         # 密度低 → 更依赖边缘（全局上下文）
         density_w = self.density_weight(x_concat)
         x_fused = x_strip * density_w + x_edge * (1.0 - density_w)
-        
-        # 残差连接（保留原始信息）
-        x_fused = x_fused + x_concat
         
         # 步骤6：深度可分离融合
         x_out = self.fusion_dw(x_fused)
