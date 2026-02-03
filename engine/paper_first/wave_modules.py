@@ -4,7 +4,7 @@ Wave Propagation Modules for DFINE Integration
 
 集成方案：
 1. Wave2D: 核心波动传播模块（适配检测特征）
-3. WaveEncoderBlock: 完全替换Transformer的版本
+3. WaveEncoderBlock, WaveEncoderBlockV2: 完全替换Transformer的版本
 """
 import sys
 import os
@@ -194,7 +194,6 @@ class Wave2D(nn.Module):
 class WaveEncoderBlock(nn.Module):
     """
     纯Wave版本的Encoder Block
-    适用于阶段2：完全替换Transformer
     
     结构：Wave2D + FFN（类似Transformer的MHA + FFN）
     """

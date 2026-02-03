@@ -22,7 +22,7 @@ DFINE的FDR (Fine-grained Distribution Refinement) 对所有预测使用相同�
 '''
 
 import os, sys
-sys.path.append(os.path.dirname(os.path.abspath(__file__)) + '/../../../..')
+sys.path.append(os.path.dirname(os.path.abspath(__file__)) + '/../../..')
 
 import warnings
 warnings.filterwarnings('ignore')
@@ -439,7 +439,7 @@ def visualize_beta_schedule():
     
     print("\n生成β调度可视化...")
     
-    max_epochs = 160
+    max_epochs = 72
     epochs = np.arange(0, max_epochs)
     
     schedules = {
