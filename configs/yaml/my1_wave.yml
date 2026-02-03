@@ -9,7 +9,7 @@ __include__: [
 
 comment: 'WaveEncoderBlockV2, s'
 
-output_dir: ./outputs/my1_wave_v2_s
+output_dir: ./outputs/dfine-s-wave
 
 DEIM_MG:
-  yaml_path: configs/cfg/my1_wave_v2_s.yaml
+  yaml_path: configs/cfg/dfine-s-wave.yaml

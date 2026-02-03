@@ -7,9 +7,9 @@ __include__: [
   '../base/common.yml'
 ]
 
-comment: 'dfine, DFF, s'
+comment: 'dfine-s-hypergraph, s'
 
-output_dir: ./outputs/dfine_DFF_s
+output_dir: ./outputs/dfine-s-hypergraph
 
 DEIM_MG:
-  yaml_path: configs/cfg/dfine-s-DFF.yaml
+  yaml_path: configs/cfg/dfine-s-hypergraph.yaml
