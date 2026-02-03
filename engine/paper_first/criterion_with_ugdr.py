@@ -2,12 +2,16 @@
 Criterion with UGDR (Uncertainty-Guided Distribution Refinement) Integration
 向后兼容的wrapper实现，enable_ugdr=False时行为与base criterion完全一致
 """
+import sys
+import os
+sys.path.append(os.path.dirname(os.path.abspath(__file__)) + '/../..')
+
 import torch
 import torch.nn as nn
 from typing import Dict, List, Optional
-from ..deim.deim_criterion import DEIMCriterion
-from ..extre_module.paper_first.ugdr import UGDRLoss
-from ..core import register
+from engine.deim.deim_criterion import DEIMCriterion
+from .ugdr import UGDRLoss
+from engine.core import register
 
 
 @register()

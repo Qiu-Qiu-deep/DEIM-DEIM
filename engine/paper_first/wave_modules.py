@@ -6,6 +6,9 @@ Wave Propagation Modules for DFINE Integration
 1. Wave2D: 核心波动传播模块（适配检测特征）
 3. WaveEncoderBlock: 完全替换Transformer的版本
 """
+import sys
+import os
+sys.path.append(os.path.dirname(os.path.abspath(__file__)) + '/../..')
 
 import math
 import torch
@@ -409,10 +412,7 @@ class WaveEncoderBlockV2(nn.Module):
 
 if __name__ == "__main__":
     # 测试代码
-    import sys
-    import os
-    sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(__file__))))
-    
+      
     print("="*60)
     print("测试Wave2D模块")
     print("="*60)

@@ -6,7 +6,6 @@ Copyright(c) 2023 lyuwenyu. All Rights Reserved.
 from ._solver import BaseSolver
 from .clas_solver import ClasSolver
 from .det_solver import DetSolver
-from .criterion_with_ugdr import CriterionWithUGDR  # Paper First
      
 
     

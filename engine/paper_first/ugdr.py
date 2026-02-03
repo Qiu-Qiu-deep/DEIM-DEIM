@@ -19,8 +19,6 @@ DFINE的FDR (Fine-grained Distribution Refinement) 对所有预测使用相同�
 - 信息论：熵(Entropy)度量分布的不确定性
 - 课程学习：先学习确定样本(低熵)，再学习模糊样本(高熵)
 - 鲁棒学习：降低噪声样本的影响
-
-本文件由BiliBili：魔傀面具整理
 '''
 
 import os, sys

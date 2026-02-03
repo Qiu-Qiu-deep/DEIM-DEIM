@@ -36,9 +36,9 @@ encoder:
 
   # ============== HyperGraph Enhancement ==============
   # 超图跨尺度特征增强: 捕获高阶关联
-  # Args: [hidden_dim=256, threshold=8, target_size=40, residual_weight=0.5]
+  # Args: [hidden_dim=256, threshold=6, target_size=40, residual_weight=0.7]
   # target_size=40: 使用中间尺度(P4)进行超图计算，平衡细节和效率
-  - [[16, 19, 22], HyperGraphEnhance, [256, 8, 40, 0.5]] # 23-HyperGraph
+  - [[16, 19, 22], HyperGraphEnhance, [256, 6, 40, 0.7]] # 23-HyperGraph
   # ====================================================
   - [23, Route, [0]]  # 24
   - [23, Route, [1]]  # 25

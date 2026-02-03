@@ -212,26 +212,5 @@ class HyperGraphEnhance(nn.Module):
         return enhanced_features
 
 
-class HyperGraphEnhanceLite(nn.Module):
-    """
-    轻量级超图增强模块 - 单尺度版本
-    
-    适用场景: 对单个尺度的特征进行超图增强
-    计算开销更小，适合插入到encoder的中间层
-    """
-    def __init__(self, channels=256, threshold=8):
-        super().__init__()
-        self.hyper_compute = HyperComputeCore(channels, threshold)
-    
-    def forward(self, x):
-        """
-        Args:
-            x: [B, C, H, W] 单一尺度的特征图
-        Returns:
-            增强后的特征
-        """
-        return self.hyper_compute(x)
-
-
 # 为了兼容性，创建别名
 HyperGraphModule = HyperGraphEnhance

@@ -1,8 +1,0 @@
-\begin{abstract}
-Despite previous DETR-like methods having performed successfully in generic object detection, tiny object detection is still a challenging task for them since the positional information of object queries is not customized for detecting tiny objects, whose scale is extraordinarily smaller than general objects. 
-Additionally, the fixed number of queries used in DETR-like methods makes them unsuitable for detection if the number of instances is imbalanced between different images. 
-Thus, we present a simple yet effective model, DQ-DETR, consisting of three components: categorical counting module, counting-guided feature enhancement, and dynamic query selection to solve the above-mentioned problems. 
-DQ-DETR uses the prediction and density maps from the categorical counting module to dynamically adjust the number and positional information of object queries. Our model DQ-DETR outperforms previous CNN-based and DETR-like methods, achieving state-of-the-art mAP 30.2\% on the AI-TOD-V2 dataset, which mostly consists of tiny objects.
-Our code will be available at \url{https://github.com/hoiliu-0801/DQ-DETR}.
-  \keywords{Detection Transformer \and Query Selection \and Tiny Object Detection}
-\end{abstract}

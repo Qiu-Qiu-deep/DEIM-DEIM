@@ -15,9 +15,7 @@ from engine.deim.hybrid_encoder import RepNCSPELAN4, ConvNormLayer_fuse, SCDown,
 from engine.deim.dfine_decoder import DFINETransformer     
 from engine.deim.dq_dfine_decoder import DQDFINETransformer
 from engine.deim.dqs_dfine_decoder import DQSDFINETransformer
-# Wave模块集成
-from engine.extre_module.paper_first.wave_modules import WaveEncoderBlock, WaveEncoderBlockV2
-     
+    
 from engine.extre_module.ultralytics_nn.conv import Concat, Add, Conv 
 from engine.extre_module.ultralytics_nn.block import Bottleneck, C3_Block, C2f_Block, C3k2_Block, MetaFormer_Block, MetaFormer_Mona, MetaFormer_SEFN, MetaFormer_Mona_SEFN, NCHW2NLC2NCHW   
   
@@ -45,11 +43,10 @@ from engine.extre_module.custom_nn.module.ARF import ARF
 from engine.extre_module.custom_nn.module.LWGA import LWGA
 
 # Paper First: 论文第一篇的创新模块
-from engine.extre_module.paper_first.wapk import WAPKBlock, WAPKv4Stage
-from engine.extre_module.paper_first.dff import DensityFrequencyFusion
-from engine.extre_module.paper_first.wheat_freq_fusion import WheatFreqFusion
-from engine.extre_module.paper_first.msstage import MS_Stage
-from engine.extre_module.paper_first.hypergraph import HyperGraphEnhance, HyperGraphEnhanceLite, Route
+# HyperGraphEnhance模块集成
+from engine.paper_first import HyperGraphEnhance, Route
+# Wave模块集成
+from engine.paper_first import WaveEncoderBlock, WaveEncoderBlockV2
 
 RED, GREEN, BLUE, YELLOW, ORANGE, RESET = "\033[91m", "\033[92m", "\033[94m", "\033[93m", "\033[38;5;208m", "\033[0m"
 logger = get_logger(__name__)     
@@ -254,18 +251,11 @@ def parse_module(d, i, f, m, args, ch, nc=None, eval_spatial_size=None):
     elif m in {HyperComputeModule}: 
         c2 = ch[f]    
         args = [c2, *args]   
-    # ============== Paper First Modules ==============
-    elif m in {WAPKBlock, WAPKv4Stage, MS_Stage}:  # WAPK: 替换标准卷积，通道可变
-        c1, c2 = ch[f], args[0]
-        args = [c1, c2, *args[1:]]
     elif m is HyperGraphEnhance:  # 超图多尺度增强: 输入多个尺度，输出增强后的多尺度特征
         # 输入是多个尺度的特征 [P3, P4, P5]，输出也是多个尺度
         # 这里c2应该保持为最后一个输入的通道数（因为后续decoder需要）
         c2 = ch[f[-1]]  # 使用最后一个输入的通道数
         args = [args[0], *args[1:]]  # hidden_dim, threshold, target_size, residual_weight
-    elif m is HyperGraphEnhanceLite:  # 超图轻量级增强: 单尺度输入输出
-        c2 = ch[f]
-        args = [c2, *args]
     elif m is Route:
         args = [*args]
     # ============== Paper First Modules ==============
@@ -279,7 +269,7 @@ def parse_module(d, i, f, m, args, ch, nc=None, eval_spatial_size=None):
         c1 = [ch[i] for i in f]
         c2 = args[0] 
         args = [c1, c2, *args[1:]] 
-    elif m in {FocusFeature, DensityFrequencyFusion, WheatFreqFusion}:  # 多尺度融合模块
+    elif m in {FocusFeature}:  # 多尺度融合模块
         c1 = [ch[i] for i in f]
         c2 = c1[1]    
         args = [c1, *args]   
