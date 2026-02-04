@@ -7,13 +7,13 @@ __include__: [
   '../base/common.yml'
 ]
 
-comment: 'UGDR损失'
+comment: '三个模块完整实现'
 
-output_dir: ./outputs/my1_ugdr_s
+output_dir: ./outputs/my1_all
 
 
 DEIM_MG:
-  yaml_path: configs/cfg/dfine-s.yaml
+  yaml_path: configs/cfg/dfine-s-hypergraph-wave.yaml
 
 criterion: CriterionWithUGDR
 
@@ -38,5 +38,3 @@ CriterionWithUGDR:
     weight_dict: {cost_class: 2, cost_bbox: 5, cost_giou: 2}
     alpha: 0.25
     gamma: 2.0
-
-# 消融策略 衰减方式：常数[1.0;0.5;0.1];线性[1.0-0.1];余弦[1.0-0.1]

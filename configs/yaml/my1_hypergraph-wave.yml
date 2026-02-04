@@ -7,11 +7,9 @@ __include__: [
   '../base/common.yml'
 ]
 
-comment: 'dfine-s-hypergraph, s'
+comment: 'dfine-s-hypergraph-wave, s'
 
-output_dir: ./outputs/dfine-s-hypergraph
+output_dir: ./outputs/dfine-s-hypergraph-wave
 
 DEIM_MG:
-  yaml_path: configs/cfg/dfine-s-hypergraph.yaml
-
-# 消融策略：1[8,0.5];2[6,0.5];7[8,0.7];9[6,0.7];
+  yaml_path: configs/cfg/dfine-s-hypergraph-wave.yaml
